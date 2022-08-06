@@ -23,8 +23,8 @@ export default class BSTreeViewNode {
     backColor: string;
     iconColor: string;
     iconBackground: string;
-    selectable: boolean;
-    checkable: boolean;
+    selectable: boolean = true;
+    checkable: boolean = true;
     state: BSTreeViewNodeState;
     tags: string[];
     dataAttr: object;
@@ -57,6 +57,8 @@ export default class BSTreeViewNode {
      * @param treeView
      */
     constructor(treeView: BSTreeView) {
+        this.state = new BSTreeViewNodeState();
+
         this._treeView = treeView;
         this._options = treeView._options;
     }

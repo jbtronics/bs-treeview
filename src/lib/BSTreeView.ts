@@ -388,32 +388,9 @@ export default class BSTreeView
             // parentId : transversing up the tree
             node.parentId = parent.nodeId;
 
-            // if not provided set selectable default value
-            if (!node.hasOwnProperty('selectable')) {
-                node.selectable = true;
-            }
-
-            // if not provided set checkable default value
-            if (!node.hasOwnProperty('checkable')) {
-                node.checkable = true;
-            }
-
-            // where provided we should preserve states
-            node.state = node.state || new BSTreeViewNodeState();
-
-            // set checked state; unless set always false
-            if (!node.state.hasOwnProperty('checked')) {
-                node.state.checked = false;
-            }
-
             // convert the undefined string if hierarchical checks are enabled
             if (this._options.hierarchicalCheck && node.state.checked === null) {
                 node.state.checked = null;
-            }
-
-            // set enabled state; unless set always false
-            if (!node.state.hasOwnProperty('disabled')) {
-                node.state.disabled = false;
             }
 
             // set expanded state; if not provided based on levels
@@ -426,11 +403,6 @@ export default class BSTreeView
                 else {
                     node.state.expanded = false;
                 }
-            }
-
-            // set selected state; unless set always false
-            if (!node.state.hasOwnProperty('selected')) {
-                node.state.selected = false;
             }
 
             // set visible state; based parent state plus levels
