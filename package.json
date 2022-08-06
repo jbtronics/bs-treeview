@@ -1,5 +1,5 @@
 {
-  "name": "bs-treeview",
+  "name": "@jbtronics/bs-treeview",
   "version": "1.0.0",
   "description": "TreeView element for Javascript (mostly optimized for bootstrap)",
   "main": "build/main/index.js",
