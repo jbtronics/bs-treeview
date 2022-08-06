@@ -1,33 +1,33 @@
-import BSTreeViewOptions from "./BSTreeViewOptions";
+import BSTreeSearchOptions from "./BSTreeSearchOptions";
+import BSTreeViewDisableOptions from "./BSTreeViewDisableOptions";
+import {
+  EVENT_DESTROYED,
+  EVENT_INITIALIZED,
+  EVENT_LOADING_FAILED,
+  EVENT_NODE_CHECKED,
+  EVENT_NODE_COLLAPSED,
+  EVENT_NODE_DISABLED,
+  EVENT_NODE_ENABLED,
+  EVENT_NODE_EXPANDED,
+  EVENT_NODE_RENDERED,
+  EVENT_NODE_SELECTED,
+  EVENT_NODE_UNCHECKED,
+  EVENT_NODE_UNSELECTED,
+  EVENT_RENDERED,
+  EVENT_SEARCH_CLEARED,
+  EVENT_SEARCH_COMPLETED
+} from "./BSTreeViewEventNames";
 import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
+import BSTreeViewExpandOptions from "./BSTreeViewExpandOptions";
 import {default as BSTreeViewNode} from "./BSTreeViewNode";
 import BSTreeViewNodeState from "./BSTreeViewNodeState";
+import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
-import BSTreeViewDisableOptions from "./BSTreeViewDisableOptions";
-import BSTreeViewExpandOptions from "./BSTreeViewExpandOptions";
-import BSTreeSearchOptions from "./BSTreeSearchOptions";
 
 
 const pluginName = 'treeview';
 
 const EVENT_LOADING = 'bs-tree:loading';
-const EVENT_LOADING_FAILED = 'bs-tree:loadingFailed';
-const EVENT_INITIALIZED = 'bs-tree:initialized';
-const EVENT_NODE_RENDERED = 'bs-tree:nodeRendered';
-const EVENT_RENDERED = 'bs-tree:rendered';
-const EVENT_DESTROYED = 'bs-tree:destroyed';
-
-const EVENT_NODE_CHECKED = 'bs-tree:nodeChecked';
-const EVENT_NODE_COLLAPSED = 'bs-tree:nodeCollapsed';
-const EVENT_NODE_DISABLED = 'bs-tree:nodeDisabled';
-const EVENT_NODE_ENABLED = 'bs-tree:nodeEnabled';
-const EVENT_NODE_EXPANDED = 'bs-tree:nodeExpanded';
-const EVENT_NODE_SELECTED = 'bs-tree:nodeSelected';
-const EVENT_NODE_UNCHECKED = 'bs-tree:nodeUnchecked';
-const EVENT_NODE_UNSELECTED = 'bs-tree:nodeUnselected';
-
-const EVENT_SEARCH_COMPLETED = 'bs-tree:searchCompleted';
-const EVENT_SEARCH_CLEARED = 'bs-tree:searchCleared';
 
 function templateElement(tagType: string, classes: string): HTMLElement {
     const el = document.createElement(tagType);
@@ -118,19 +118,24 @@ export default class BSTreeView
         this._triggerEvent(EVENT_LOADING, null, new BSTreeViewEventOptions({silent: true}));
         this._load(this._options)
             .then((data) => {
-                // load done
-                return this._tree = data;
+                if (!data) {
+                    throw new Error("No data provided!");
+                }
+
+                //Parse the returned data
+                this._tree = data.map((dataNode) => BSTreeViewNode.fromData(dataNode, this));
+
+                // We continue to work with
+                return this._tree;
             })
             .catch((error) => {
                 // load fail
                 this._triggerEvent(EVENT_LOADING_FAILED, error, new BSTreeViewEventOptions());
             })
-            .then((treeData) => {
-                // initialize data
-                if (treeData) {
-                  return this._setInitialStates(new BSTreeViewNode({nodes: treeData}), 0);
-                }
-                throw new Error("No data provided!");
+            .then((tree: BSTreeViewNode[]) => {
+                  const tmp = new BSTreeViewNode(this);
+                  tmp.nodes = tree;
+                  return this._setInitialStates(tmp, 0);
               }
             )
             .then(() => {
@@ -140,7 +145,7 @@ export default class BSTreeView
         ;
     }
 
-    _load (options: BSTreeViewOptions): Promise<BSTreeViewNode[]> {
+    _load (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         if (options.data) {
             return this._loadLocalData(options);
         } else if (options.ajaxURL) {
@@ -149,7 +154,7 @@ export default class BSTreeView
         throw new Error("No data source defined.");
     }
 
-    _loadRemoteData (options: BSTreeViewOptions): Promise<BSTreeViewNode[]> {
+    _loadRemoteData (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         return new Promise((resolve, reject) => {
             fetch(options.ajaxURL, options.ajaxConfig).then((response) => {
                 resolve(response.json());
@@ -158,7 +163,7 @@ export default class BSTreeView
         });
     }
 
-    _loadLocalData (options: BSTreeViewOptions): Promise<BSTreeViewNode[]> {
+    _loadLocalData (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         return new Promise((resolve, reject) => {
             //if options.data is a string we need to JSON decode it first
             if (typeof options.data === 'string') {
@@ -479,21 +484,32 @@ export default class BSTreeView
 
         const classList = target.classList;
         if (classList.contains('expand-icon')) {
-            this._toggleExpanded(node);
+            node.toggleExpanded();
         }
         else if (classList.contains('check-icon')) {
             if (node.checkable) {
-                this._toggleChecked(node);
+                node.toggleChecked();
             }
         }
         else {
             if (node.selectable) {
-                this._toggleSelected(node);
+                node.toggleSelected();
             } else {
-                this._toggleExpanded(node);
+                node.toggleExpanded();
             }
         }
     };
+
+  _inheritCheckboxChanges (): void {
+    if (this._options.showCheckbox && this._options.highlightChanges) {
+      this._checkedNodes = [];
+      this._orderedNodes.forEach((node) => {
+        if(node.state.checked) {
+          this._checkedNodes.push(node);
+        }
+      });
+    }
+  };
 
     /* Looks up the DOM for the closest parent list item to retrieve the
      * data attribute nodeid, which is used to lookup the node in the flattened structure. */
@@ -505,382 +521,6 @@ export default class BSTreeView
             console.warn('Error: node does not exist');
         }
         return node;
-    };
-
-    _toggleExpanded (node: BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
-        if (!node) return;
-
-        // Lazy-load the child nodes if possible
-        if (typeof(this._options.lazyLoad) === 'function' && node.lazyLoad) {
-            this._lazyLoad(node);
-        } else {
-            this._setExpanded(node, !node.state.expanded, options);
-        }
-    };
-
-    _lazyLoad (node: BSTreeViewNode) {
-        if(!node.lazyLoad) return;
-
-        // Show a different icon while loading the child nodes
-        const span = node.el.querySelector('span.expand-icon');
-        span.classList.remove(...this._options.expandIcon.split(' '));
-        span.classList.add(...this._options.loadingIcon.split(' '));
-
-        this._options.lazyLoad(node, (nodes) => {
-            // Adding the node will expand its parent automatically
-            this.addNode(nodes, node);
-        });
-        // Only the first expand should do a lazy-load
-        node.lazyLoad = false;
-    };
-
-    _setExpanded (node: BSTreeViewNode, state: boolean, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
-
-        // We never pass options when rendering, so the only time
-        // we need to validate state is from user interaction
-        if (options && state === node.state.expanded) return;
-
-        if (state && node.nodes) {
-
-            // Set node state
-            node.state.expanded = true;
-
-            // Set element
-            if (node.el) {
-                const span = node.el.querySelector('span.expand-icon');
-                span.classList.remove(...this._options.expandIcon.split(" "))
-                span.classList.remove(...this._options.loadingIcon.split(" "))
-                span.classList.add(...this._options.collapseIcon.split(" "));
-            }
-
-            // Expand children
-            if (node.nodes && options) {
-                node.nodes.forEach((node) => {
-                    this._setVisible(node, true, options);
-                });
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_EXPANDED, node, options);
-        }
-        else if (!state) {
-
-            // Set node state
-            node.state.expanded = false;
-
-            // Set element
-            if (node.el) {
-                const span = node.el.querySelector('span.expand-icon');
-                span.classList.remove(...this._options.collapseIcon.split(" "));
-                span.classList.add(...this._options.expandIcon.split(" "));
-            }
-
-            // Collapse children
-            if (node.nodes && options) {
-                node.nodes.forEach ((node) => {
-                    this._setVisible(node, false, options);
-                    this._setExpanded(node, false, options);
-                });
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_COLLAPSED, node, options);
-        }
-    };
-
-    _setVisible (node: BSTreeViewNode, state: boolean, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
-
-        if (options && state === node.state.visible) return;
-
-        if (state) {
-
-            // Set node state
-            node.state.visible = true;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.remove('node-hidden');
-            }
-        }
-        else {
-
-            // Set node state to unchecked
-            node.state.visible = false;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.add('node-hidden');
-            }
-        }
-    };
-
-    _toggleSelected (node: BSTreeViewNode, options: BSTreeViewSelectOptions = new BSTreeViewSelectOptions()): this {
-        if (!node) return this;
-        this._setSelected(node, !node.state.selected, options);
-        return this;
-    };
-
-    _setSelected (node: BSTreeViewNode, state: boolean, options = new BSTreeViewSelectOptions()): this {
-
-        // We never pass options when rendering, so the only time
-        // we need to validate state is from user interaction
-        if (options && (state === node.state.selected)) return this;
-
-        if (state) {
-
-            // If multiSelect false, unselect previously selected
-            if (!this._options.multiSelect) {
-                const selectedNodes = this._findNodes('true', 'state.selected');
-                selectedNodes.forEach((node) => {
-                    options.unselecting = true;
-
-                    this._setSelected(node, false, options);
-                });
-            }
-
-            // Set node state
-            node.state.selected = true;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.add('node-selected');
-
-                if (node.selectedIcon || this._options.selectedIcon) {
-                    const span = node.el.querySelector('span.node-icon');
-                    span.classList.remove(...(node.icon || this._options.nodeIcon).split(" "));
-                    span.classList.add(...(node.selectedIcon || this._options.selectedIcon).split(" "));
-                }
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_SELECTED, node, options);
-        }
-        else {
-
-            // If preventUnselect true + only one remaining selection, disable unselect
-            if (this._options.preventUnselect &&
-                (options && !options.unselecting) &&
-                (this._findNodes('true', 'state.selected').length === 1)) {
-                // Fire the nodeSelected event if reselection is allowed
-                if (this._options.allowReselect) {
-                    this._triggerEvent(EVENT_NODE_SELECTED, node, options);
-                }
-                return this;
-            }
-
-            // Set node state
-            node.state.selected = false;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.remove('node-selected');
-
-                if (node.selectedIcon || this._options.selectedIcon) {
-                    const span = node.el.querySelector('span.node-icon');
-                    span.classList.remove(...(node.selectedIcon || this._options.selectedIcon).split(" "))
-                    span.classList.add(...(node.icon || this._options.nodeIcon).split(" "));
-                }
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_UNSELECTED, node, options);
-        }
-
-        return this;
-    };
-
-    _inheritCheckboxChanges (): void {
-        if (this._options.showCheckbox && this._options.highlightChanges) {
-            this._checkedNodes = [];
-            this._orderedNodes.forEach((node) => {
-               if(node.state.checked) {
-                   this._checkedNodes.push(node);
-               }
-            });
-        }
-    };
-
-    _toggleChecked (node: BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): this {
-        if (!node) return this;
-
-        if (this._options.hierarchicalCheck) {
-            // Event propagation to the parent/child nodes
-            const childOptions = new BSTreeViewEventOptions(options);
-            childOptions.silent = options.silent || !this._options.propagateCheckEvent;
-
-            let state: boolean|null;
-            let currentNode = node;
-            // Temporarily swap the tree state
-            node.state.checked = !node.state.checked;
-
-            currentNode = this._nodes.get(currentNode.parentId);
-            // Iterate through each parent node
-            while (currentNode) {
-
-                // Calculate the state
-                state = currentNode.nodes.reduce((acc, curr) => {
-                    return (acc === curr.state.checked) ? acc : null;
-                }, currentNode.nodes[0].state.checked);
-
-                // Set the state
-                this._setChecked(currentNode, state, childOptions);
-
-                currentNode = this._nodes.get(currentNode.parentId);
-            }
-
-            if (node.nodes && node.nodes.length > 0) {
-                // Copy the content of the array
-                let child, children = node.nodes.slice();
-                // Iterate through each child node
-                while (children && children.length > 0) {
-                    child = children.pop();
-
-                    // Set the state
-                    this._setChecked(child, node.state.checked, childOptions);
-
-                    // Append children to the end of the list
-                    if (child.nodes && child.nodes.length > 0) {
-                        children = children.concat(child.nodes.slice());
-                    }
-                }
-            }
-            // Swap back the tree state
-            node.state.checked = !node.state.checked;
-        }
-
-        this._setChecked(node, !node.state.checked, options);
-        return this;
-    };
-
-    _setChecked (node: BSTreeViewNode, state: boolean, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
-        // We never pass options when rendering, so the only time
-        // we need to validate state is from user interaction
-        if (options && state === node.state.checked) return;
-
-        // Highlight the node if its checkbox has unsaved changes
-        if (this._options.highlightChanges) {
-            const nodeNotInCheckList = this._checkedNodes.indexOf(node) == -1;
-            if(nodeNotInCheckList == state) {
-                node.el.classList.add('node-check-changed');
-            } else {
-                node.el.classList.remove('node-check-changed');
-            }
-        }
-
-        if (state) {
-
-            // Set node state
-            node.state.checked = true;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.add('node-checked');
-                node.el.classList.remove('node-checked-partial');
-                const span = node.el.querySelector('span.check-icon');
-                span.classList.remove(...this._options.uncheckedIcon.split(" "))
-                span.classList.remove(...this._options.partiallyCheckedIcon.split(" "))
-                span.classList.add(...this._options.checkedIcon.split(" "));
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_CHECKED, node, options);
-        }
-        else if (state === null && this._options.hierarchicalCheck) {
-
-            // Set node state to partially checked
-            node.state.checked = null;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.add('node-checked-partial');
-                node.el.classList.remove('node-checked');
-                const span = node.el.querySelector('span.check-icon');
-                span.classList.remove(...this._options.uncheckedIcon.split(" "));
-                span.classList.remove(...this._options.checkedIcon.split(" "));
-                span.classList.add(...this._options.partiallyCheckedIcon.split(" "));
-            }
-
-            // Optionally trigger event, partially checked is technically unchecked
-            this._triggerEvent(EVENT_NODE_UNCHECKED, node, options);
-        } else {
-
-            // Set node state to unchecked
-            node.state.checked = false;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.remove('node-checked node-checked-partial');
-                const span = node.el.querySelector('span.check-icon');
-                span.classList.remove(...this._options.checkedIcon.split(" "));
-                span.classList.remove(...this._options.partiallyCheckedIcon.split(" "));
-                span.classList.add(...this._options.uncheckedIcon.split(" "));
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_UNCHECKED, node, options);
-        }
-    };
-
-    _setDisabled (node: BSTreeViewNode, state: boolean, options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()) {
-
-        // We never pass options when rendering, so the only time
-        // we need to validate state is from user interaction
-        if (options && state === node.state.disabled) return;
-
-        if (state) {
-
-            // Set node state to disabled
-            node.state.disabled = true;
-
-            // Disable all other states
-            if (options && !options.keepState) {
-                this._setSelected(node, false, options);
-                this._setChecked(node, false, options);
-                this._setExpanded(node, false, options);
-            }
-
-            // Set element
-            if (node.el) {
-                node.el.classList.add('node-disabled');
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_DISABLED, node, options);
-        }
-        else {
-
-            // Set node state to enabled
-            node.state.disabled = false;
-
-            // Set element
-            if (node.el) {
-                node.el.classList.remove('node-disabled');
-            }
-
-            // Optionally trigger event
-            this._triggerEvent(EVENT_NODE_DISABLED, node, options);
-        }
-    };
-
-    _setSearchResult (node: BSTreeViewNode, state: boolean, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
-        if (options && state === node.searchResult) return;
-
-        if (state) {
-
-            node.searchResult = true;
-
-            if (node.el) {
-                node.el.classList.add('node-result');
-            }
-        }
-        else {
-
-            node.searchResult = false;
-
-            if (node.el) {
-                node.el.classList.remove('node-result');
-            }
-        }
     };
 
     _render(): void {
@@ -962,13 +602,13 @@ export default class BSTreeView
 
         // Add checkbox and node icons
         if (this._options.checkboxFirst) {
-            this._addCheckbox(node);
-            this._addIcon(node);
-            this._addImage(node);
+            node._addCheckbox();
+            node._addIcon();
+            node._addImage();
         } else {
-            this._addIcon(node);
-            this._addImage(node);
-            this._addCheckbox(node);
+            node._addIcon();
+            node._addImage();
+            node._addCheckbox();
         }
 
         // Add text
@@ -1001,48 +641,19 @@ export default class BSTreeView
         }
 
         // Set various node states
-        this._setSelected(node, node.state.selected);
-        this._setChecked(node, node.state.checked);
-        this._setSearchResult(node, node.searchResult);
-        this._setExpanded(node, node.state.expanded);
-        this._setDisabled(node, node.state.disabled);
-        this._setVisible(node, node.state.visible);
+        node.setSelected(node.state.selected);
+        node.setChecked(node.state.checked);
+        node._setSearchResult(node.searchResult);
+        node.setExpanded(node.state.expanded);
+        node.setDisabled(node.state.disabled);
+        node.setVisible(node.state.visible);
 
         // Trigger nodeRendered event
         this._triggerEvent(EVENT_NODE_RENDERED, node, new BSTreeViewEventOptions());
     };
 
-// Add checkable icon
-    _addCheckbox (node: BSTreeViewNode): void {
-        if (this._options.showCheckbox && (node.hideCheckbox === undefined || node.hideCheckbox === false)) {
-            node.el
-                .append(this._template.icon.check.cloneNode(true) as HTMLElement);
-        }
-    }
-
-// Add node icon
-    _addIcon (node: BSTreeViewNode): void {
-        if (this._options.showIcon && !(this._options.showImage && node.image)) {
-            const template = this._template.icon.node.cloneNode(true) as HTMLElement;
-            template.classList.add(...(node.icon || this._options.nodeIcon).split(" "))
-
-            node.el.append(template);
-        }
-    }
-
-    _addImage (node: BSTreeViewNode): void {
-        if (this._options.showImage && node.image) {
-            const template = this._template.image.cloneNode(true) as HTMLElement;
-            template.classList.add('node-image');
-            template.style.backgroundImage = "url('" + node.image + "')";
 
 
-            node.el
-                .append(
-
-                );
-        }
-    }
 
 // Creates a new node element from template and
 // ensures the template is inserted at the correct position
@@ -1074,15 +685,6 @@ export default class BSTreeView
         node.el.remove();
     };
 
-// Expand node, rendering it's immediate children
-    _expandNode (node: BSTreeViewNode): void {
-        if (!node.nodes) return;
-
-        node.nodes.slice(0).reverse().forEach((childNode) => {
-            childNode.level = node.level + 1;
-            this._renderNode(childNode, node);
-        });
-    };
 
 // Add inline style into head
     _injectStyle (): void {
@@ -1341,10 +943,12 @@ export default class BSTreeView
         });
 
         // initialize new state and render changes
-        this._setInitialStates(new BSTreeViewNode({nodes: this._tree}), 0)
+        let tmp = new BSTreeViewNode(this);
+        tmp.nodes = this._tree;
+        this._setInitialStates(tmp, 0)
             .then(() =>{
                 if (parentNode && !parentNode.state.expanded) {
-                    this._setExpanded(parentNode, true, options);
+                    parentNode.setExpanded(true, options);
                 }
                 this._render();
             });
@@ -1413,8 +1017,10 @@ export default class BSTreeView
             this._removeNodeEl(node);
         });
 
+        const tmp = new BSTreeViewNode(this);
+        tmp.nodes = this._tree;
         // initialize new state and render changes
-        this._setInitialStates(new BSTreeViewNode({nodes: this._tree}), 0)
+        this._setInitialStates(tmp, 0)
             .then(this._render.bind(this));
     };
 
@@ -1442,8 +1048,11 @@ export default class BSTreeView
         // remove old node from DOM
         this._removeNodeEl(node);
 
+        const tmp = new BSTreeViewNode(this);
+        tmp.nodes = this._tree;
+
         // initialize new state and render changes
-        this._setInitialStates(new BSTreeViewNode({nodes: this._tree}), 0)
+        this._setInitialStates(tmp, 0)
             .then(this._render.bind(this));
     };
 
@@ -1459,7 +1068,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setSelected(node, true, options);
+            node.setSelected(true, options);
         });
     };
 
@@ -1475,7 +1084,7 @@ export default class BSTreeView
 
 
         nodes.forEach((node) => {
-            this._setSelected(node, false, options);
+            node.setSelected(false, options);
         });
     };
 
@@ -1490,7 +1099,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._toggleSelected(node, options);
+            node.toggleSelected(options);
         }, this);
     };
 
@@ -1515,7 +1124,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setExpanded(node, false, options);
+            node.setExpanded(false, options);
         });
     };
 
@@ -1543,10 +1152,10 @@ export default class BSTreeView
             if (node.state.expanded) return;
 
             if (typeof(this._options.lazyLoad) === 'function' && node.lazyLoad) {
-                this._lazyLoad(node);
+                node._lazyLoad();
             }
 
-            this._setExpanded(node, true, options);
+            node.setExpanded( true, options);
             if (node.nodes) {
                 this._expandLevels(node.nodes, options.levels-1, options);
             }
@@ -1559,7 +1168,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setExpanded(node, (level > 0), options);
+            node.setExpanded((level > 0), options);
             if (node.nodes) {
                 this._expandLevels(node.nodes, level-1, options);
             }
@@ -1581,7 +1190,7 @@ export default class BSTreeView
             let tmpNode;
             while (tmpNode = this.getParents([parentNode])[0]) {
                 parentNode = tmpNode;
-                this._setExpanded(parentNode, true, options);
+                parentNode.setExpanded(true, options);
             }
         });
     };
@@ -1597,7 +1206,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._toggleExpanded(node, options);
+            node.toggleExpanded(options);
         });
 
     };
@@ -1610,7 +1219,7 @@ export default class BSTreeView
     checkAll (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
         this._orderedNodes.forEach((node) => {
             if(!node.state.checked) {
-                this._setChecked(node, true, options);
+                node.setChecked(true, options);
             }
         });
     };
@@ -1626,7 +1235,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setChecked(node, true, options);
+            node.setChecked(true, options);
         });
     };
 
@@ -1637,7 +1246,7 @@ export default class BSTreeView
     uncheckAll (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
         this._orderedNodes.forEach((node) => {
             if(node.state.checked || node.state.checked === undefined) {
-                this._setChecked(node, false, options);
+                node.setChecked( false, options);
             }
         });
     };
@@ -1653,7 +1262,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setChecked(node, false, options);
+            node.setChecked( false, options);
         });
     };
 
@@ -1668,7 +1277,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._toggleChecked(node, options);
+            node.toggleChecked(options);
         });
     };
 
@@ -1690,7 +1299,7 @@ export default class BSTreeView
     disableAll (options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
         const nodes = this._findNodes('false', 'state.disabled');
         nodes.forEach((node) => {
-           this._setDisabled(node,true, options);
+           node.setDisabled(true, options);
         });
     };
 
@@ -1705,7 +1314,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setDisabled(node, true, options);
+            node.setDisabled(true, options);
         });
     };
 
@@ -1717,7 +1326,7 @@ export default class BSTreeView
         const nodes = this._findNodes('true', 'state.disabled');
 
         nodes.forEach((node) => {
-            this._setDisabled(node, false, options);
+            node.setDisabled(false, options);
         });
     };
 
@@ -1732,7 +1341,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setDisabled(node, false, options);
+            node.setDisabled(false, options);
         })
     };
 
@@ -1747,7 +1356,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-            this._setDisabled(node, !node.state.disabled, options);
+           node.toggleDisabled(options);
         })
     };
 
@@ -1778,12 +1387,12 @@ export default class BSTreeView
 
         // Clear previous results no longer matched
         this._diffArray<BSTreeViewNode>(results, previous).forEach((node) => {
-            this._setSearchResult(node, false, options);
+            node._setSearchResult(false, options);
         });
 
         // Set new results
         this._diffArray<BSTreeViewNode>(previous, results).forEach((node) => {
-            this._setSearchResult(node, true, options);
+            node._setSearchResult( true, options);
         });
 
         // Reveal hidden nodes
@@ -1802,7 +1411,7 @@ export default class BSTreeView
     clearSearch (options: BSTreeSearchOptions = new BSTreeSearchOptions()): void {
         const results = this._getSearchResults();
         results.forEach((node) => {
-            this._setSearchResult(node, false, options);
+            node._setSearchResult(false, options);
         });
 
         this._triggerEvent(EVENT_SEARCH_CLEARED, results, options);

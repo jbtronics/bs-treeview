@@ -11,6 +11,11 @@ but is overhauled with typescript and does not use any jQuery.
 ## Usage
 TODO
 
+## Migrate from bootstrap-treeview
+### Changes
+* Other event names and event signatures are changed: We use javascript native events now, which has the signature: `(event: Event) => void` for the handlers. You can access the data part of the event using `event.detail.data`
+* 
+
 
 # License
 bs-treeview is licensed under Apache 2.0 license. This means you can use it for free and redistribute it, without much restrictions. See [LICENSE](LICENSE.md) for more information.

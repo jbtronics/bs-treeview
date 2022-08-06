@@ -5,7 +5,7 @@
     "outDir": "build/main",
     "rootDir": "src",
     "declaration": true,
-    "inlineSourceMap": true,
+    //"inlineSourceMap": true, //Disabled as it confuses webpack in local link
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     //"resolveJsonModule": true /* Include modules imported with .json extension. */,
 
