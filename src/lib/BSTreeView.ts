@@ -1,58 +1,36 @@
 import BSTreeSearchOptions from "./BSTreeSearchOptions";
 import BSTreeViewDisableOptions from "./BSTreeViewDisableOptions";
 import {
-  EVENT_DESTROYED,
-  EVENT_INITIALIZED,
-  EVENT_LOADING_FAILED,
-  EVENT_NODE_CHECKED,
-  EVENT_NODE_COLLAPSED,
-  EVENT_NODE_DISABLED,
-  EVENT_NODE_ENABLED,
-  EVENT_NODE_EXPANDED,
-  EVENT_NODE_RENDERED,
-  EVENT_NODE_SELECTED,
-  EVENT_NODE_UNCHECKED,
-  EVENT_NODE_UNSELECTED,
-  EVENT_RENDERED,
-  EVENT_SEARCH_CLEARED,
-  EVENT_SEARCH_COMPLETED
+    EVENT_DESTROYED,
+    EVENT_INITIALIZED,
+    EVENT_LOADING_FAILED,
+    EVENT_NODE_CHECKED,
+    EVENT_NODE_COLLAPSED,
+    EVENT_NODE_DISABLED,
+    EVENT_NODE_ENABLED,
+    EVENT_NODE_EXPANDED,
+    EVENT_NODE_RENDERED,
+    EVENT_NODE_SELECTED,
+    EVENT_NODE_UNCHECKED,
+    EVENT_NODE_UNSELECTED,
+    EVENT_RENDERED,
+    EVENT_SEARCH_CLEARED,
+    EVENT_SEARCH_COMPLETED
 } from "./BSTreeViewEventNames";
 import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
 import BSTreeViewExpandOptions from "./BSTreeViewExpandOptions";
 import {default as BSTreeViewNode} from "./BSTreeViewNode";
 import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
-
+import Template from "./BSTreeViewTemplate";
 
 const pluginName = 'treeview';
 
 const EVENT_LOADING = 'bs-tree:loading';
 
-function templateElement(tagType: string, classes: string): HTMLElement {
-    const el = document.createElement(tagType);
-    if(classes.length > 0) {
-        el.classList.add(...classes.split(" "));
-    }
-    return el;
-}
 
 export default class BSTreeView
 {
-    _template = {
-        tree: templateElement('ul', "list-group"),
-        node: templateElement("li", "list-group-item"),
-        indent: templateElement("span", "indent"),
-        icon: {
-            node: templateElement("span", "icon node-icon"),
-            expand: templateElement("span", "icon expand-icon"),
-            check: templateElement("span", "icon check-icon"),
-            empty:  templateElement("span", "icon")
-        },
-        image: templateElement("span", "image"),
-        badge: templateElement("span", ""),
-        text: templateElement("span", "text"),
-    };
-
     _css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}'
 
 
@@ -119,7 +97,7 @@ export default class BSTreeView
         }
 
         // Cache empty icon DOM template
-        this._template.icon.empty.classList.add(...this._options.emptyIcon.split(" "));
+        Template.icon.empty.classList.add(...this._options.emptyIcon.split(" "));
 
         this._destroy();
         this._subscribeEvents();
@@ -429,16 +407,16 @@ export default class BSTreeView
         }
     };
 
-  _inheritCheckboxChanges (): void {
-    if (this._options.showCheckbox && this._options.highlightChanges) {
-      this._checkedNodes = [];
-      this._orderedNodes.forEach((node) => {
-        if(node.state.checked) {
-          this._checkedNodes.push(node);
+    _inheritCheckboxChanges (): void {
+        if (this._options.showCheckbox && this._options.highlightChanges) {
+            this._checkedNodes = [];
+            this._orderedNodes.forEach((node) => {
+                if(node.state.checked) {
+                    this._checkedNodes.push(node);
+                }
+            });
         }
-      });
-    }
-  };
+    };
 
     /* Looks up the DOM for the closest parent list item to retrieve the
      * data attribute nodeid, which is used to lookup the node in the flattened structure. */
@@ -456,7 +434,7 @@ export default class BSTreeView
         if (!this._initialized) {
 
             // Setup first time only components
-            this.wrapper = this._template.tree.cloneNode(true) as HTMLElement;
+            this.wrapper = Template.tree.cloneNode(true) as HTMLElement;
             //Empty this element
             while(this.element.firstChild) {
                 this.element.removeChild(this.element.firstChild);
@@ -471,149 +449,24 @@ export default class BSTreeView
             this._initialized = true;
         }
 
-        let previousNode: BSTreeViewNode|null = null;
+        //let previousNode: BSTreeViewNode|null = null;
         this._orderedNodes.forEach((node) => {
-            this._renderNode(node, previousNode);
-            previousNode = node;
+            const nodeElement = node._renderNode();
+
+            //Append our node to the wrapper to really show it in the DOM
+            this.wrapper.appendChild(nodeElement);
         });
+
+        /*//If we already had a previous node, insert it after
+        if (previousNode) {
+            previousNode.el.after(nodeElement);
+        }
+        this._renderNode(node, previousNode);
+        previousNode = node;
+    });*/
 
         this._triggerEvent(EVENT_RENDERED, Array.from(this._orderedNodes.values()), new BSTreeViewEventOptions());
     };
-
-    _renderNode(node: BSTreeViewNode, previousNode: BSTreeViewNode|null): void {
-        if (!node) return;
-
-        if (!node.el) {
-            node.el = this._newNodeEl(node, previousNode);
-            node.el.classList.add('node-' + this._elementId);
-        }
-        else {
-            node.el.innerHTML = "";
-        }
-
-        // Append .classes to the node
-        if(node.class) {
-            node.el.classList.add(...node.class.split(" "));
-        }
-
-        // Set the #id of the node if specified
-        if (node.id) {
-            node.el.id = node.id;
-        }
-
-        // Append custom data- attributes to the node
-        if (node.dataAttr) {
-            for (const key in node.dataAttr) {
-                if (node.dataAttr.hasOwnProperty(key)) {
-                    node.el.setAttribute('data-' + key, node.dataAttr[key]);
-                }
-            }
-        }
-
-        // Set / update nodeid; it can change as a result of addNode etc.
-        node.el.dataset.nodeId = node.nodeId;
-
-        // Set the tooltip attribute if present
-        if (node.tooltip) {
-            node.el.title = node.tooltip;
-        }
-
-        // Add indent/spacer to mimic tree structure
-        for (let i = 0; i < (node.level - 1); i++) {
-            node.el.append(this._template.indent.cloneNode(true) as HTMLElement);
-        }
-
-        // Add expand / collapse or empty spacer icons
-        node.el
-            .append(
-                node.nodes || node.lazyLoad ? this._template.icon.expand.cloneNode(true) as HTMLElement : this._template.icon.empty.cloneNode(true) as HTMLElement
-            );
-
-        // Add checkbox and node icons
-        if (this._options.checkboxFirst) {
-            node._addCheckbox();
-            node._addIcon();
-            node._addImage();
-        } else {
-            node._addIcon();
-            node._addImage();
-            node._addCheckbox();
-        }
-
-        // Add text
-        if (this._options.wrapNodeText) {
-            const wrapper = this._template.text.cloneNode(true) as HTMLElement;
-            node.el.append(wrapper);
-            wrapper.append(node.text);
-        } else {
-            node.el.append(node.text);
-        }
-
-        // Add tags as badges
-        if (this._options.showTags && node.tags) {
-            node.tags.forEach(tag => {
-                const template = this._template.badge.cloneNode(true) as HTMLElement;
-                template.classList.add(
-                    //@ts-ignore
-                    ...((typeof tag === 'object' ? tag.class : undefined)
-                    || node.tagsClass
-                    || this._options.tagsClass).split(" ")
-                );
-                template.append(
-                    //@ts-ignore
-                    (typeof tag === 'object' ? tag.text : undefined)
-                    || tag
-                );
-
-                node.el.append(template);
-            });
-        }
-
-        // Set various node states
-        node.setSelected(node.state.selected);
-        node.setChecked(node.state.checked);
-        node._setSearchResult(node.searchResult);
-        node.setExpanded(node.state.expanded);
-        node.setDisabled(node.state.disabled);
-        node.setVisible(node.state.visible);
-
-        // Trigger nodeRendered event
-        this._triggerEvent(EVENT_NODE_RENDERED, node, new BSTreeViewEventOptions());
-    };
-
-
-
-
-// Creates a new node element from template and
-// ensures the template is inserted at the correct position
-    _newNodeEl (_node: BSTreeViewNode, previousNode: BSTreeViewNode|null): HTMLElement {
-        const template = this._template.node.cloneNode(true) as HTMLElement;
-
-        if (previousNode) {
-            // typical usage, as nodes are rendered in
-            // sort order we add after the previous element
-            previousNode.el.after(template);
-        } else {
-            // we use prepend instead of append,
-            // to cater for root inserts i.e. nodeId 0.0
-            this.wrapper.prepend(template);
-        }
-
-        return template;
-    };
-
-// Recursively remove node elements from DOM
-    _removeNodeEl (node: BSTreeViewNode): void {
-        if (!node) return;
-
-        if (node.nodes) {
-            node.nodes.forEach((node) => {
-                this._removeNodeEl(node);
-            });
-        }
-        node.el.remove();
-    };
-
 
 // Add inline style into head
     _injectStyle (): void {
@@ -942,7 +795,7 @@ export default class BSTreeView
             targetNodes.splice(node.index, 1);
 
             // remove node from DOM
-            this._removeNodeEl(node);
+            node._removeNodeEl();
         });
 
         // Update the flat representation of the tree and rerender it
@@ -972,7 +825,7 @@ export default class BSTreeView
         targetNodes.splice(node.index, 1, newNode);
 
         // remove old node from DOM
-        this._removeNodeEl(node);
+        node._removeNodeEl();
 
         // Update the flat representation of the tree and rerender it
         this._updateFlatTreeMaps();
@@ -1211,7 +1064,7 @@ export default class BSTreeView
         this._inheritCheckboxChanges();
 
         this._nodes.forEach((node) => {
-           node.el.classList.remove('node-check-changed');
+            node.el.classList.remove('node-check-changed');
         });
     };
 
@@ -1222,7 +1075,7 @@ export default class BSTreeView
     disableAll (options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
         const nodes = this._findNodes('false', 'state.disabled');
         nodes.forEach((node) => {
-           node.setDisabled(true, options);
+            node.setDisabled(true, options);
         });
     };
 
@@ -1279,7 +1132,7 @@ export default class BSTreeView
         }
 
         nodes.forEach((node) => {
-           node.toggleDisabled(options);
+            node.toggleDisabled(options);
         })
     };
 
@@ -1348,9 +1201,9 @@ export default class BSTreeView
         let diff: Array<T> = [];
 
         b.forEach((n) => {
-           if (a.indexOf(n) === -1) {
-               diff.push(n);
-           }
+            if (a.indexOf(n) === -1) {
+                diff.push(n);
+            }
         });
         return diff;
     };

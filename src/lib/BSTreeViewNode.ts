@@ -4,7 +4,7 @@ import {
     EVENT_NODE_CHECKED,
     EVENT_NODE_COLLAPSED,
     EVENT_NODE_DISABLED,
-    EVENT_NODE_EXPANDED,
+    EVENT_NODE_EXPANDED, EVENT_NODE_RENDERED,
     EVENT_NODE_SELECTED,
     EVENT_NODE_UNCHECKED,
     EVENT_NODE_UNSELECTED
@@ -13,6 +13,7 @@ import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
 import BSTreeViewNodeState from "./BSTreeViewNodeState";
 import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
+import Template from "./BSTreeViewTemplate";
 
 export default class BSTreeViewNode {
 
@@ -164,6 +165,125 @@ export default class BSTreeViewNode {
             this._treeView._registerNode(node);
         });
     }
+
+    /**
+     * Creates the underlying HTMLElement for this node and updates its properties.
+     */
+    _renderNode(): HTMLElement
+    {
+        //Create the node element from template if it is not existing
+        if (!this.el) {
+            this.el = Template.node.cloneNode(true) as HTMLElement;
+            this.el.classList.add('node-' + this._treeView._elementId);
+        }
+        else {
+            this.el.innerHTML = "";
+        }
+
+        // Append .classes to the node
+        if(this.class) {
+            this.el.classList.add(...this.class.split(" "));
+        }
+
+        // Set the #id of the node if specified
+        if (this.id) {
+            this.el.id = this.id;
+        }
+
+        // Append custom data- attributes to the node
+        if (this.dataAttr) {
+            for (const key in this.dataAttr) {
+                if (this.dataAttr[key]) {
+                    this.el.dataset[key] = this.dataAttr[key];
+                }
+            }
+        }
+
+        // Set / update nodeid; it can change as a result of addNode etc.
+        this.el.dataset.nodeId = this.nodeId;
+
+        // Set the tooltip attribute if present
+        if (this.tooltip) {
+            this.el.title = this.tooltip;
+        }
+
+        // Add indent/spacer to mimic tree structure
+        for (let i = 0; i < (this.level - 1); i++) {
+            this.el.append(Template.indent.cloneNode(true) as HTMLElement);
+        }
+
+        // Add expand / collapse or empty spacer icons
+        this.el
+            .append(
+                this.nodes || this.lazyLoad ? Template.icon.expand.cloneNode(true) as HTMLElement : Template.icon.empty.cloneNode(true) as HTMLElement
+            );
+
+        // Add checkbox and node icons
+        if (this._options.checkboxFirst) {
+            this._addCheckbox();
+            this._addIcon();
+            this._addImage();
+        } else {
+            this._addIcon();
+            this._addImage();
+            this._addCheckbox();
+        }
+
+        // Add text
+        if (this._options.wrapNodeText) {
+            const wrapper = Template.text.cloneNode(true) as HTMLElement;
+            this.el.append(wrapper);
+            wrapper.append(this.text);
+        } else {
+            this.el.append(this.text);
+        }
+
+        // Add tags as badges
+        if (this._options.showTags && this.tags) {
+            this.tags.forEach(tag => {
+                const template = Template.badge.cloneNode(true) as HTMLElement;
+                template.classList.add(
+                    //@ts-ignore
+                    ...((typeof tag === 'object' ? tag.class : undefined)
+                        || this.tagsClass
+                        || this._options.tagsClass).split(" ")
+                );
+                template.append(
+                    //@ts-ignore
+                    (typeof tag === 'object' ? tag.text : undefined)
+                    || tag
+                );
+
+                this.el.append(template);
+            });
+        }
+
+        // Set various node states
+        this.setSelected(this.state.selected);
+        this.setChecked(this.state.checked);
+        this._setSearchResult(this.searchResult);
+        this.setExpanded(this.state.expanded);
+        this.setDisabled(this.state.disabled);
+        this.setVisible(this.state.visible);
+
+        // Trigger nodeRendered event
+        this._triggerEvent(EVENT_NODE_RENDERED, new BSTreeViewEventOptions());
+
+
+        return this.el;
+    }
+
+    /**
+     * Recursivley removes this node and all its children from the Dom
+     */
+    _removeNodeEl (): void {
+        if (this.nodes) {
+            this.nodes.forEach((node) => {
+                node._removeNodeEl();
+            });
+        }
+        this.el.remove();
+    };
 
     /**
      * Create the given event on the nodes element. The event bubbles the DOM upwards. Details about the node and the used treeView are passed via event.detail
@@ -528,14 +648,14 @@ export default class BSTreeViewNode {
     _addCheckbox (): void {
         if (this._options.showCheckbox && (this.hideCheckbox === undefined || this.hideCheckbox === false)) {
             this.el
-                .append(this._treeView._template.icon.check.cloneNode(true) as HTMLElement);
+                .append(Template.icon.check.cloneNode(true) as HTMLElement);
         }
     }
 
 // Add node icon
     _addIcon (): void {
         if (this._options.showIcon && !(this._options.showImage && this.image)) {
-            const template = this._treeView._template.icon.node.cloneNode(true) as HTMLElement;
+            const template = Template.icon.node.cloneNode(true) as HTMLElement;
             template.classList.add(...(this.icon || this._options.nodeIcon).split(" "))
 
             this.el.append(template);
@@ -544,7 +664,7 @@ export default class BSTreeViewNode {
 
     _addImage (): void {
         if (this._options.showImage && this.image) {
-            const template = this._treeView._template.image.cloneNode(true) as HTMLElement;
+            const template = Template.image.cloneNode(true) as HTMLElement;
             template.classList.add('node-image');
             template.style.backgroundImage = "url('" + this.image + "')";
 
@@ -557,10 +677,10 @@ export default class BSTreeViewNode {
     _expandNode (): void {
         if (!this.nodes) return;
 
-        this.nodes.slice(0).reverse().forEach((childNode) => {
+        /*this.nodes.slice(0).reverse().forEach((childNode) => {
             childNode.level = this.level + 1;
-            this._treeView._renderNode(childNode, this);
-        });
+            Template._renderNode(childNode, this);
+        });*/
     };
 
 
