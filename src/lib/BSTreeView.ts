@@ -71,9 +71,19 @@ export default class BSTreeView
 
     _styleId: string;
 
+    /**
+     * The hierachically tree of nodes
+     */
     _tree: BSTreeViewNode[];
 
+    /**
+     * A flat list representation of all nodes (unsorted)
+     */
     _nodes: Map<string, BSTreeViewNode>;
+
+    /**
+     * A flat list representation of all nodes, sorted by their nodeId, which gives you the render order
+     */
     _orderedNodes: Map<string, BSTreeViewNode>;
 
     _checkedNodes: BSTreeViewNode[];
@@ -124,22 +134,20 @@ export default class BSTreeView
                 //Parse the returned data
                 this._tree = data.map((dataNode) => BSTreeViewNode.fromData(dataNode, this));
 
-                // We continue to work with
-                return this._tree;
+                //Update our internal representation of the tree
+                this._updateFlatTreeMaps();
+
+                //Trigger the initialized event
+                this._triggerEvent(EVENT_INITIALIZED, Array.from(this._orderedNodes.values()));
+
+                //Render the tree
+                this._render();
+
             })
             .catch((error) => {
                 // load fail
                 this._triggerEvent(EVENT_LOADING_FAILED, error, new BSTreeViewEventOptions());
-            })
-            .then((tree: BSTreeViewNode[]) => {
-                  const tmp = new BSTreeViewNode(this);
-                  tmp.nodes = tree;
-                  return this._setInitialStates(tmp, 0);
-              }
-            )
-            .then(() => {
-                // render to DOM
-                this._render();
+                throw error;
             })
         ;
     }
@@ -344,89 +352,39 @@ export default class BSTreeView
         }
     }
 
-    /*
-        Recurse the tree structure and ensure all nodes have
-        valid initial states.  User defined states will be preserved.
-        For performance we also take this opportunity to
-        index nodes in a flattened ordered structure
-    */
-    _setInitialStates (node: BSTreeViewNode, level: number): Promise<any> {
+    /**
+     * Call this function after changes to the tree have been made to regenerate the flat structures
+     */
+    _updateFlatTreeMaps(): void
+    {
+        //We start with a empty map, as nodes are re-registered later
         this._nodes = new Map<string, BSTreeViewNode>();
 
-        const promise = new Promise((resolve) => {
-            this._setInitialState(node, level)
-            resolve(false);
-        });
-
-        promise.then(() => {
-            this._orderedNodes = this._sortNodes(this._nodes);
-            this._inheritCheckboxChanges();
-            this._triggerEvent(EVENT_INITIALIZED, Array.from(this._orderedNodes.values()));
-        });
-
-        return promise;
-    };
-
-    _setInitialState (node: BSTreeViewNode, level: number): void {
-        if (!node.nodes) return;
-        level += 1;
-
-        let parent = node;
-        node.nodes.forEach((node, index) => {
-            // level : hierarchical tree level, starts at 1
-            node.level = level;
-
-            // index : relative to siblings
+        //Initialize all parent nodes and register them at our flat map
+        this._tree.forEach((node: BSTreeViewNode, index) => {
+            //The root nodes have no index yet, so give them one
             node.index = index;
+            node.nodeId = index.toString();
 
-            // nodeId : unique, hierarchical identifier
-            node.nodeId = (parent && parent.nodeId) ?
-                parent.nodeId + '.' + node.index :
-                (level - 1) + '.' + node.index;
+            this._registerNode(node);
+            node._updateChildrenHierarchy();
+        });
 
-            // parentId : transversing up the tree
-            node.parentId = parent.nodeId;
+        /** Create the sorted version of the flat map */
+        this._orderedNodes = this._sortNodes(this._nodes);
+        // Update checkbox changes
+        this._inheritCheckboxChanges();
+    }
 
-            // convert the undefined string if hierarchical checks are enabled
-            if (this._options.hierarchicalCheck && node.state.checked === null) {
-                node.state.checked = null;
-            }
 
-            // set expanded state; if not provided based on levels
-            if (!node.state.hasOwnProperty('expanded')) {
-                if (!node.state.disabled &&
-                    (level < this._options.levels) &&
-                    (node.nodes && node.nodes.length > 0)) {
-                    node.state.expanded = true;
-                }
-                else {
-                    node.state.expanded = false;
-                }
-            }
-
-            // set visible state; based parent state plus levels
-            if ((parent && parent.state && parent.state.expanded) ||
-                (level <= this._options.levels)) {
-                node.state.visible = true;
-            }
-            else {
-                node.state.visible = false;
-            }
-
-            // recurse child nodes and transverse the tree, depth-first
-            if (node.nodes) {
-                if (node.nodes.length > 0) {
-                    this._setInitialState(node, level);
-                }
-                else {
-                    delete node.nodes;
-                }
-            }
-
-            // add / update indexed collection
-            this._nodes.set(node.nodeId, node);
-        })
-    };
+    /**
+     * Register the given node at this tree view. This is called in BSTreeViewNode::_updateChildHierachy
+     * @param node
+     */
+    _registerNode(node: BSTreeViewNode): void
+    {
+        this._nodes.set(node.nodeId, node);
+    }
 
     _sortNodes (nodes: Map<string, BSTreeViewNode>): Map<string, BSTreeViewNode> {
         return new Map([...nodes].sort((pairA, pairB) => {
@@ -882,10 +840,10 @@ export default class BSTreeView
 
 
     /**
-     Add nodes to the tree.
+     Add nodes to the tree, at the specified position of parent
      @param {Array} nodes  - An array of nodes to add
-     @param {optional Object} parentNode  - The node to which nodes will be added as children
-     @param {optional number} index  - Zero based insert index
+     @param {optional Object} parentNode  - The node to which nodes will be added as children. Set null if it should be added to the root.
+     @param {optional number} index  - Zero based insert index, where the node will be inserted. If not specified, the node will be added to the end of the list.
      @param {optional Object} options
      */
     addNode (nodes: BSTreeViewNode[]|BSTreeViewNode, parentNode: BSTreeViewNode|null = null, index: number = null, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
@@ -909,20 +867,19 @@ export default class BSTreeView
 
         // inserting nodes at specified positions
         nodes.forEach((node, i) => {
-            let insertIndex = (typeof(index) === 'number') ? (index + i) : (targetNodes.length + 1);
+            const insertIndex = (typeof(index) === 'number') ? (index + i) : (targetNodes.length + 1);
             targetNodes.splice(insertIndex, 0, node);
         });
 
-        // initialize new state and render changes
-        let tmp = new BSTreeViewNode(this);
-        tmp.nodes = this._tree;
-        this._setInitialStates(tmp, 0)
-            .then(() =>{
-                if (parentNode && !parentNode.state.expanded) {
-                    parentNode.setExpanded(true, options);
-                }
-                this._render();
-            });
+        // Update the flat representation of the tree
+        this._updateFlatTreeMaps();
+
+        // The parent node of the added nodes gets expanded if it is not already expanded
+        if (parentNode && !parentNode.state.expanded) {
+            parentNode.setExpanded(true, options);
+        }
+
+        this._render();
     }
 
     /**
@@ -988,11 +945,9 @@ export default class BSTreeView
             this._removeNodeEl(node);
         });
 
-        const tmp = new BSTreeViewNode(this);
-        tmp.nodes = this._tree;
-        // initialize new state and render changes
-        this._setInitialStates(tmp, 0)
-            .then(this._render.bind(this));
+        // Update the flat representation of the tree and rerender it
+        this._updateFlatTreeMaps();
+        this._render();
     };
 
     /**
@@ -1019,12 +974,9 @@ export default class BSTreeView
         // remove old node from DOM
         this._removeNodeEl(node);
 
-        const tmp = new BSTreeViewNode(this);
-        tmp.nodes = this._tree;
-
-        // initialize new state and render changes
-        this._setInitialStates(tmp, 0)
-            .then(this._render.bind(this));
+        // Update the flat representation of the tree and rerender it
+        this._updateFlatTreeMaps();
+        this._render();
     };
 
 

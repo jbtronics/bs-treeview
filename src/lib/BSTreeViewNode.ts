@@ -64,10 +64,13 @@ export default class BSTreeViewNode {
     searchResult: boolean;
 
 
-    level: number;
+    /** The hierachy level this node is at. */
+    level: number = 0;
+    /** The index of this entry in the parent's children array. */
     index: number;
     nodeId: string;
-    parentId: string
+
+    _parentNode: BSTreeViewNode|null = null;
 
     _options: BSTreeViewOptions;
     _treeView: BSTreeView;
@@ -81,6 +84,11 @@ export default class BSTreeViewNode {
 
         this._treeView = treeView;
         this._options = treeView._options;
+    }
+
+    get parentId(): string|null
+    {
+        return this._parentNode.nodeId ?? null;
     }
 
     /**
@@ -100,10 +108,61 @@ export default class BSTreeViewNode {
         if(data.nodes) {
             node.nodes = data.nodes.map(node => BSTreeViewNode.fromData(node, treeView));
         } else {
-            data.nodes = [];
+            node.nodes = [];
         }
 
         return node;
+    }
+
+    /**
+     * Update the children nodes for hierachy, by setting the right values for parent, level and index.
+     * All children nodes are registered then at the treeview. Beware that this node itself is not registered!
+     * Also hierachically dependent node properties are set here. This function is called recursively.
+     */
+    _updateChildrenHierarchy(): void
+    {
+        //If this node has no children we are done
+        if (!this.nodes) return;
+
+        const new_level = this.level + 1;
+        const parent = this;
+
+        this.nodes.forEach((node, index) => {
+            // level : hierarchical tree level, starts at 1
+            node.level = new_level;
+
+            // index : relative to siblings
+            node.index = index;
+
+            // nodeId : unique, hierarchical identifier
+            node.nodeId = (parent && parent.nodeId) ?
+                parent.nodeId + '.' + node.index :
+                (new_level - 1) + '.' + node.index;
+
+            // We are the parent of our children nodea
+            node._parentNode = parent;
+
+            // convert the undefined string if hierarchical checks are enabled
+            if (this._options.hierarchicalCheck && node.state.checked === null) {
+                node.state.checked = null;
+            }
+
+            // If no expanded state was passed as data (meaning it is null), set its value depending on the levels properties
+            if (node.state.expanded === null) {
+                node.state.expanded = !node.state.disabled && (new_level < this._options.levels) && (node.nodes && node.nodes.length > 0);
+            }
+
+            // set visible state; based parent state plus levels
+            node.state.visible = !!((parent && parent.state && parent.state.expanded) || (new_level <= this._options.levels));
+
+            // recurse child nodes and transverse the tree, depth-first
+            if (node.nodes) {
+                node._updateChildrenHierarchy();
+            }
+
+            //Register our children nodes at the treeview
+            this._treeView._registerNode(node);
+        });
     }
 
     /**

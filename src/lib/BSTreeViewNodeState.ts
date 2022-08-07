@@ -7,7 +7,7 @@ export default class BSTreeViewNodeState {
     /** Whether a node is disabled (not selectable, expandable or checkable). */
     disabled: boolean = false;
     /** Whether or not a node is expanded i.e. open. */
-    expanded: boolean;
+    expanded: boolean|null = null;
     /** Whether or not a node is selected. */
     selected: boolean = false;
 
