@@ -20,7 +20,6 @@ import {
 import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
 import BSTreeViewExpandOptions from "./BSTreeViewExpandOptions";
 import {default as BSTreeViewNode} from "./BSTreeViewNode";
-import BSTreeViewNodeState from "./BSTreeViewNodeState";
 import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
 

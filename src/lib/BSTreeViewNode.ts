@@ -15,28 +15,48 @@ import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
 
 export default class BSTreeViewNode {
+
+    /** The text value displayed for a given tree node, typically to the right of the nodes icon. (Mandatory) */
     text: string;
+    /** The icon displayed on a given node, typically to the left of the text. (Optional) */
     icon: string;
+    /** The URL to an image displayed on a given node, overrides the icon. (Optional) */
     image: string;
+    /** The icon displayed on a given node when selected, typically to the left of the text. (Optional) */
     selectedIcon: string;
+    /** The foreground color used on a given node, overrides global color option. (Optional) */
     color: string;
+    /** The background color used on a given node, overrides global color option. (Optional) */
     backColor: string;
+    /** The color used on a given node's icon. (Optional) */
     iconColor: string;
+    /** The color used under a given node's background icon. (Optional) */
     iconBackground: string;
+    /** Whether a node is selectable in the tree. False indicates the node should act as an expansion heading and will not fire selection events. Default true */
     selectable: boolean = true;
+    /** Whether a node is checkable in the tree, used in conjunction with showCheckbox. Default true */
     checkable: boolean = true;
+    /** The current state of this node. See @BSTreeViewNodeState for more details */
     state: BSTreeViewNodeState;
+    /** Used in conjunction with global showTags option to add additional information to the right of each node; using Bootstrap Badges, A tag can be an object with properties 'text' for tag value and 'class' for class names(s) of this tag **/
     tags: string[];
+    /** List of per-node HTML data- attributes to append. */
     dataAttr: object;
+    /** Custom HTML id attribute */
     id: string;
+    /** List of custom CSS classes to append, separated by space. */
     class: string;
+    /** Used to hide the checkbox of the given node when showCheckbox is set to true */
     hideCheckbox: boolean;
     nodes: BSTreeViewNode[];
+    /** The tooltip value displayed for a given tree node on mouse hover. (Optional) */
     tooltip: string;
     href: string;
 
-    lazyLoad: boolean;
-    tagsClass: string;
+    /** Adds an expand icon to the node even if it has no children, it calls the lazyLoad() function (described below) upon the first expand. Default: false (Optional) */
+    lazyLoad: boolean = false;
+    /** Sets the class of node tags. Default "badge" **/
+    tagsClass: string = "badge";
 
 
     el: HTMLElement;
@@ -53,8 +73,8 @@ export default class BSTreeViewNode {
     _treeView: BSTreeView;
 
     /**
-     * The treeview this node belongs to
-     * @param treeView
+     * Create a new TreeViewNode
+     * @param treeView The treeview this node belongs to
      */
     constructor(treeView: BSTreeView) {
         this.state = new BSTreeViewNodeState();
@@ -66,7 +86,7 @@ export default class BSTreeViewNode {
     /**
      * Create a new node object from partial data object, containing the properties which should be set on the node.
      * This function creates the children nodes objects from the data object recursively.
-     * @param data
+     * @param data An object with the properties which should be set on the node.
      * @param treeView The treeview this node belongs to
      */
     static fromData(data: Partial<BSTreeViewNode>, treeView: BSTreeView): BSTreeViewNode
@@ -86,10 +106,21 @@ export default class BSTreeViewNode {
         return node;
     }
 
+    /**
+     * Create the given event on the nodes element. The event bubbles the DOM upwards. Details about the node and the used treeView are passed via event.detail
+     * @param eventType The name of the event to generate (see EVENT_* constants in BSTreeViewEventNames)
+     * @param options
+     */
     _triggerEvent (eventType: string, options: BSTreeViewEventOptions = null) {
         if (options && !options.silent) {
-            const event = new CustomEvent(eventType, { detail: {data: this, eventOptions: options, treeView: this}, bubbles: true});
-
+            const event = new CustomEvent(eventType, {
+                detail: {
+                    node: this,
+                    eventOptions: options,
+                    treeView: this._treeView
+                },
+                bubbles: true
+            });
             this.el.dispatchEvent(event);
         }
     }
