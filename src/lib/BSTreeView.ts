@@ -123,7 +123,13 @@ export default class BSTreeView
         }
 
         this._element = element;
-        this._elementId = element.id ?? "bs-treeview-" + Math.floor(Math.random() * 1000000);
+        if(element.id) {
+            this._elementId = element.id;
+        } else {
+            //If no explicit ID was set, generate a random one
+            this._elementId = "treeview-" + Math.floor(Math.random() * 1000000);
+            element.id = this._elementId;
+        }
         this._styleId = this._elementId + '-style';
 
         //Apply the presets of the thmes if any are defined
