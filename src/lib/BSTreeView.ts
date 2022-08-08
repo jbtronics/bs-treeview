@@ -1064,7 +1064,7 @@ export default class BSTreeView
         this._inheritCheckboxChanges();
 
         this._nodes.forEach((node) => {
-            node.el.classList.remove('node-check-changed');
+            node._domElement.classList.remove('node-check-changed');
         });
     };
 
@@ -1163,12 +1163,12 @@ export default class BSTreeView
 
         // Clear previous results no longer matched
         this._diffArray<BSTreeViewNode>(results, previous).forEach((node) => {
-            node._setSearchResult(false, options);
+            node.setSearchResult(false, options);
         });
 
         // Set new results
         this._diffArray<BSTreeViewNode>(previous, results).forEach((node) => {
-            node._setSearchResult( true, options);
+            node.setSearchResult( true, options);
         });
 
         // Reveal hidden nodes
@@ -1187,7 +1187,7 @@ export default class BSTreeView
     clearSearch (options: BSTreeSearchOptions = new BSTreeSearchOptions()): void {
         const results = this._getSearchResults();
         results.forEach((node) => {
-            node._setSearchResult(false, options);
+            node.setSearchResult(false, options);
         });
 
         this._triggerEvent(EVENT_SEARCH_CLEARED, results, options);
