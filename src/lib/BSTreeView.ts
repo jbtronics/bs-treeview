@@ -338,15 +338,14 @@ export default class BSTreeView
         //We start with a empty map, as nodes are re-registered later
         this._nodes = new Map<string, BSTreeViewNode>();
 
-        //Initialize all parent nodes and register them at our flat map
-        this._tree.forEach((node: BSTreeViewNode, index) => {
-            //The root nodes have no index yet, so give them one
-            node.index = index;
-            node.nodeId = index.toString();
+        //Create an virtual root node, which is used to initialize the real root nodes, by calling _updateChildrenHierachy
+        const virtual_root = new BSTreeViewNode(this);
+        //Virtual root is the only node with no parent
+        virtual_root.level = 0;
+        virtual_root.nodes = this._tree;
 
-            this._registerNode(node);
-            node._updateChildrenHierarchy();
-        });
+        //Initialize all nodes of our tree and register them to the flat map
+        virtual_root._updateChildrenHierarchy();
 
         /** Create the sorted version of the flat map */
         this._orderedNodes = this._sortNodes(this._nodes);
@@ -710,7 +709,7 @@ export default class BSTreeView
 
         // identify target nodes; either the tree's root or a parent's child nodes
         let targetNodes;
-        if (parentNode && parentNode.nodes) {
+        if (parentNode && parentNode.hasChildren()) {
             targetNodes = parentNode.nodes;
         } else if (parentNode) {
             targetNodes = parentNode.nodes = [];

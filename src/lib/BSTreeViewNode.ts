@@ -127,10 +127,11 @@ export default class BSTreeViewNode {
     _updateChildrenHierarchy(): void
     {
         //If this node has no children we are done
-        if (!this.nodes) return;
+        if (!this.hasChildren()) return;
 
         const new_level = this.level + 1;
-        const parent = this;
+        // The virtual root node has level 0 and should not become parent of the real root nodes
+        const parent = this.level > 0 ? this : null;
 
         this.nodes.forEach((node, index) => {
             // level : hierarchical tree level, starts at 1
@@ -154,14 +155,14 @@ export default class BSTreeViewNode {
 
             // If no expanded state was passed as data (meaning it is null), set its value depending on the levels properties
             if (node.state.expanded === null) {
-                node.state.expanded = !node.state.disabled && (new_level < this._options.levels) && (node.nodes && node.nodes.length > 0);
+                node.state.expanded = !node.state.disabled && (new_level < this._options.levels) && (node.hasChildren());
             }
 
             // set visible state; based parent state plus levels
             node.state.visible = !!((parent && parent.state && parent.state.expanded) || (new_level <= this._options.levels));
 
             // recurse child nodes and transverse the tree, depth-first
-            if (node.nodes) {
+            if (node.hasChildren()) {
                 node._updateChildrenHierarchy();
             }
 
@@ -219,7 +220,7 @@ export default class BSTreeViewNode {
         // Add expand / collapse or empty spacer icons
         this._domElement
             .append(
-                this.nodes || this.lazyLoad ? Template.icon.expand.cloneNode(true) as HTMLElement : Template.icon.empty.cloneNode(true) as HTMLElement
+                this.hasChildren() || this.lazyLoad ? Template.icon.expand.cloneNode(true) as HTMLElement : Template.icon.empty.cloneNode(true) as HTMLElement
             );
 
         // Add checkbox and node icons
@@ -284,11 +285,9 @@ export default class BSTreeViewNode {
      * Recursivley removes this node and all its children from the Dom
      */
     _removeNodeEl (): void {
-        if (this.nodes) {
-            this.nodes.forEach((node) => {
-                node._removeNodeEl();
-            });
-        }
+        this.nodes.forEach((node) => {
+            node._removeNodeEl();
+        });
         this._domElement.remove();
     };
 
@@ -314,6 +313,13 @@ export default class BSTreeViewNode {
     toggleDisabled(options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): this {
         this.setDisabled(!this.state.disabled, options);
         return this;
+    }
+
+    /**
+     * Returns true, if this node has children.
+     */
+    hasChildren(): boolean {
+        return this.nodes && this.nodes.length > 0;
     }
 
     /**
@@ -352,7 +358,7 @@ export default class BSTreeViewNode {
         // During rendered event, the options._force property is set
         if (!options._force && state === this.state.expanded) return;
 
-        if (state && this.nodes) {
+        if (state && this.hasChildren()) {
 
             // Set node state
             this.state.expanded = true;
@@ -366,11 +372,9 @@ export default class BSTreeViewNode {
             }
 
             // Expand children
-            if (this.nodes && options) {
-                this.nodes.forEach((node) => {
-                    node.setVisible(true, options);
-                });
-            }
+            this.nodes.forEach((node) => {
+                node.setVisible(true, options);
+            });
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_EXPANDED, options);
@@ -388,12 +392,10 @@ export default class BSTreeViewNode {
             }
 
             // Collapse children
-            if (this.nodes && options) {
-                this.nodes.forEach ((node) => {
-                    node.setVisible(false, options);
-                    node.setExpanded(false, options);
-                });
-            }
+            this.nodes.forEach ((node) => {
+                node.setVisible(false, options);
+                node.setExpanded(false, options);
+            });
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_COLLAPSED, options);
@@ -521,7 +523,7 @@ export default class BSTreeViewNode {
                 currentNode = this._treeView._nodes.get(currentNode.parentId);
             }
 
-            if (this.nodes && this.nodes.length > 0) {
+            if (this.hasChildren()) {
                 // Copy the content of the array
                 let child, children = this.nodes.slice();
                 // Iterate through each child node
@@ -694,17 +696,6 @@ export default class BSTreeViewNode {
             this._domElement.append(template);
         }
     }
-
-    // Expand node, rendering it's immediate children
-    _expandNode (): void {
-        if (!this.nodes) return;
-
-        /*this.nodes.slice(0).reverse().forEach((childNode) => {
-            childNode.level = this.level + 1;
-            Template._renderNode(childNode, this);
-        });*/
-    };
-
 
     setSearchResult (state: boolean, options: BSTreeViewEventOptions|Record<string, unknown> = new BSTreeViewEventOptions()) {
         options = new BSTreeViewEventOptions(options);
