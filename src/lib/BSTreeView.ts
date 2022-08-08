@@ -126,11 +126,11 @@ export default class BSTreeView
                 //Update our internal representation of the tree
                 this._updateFlatTreeMaps();
 
-                //Trigger the initialized event
-                this._triggerEvent(EVENT_INITIALIZED, Array.from(this._orderedNodes.values()));
-
                 //Render the tree
                 this._render();
+
+                //Trigger the initialized event
+                this._triggerEvent(EVENT_INITIALIZED, Array.from(this._orderedNodes.values()), new BSTreeViewEventOptions());
 
             })
             .catch((error) => {
@@ -335,7 +335,7 @@ export default class BSTreeView
 
     _triggerEvent (eventType: string, data: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewEventOptions = null) {
         if (options && !options.silent) {
-            const event = new CustomEvent(eventType, { detail: {data: data, eventOptions: options, treeView: this} });
+            const event = new CustomEvent(eventType, { bubbles: true, detail: {data: data, eventOptions: options, treeView: this} });
 
             this.element.dispatchEvent(event);
         }
