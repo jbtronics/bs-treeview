@@ -64,7 +64,38 @@ export default class BSTreeViewNode {
      * The dom element representing this node
      * @private
      */
-    _domElement: HTMLElement;
+    _domElement: HTMLElement = null;
+    /**
+     * The elements used to build the node level indentation
+     * @private
+     */
+    _domIndents: HTMLElement[] = [];
+    /**
+     * The expand icon displayed on a given node, typically to the left of the text. (Optional)
+     * @private
+     */
+    _domIconExpand: HTMLElement = null;
+    /**
+     * The element representing the checkbox on this element
+     * @private
+     */
+    _domCheckbox: HTMLElement = null;
+    /**
+     * The element representing the (user definable) icon on this element
+     * @private
+     */
+    _domIcon: HTMLElement = null;
+    /**
+     * The element representing the image description of this element
+     * @private
+     */
+    _domImage: HTMLElement = null;
+    /**
+     * The elements of badges on this treeview
+     * @private
+     */
+    _domBadges: HTMLElement[] = [];
+
 
     searchResult: boolean;
 
@@ -214,14 +245,17 @@ export default class BSTreeViewNode {
 
         // Add indent/spacer to mimic tree structure
         for (let i = 0; i < (this.level - 1); i++) {
-            this._domElement.append(Template.indent.cloneNode(true) as HTMLElement);
+            this._domIndents.push(Template.indent.cloneNode(true) as HTMLElement);
         }
+        this._domElement.append(...this._domIndents);
 
-        // Add expand / collapse or empty spacer icons
-        this._domElement
-            .append(
-                this.hasChildren() || this.lazyLoad ? Template.icon.expand.cloneNode(true) as HTMLElement : Template.icon.empty.cloneNode(true) as HTMLElement
-            );
+        // Add expand / collapse icon element or an empty spacer icons
+        if(this.hasChildren() || this.lazyLoad) {
+            this._domIconExpand = Template.icon.expand.cloneNode(true) as HTMLElement;
+            this._domElement.append(this._domIconExpand);
+        } else { //Add an element for spacing
+            this._domElement.append(Template.icon.empty.cloneNode(true) as HTMLElement);
+        }
 
         // Add checkbox and node icons
         if (this._options.checkboxFirst) {
@@ -258,9 +292,9 @@ export default class BSTreeViewNode {
                     (typeof tag === 'object' ? tag.text : undefined)
                     || tag
                 );
-
-                this._domElement.append(template);
+                this._domBadges.push(template);
             });
+            this._domElement.append(...this._domBadges);
         }
 
         // Normally the node will not be updated, if the value is already set to the same value.
@@ -339,9 +373,10 @@ export default class BSTreeViewNode {
         if(!this.lazyLoad) return;
 
         // Show a different icon while loading the child nodes
-        const span = this._domElement.querySelector('span.expand-icon');
-        span.classList.remove(...this._options.expandIcon.split(' '));
-        span.classList.add(...this._options.loadingIcon.split(' '));
+        if(this._domIconExpand) {
+            this._domImage.classList.remove(...this._options.expandIcon.split(' '));
+            this._domImage.classList.add(...this._options.loadingIcon.split(' '));
+        }
 
         this._options.lazyLoad(this, (nodes) => {
             // Adding the node will expand its parent automatically
@@ -364,11 +399,10 @@ export default class BSTreeViewNode {
             this.state.expanded = true;
 
             // Set element
-            if (this._domElement) {
-                const span = this._domElement.querySelector('span.expand-icon');
-                span.classList.remove(...this._options.expandIcon.split(" "))
-                span.classList.remove(...this._options.loadingIcon.split(" "))
-                span.classList.add(...this._options.collapseIcon.split(" "));
+            if (this._domIconExpand) {
+                this._domIconExpand.classList.remove(...this._options.expandIcon.split(" "))
+                this._domIconExpand.classList.remove(...this._options.loadingIcon.split(" "))
+                this._domIconExpand.classList.add(...this._options.collapseIcon.split(" "));
             }
 
             // Expand children
@@ -385,10 +419,9 @@ export default class BSTreeViewNode {
             this.state.expanded = false;
 
             // Set element
-            if (this._domElement) {
-                const span = this._domElement.querySelector('span.expand-icon');
-                span.classList.remove(...this._options.collapseIcon.split(" "));
-                span.classList.add(...this._options.expandIcon.split(" "));
+            if (this._domIconExpand) {
+                this._domIconExpand.classList.remove(...this._options.collapseIcon.split(" "));
+                this._domIconExpand.classList.add(...this._options.expandIcon.split(" "));
             }
 
             // Collapse children
@@ -453,10 +486,9 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-selected');
 
-                if (this.selectedIcon || this._options.selectedIcon) {
-                    const span = this._domElement.querySelector('span.node-icon');
-                    span.classList.remove(...(this.icon || this._options.nodeIcon).split(" "));
-                    span.classList.add(...(this.selectedIcon || this._options.selectedIcon).split(" "));
+                if ((this.selectedIcon || this._options.selectedIcon) && this._domIcon) {
+                    this._domIcon.classList.remove(...(this.icon || this._options.nodeIcon).split(" "));
+                    this._domIcon.classList.add(...(this.selectedIcon || this._options.selectedIcon).split(" "));
                 }
             }
 
@@ -483,10 +515,9 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.remove('node-selected');
 
-                if (this.selectedIcon || this._options.selectedIcon) {
-                    const span = this._domElement.querySelector('span.node-icon');
-                    span.classList.remove(...(this.selectedIcon || this._options.selectedIcon).split(" "))
-                    span.classList.add(...(this.icon || this._options.nodeIcon).split(" "));
+                if ((this.selectedIcon || this._options.selectedIcon) && this._domIcon) {
+                    this._domIcon.classList.remove(...(this.selectedIcon || this._options.selectedIcon).split(" "))
+                    this._domIcon.classList.add(...(this.icon || this._options.nodeIcon).split(" "));
                 }
             }
 
@@ -574,11 +605,10 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-checked');
                 this._domElement.classList.remove('node-checked-partial');
-                const span = this._domElement.querySelector('span.check-icon');
-                if(span) {
-                    span.classList.remove(...this._options.uncheckedIcon.split(" "))
-                    span.classList.remove(...this._options.partiallyCheckedIcon.split(" "))
-                    span.classList.add(...this._options.checkedIcon.split(" "));
+                if(this._domCheckbox) {
+                    this._domCheckbox.classList.remove(...this._options.uncheckedIcon.split(" "))
+                    this._domCheckbox.classList.remove(...this._options.partiallyCheckedIcon.split(" "))
+                    this._domCheckbox.classList.add(...this._options.checkedIcon.split(" "));
                 }
             }
 
@@ -594,11 +624,10 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-checked-partial');
                 this._domElement.classList.remove('node-checked');
-                const span = this._domElement.querySelector('span.check-icon');
-                if(span) {
-                    span.classList.remove(...this._options.uncheckedIcon.split(" "));
-                    span.classList.remove(...this._options.checkedIcon.split(" "));
-                    span.classList.add(...this._options.partiallyCheckedIcon.split(" "));
+                if(this._domCheckbox) {
+                    this._domCheckbox.classList.remove(...this._options.uncheckedIcon.split(" "));
+                    this._domCheckbox.classList.remove(...this._options.checkedIcon.split(" "));
+                    this._domCheckbox.classList.add(...this._options.partiallyCheckedIcon.split(" "));
                 }
             }
 
@@ -612,11 +641,10 @@ export default class BSTreeViewNode {
             // Set element
             if (this._domElement) {
                 this._domElement.classList.remove('node-checked', 'node-checked-partial');
-                const span = this._domElement.querySelector('span.check-icon');
-                if(span) {
-                    span.classList.remove(...this._options.checkedIcon.split(" "));
-                    span.classList.remove(...this._options.partiallyCheckedIcon.split(" "));
-                    span.classList.add(...this._options.uncheckedIcon.split(" "));
+                if(this._domCheckbox) {
+                    this._domCheckbox.classList.remove(...this._options.checkedIcon.split(" "));
+                    this._domCheckbox.classList.remove(...this._options.partiallyCheckedIcon.split(" "));
+                    this._domCheckbox.classList.add(...this._options.uncheckedIcon.split(" "));
                 }
             }
 
@@ -668,32 +696,37 @@ export default class BSTreeViewNode {
         }
     };
 
-    // Add checkable icon
+    /**
+     * This function creates the _domCheckbox element and add it to the dom if a checkbox should be shown
+     */
     _addCheckbox (): void {
         if (this._options.showCheckbox && (this.hideCheckbox === undefined || this.hideCheckbox === false)) {
-            this._domElement
-                .append(Template.icon.check.cloneNode(true) as HTMLElement);
+            this._domCheckbox = Template.icon.check.cloneNode(true) as HTMLElement
+
+            this._domElement.append(this._domCheckbox);
         }
     }
 
-// Add node icon
+    /**
+     * This function creates the _domIcon element and add it to the dom if an icon should be shown
+     */
     _addIcon (): void {
         if (this._options.showIcon && !(this._options.showImage && this.image)) {
-            const template = Template.icon.node.cloneNode(true) as HTMLElement;
-            template.classList.add(...(this.icon || this._options.nodeIcon).split(" "))
+            this._domIcon = Template.icon.node.cloneNode(true) as HTMLElement;
+            this._domIcon.classList.add(...(this.icon || this._options.nodeIcon).split(" "));
 
-            this._domElement.append(template);
+            this._domElement.append(this._domIcon);
         }
     }
 
     _addImage (): void {
         if (this._options.showImage && this.image) {
-            const template = Template.image.cloneNode(true) as HTMLElement;
-            template.classList.add('node-image');
-            template.style.backgroundImage = "url('" + this.image + "')";
+            this._domImage = Template.image.cloneNode(true) as HTMLElement;
+            this._domImage.classList.add('node-image');
+            this._domImage.style.backgroundImage = "url('" + this.image + "')";
 
 
-            this._domElement.append(template);
+            this._domElement.append(this._domImage);
         }
     }
 
