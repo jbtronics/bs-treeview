@@ -852,6 +852,8 @@ export default class BSTreeViewNode {
             this._triggerEvent(EVENT_NODE_UNCHECKED, options);
         }
 
+        this._domElement.ariaChecked = this.state.checked ? "true" : "false";
+
         return this;
     };
 
