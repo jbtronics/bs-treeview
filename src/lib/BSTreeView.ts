@@ -727,14 +727,39 @@ export default class BSTreeView
         return this._findNodes(pattern, field);
     };
 
+    /**
+     * Returns the root nodes in the treeView
+     */
+    getRootNodes(): BSTreeViewNode[]
+    {
+        return this._tree;
+    }
 
     /**
-     Returns an ordered aarray of node objects.
+     * Returns the number of root nodes in the treeView
+     */
+    getRootNodesCount(): number
+    {
+        return this._tree.length;
+    }
+
+    /**
+     Returns a flat array of node objects ordered by their path.
      @return {Array} nodes - An array of all nodes
      */
-    getNodes (): Map<string, BSTreeViewNode> {
+    getNodes (): Map<string, BSTreeViewNode>
+    {
         return this._orderedNodes;
     };
+
+    /**
+     * Returns the number of all nodes in the treeView (including all children)
+     */
+    getNodesCount(): number
+    {
+        return this._orderedNodes.size;
+    }
+
 
     /**
      Returns parent nodes for given nodes, if valid otherwise returns undefined.

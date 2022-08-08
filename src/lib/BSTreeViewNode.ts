@@ -179,6 +179,79 @@ export default class BSTreeViewNode {
     }
 
     /**
+     * Returns true, if this node is a root node (meaning it has no parent). False otherwise.
+     */
+    isRootNode(): boolean
+    {
+        return this._parentNode === null;
+    }
+
+    /**
+     * Returns true, if this node is a child node, meaning it has a parent node. False otherwise.
+     */
+    isChildNode(): boolean
+    {
+        return !this.isRootNode();
+    }
+
+    /**
+     * Returns true, if this node is a end node, meaning it has no child nodes. False otherwise.
+     */
+    isEndNode(): boolean
+    {
+        return !this.hasChildren();
+    }
+
+    /**
+     * Returns true, if this node has children.
+     */
+    hasChildren(): boolean
+    {
+        return this.nodes && this.nodes.length > 0;
+    }
+
+    /**
+     * Returns the children of this node
+     */
+    getChildren(): BSTreeViewNode[]
+    {
+        return this.nodes;
+    }
+
+    /**
+     * Returns the number of children of this node
+     */
+    getChildrenCount(): number
+    {
+        return this.nodes.length;
+    }
+
+    /**
+     * Returns the parent node of this node, or null if no parent exists
+     */
+    getParentNode(): BSTreeViewNode|null
+    {
+        return this._parentNode;
+    }
+
+    /**
+     * Returns the level of this node in the treeview
+     * Please note that the value is only correct after the nodes have been rendered
+     */
+    getLevel(): number
+    {
+        return this._level;
+    }
+
+    /**
+     * The treeview this node belongs to
+     */
+    getTreeView(): BSTreeView
+    {
+        return this._treeView;
+    }
+
+    /**
      * Create a new node object from partial data object, containing the properties which should be set on the node.
      * This function creates the children nodes objects from the data object recursively.
      * @param data An object with the properties which should be set on the node.
@@ -422,13 +495,6 @@ export default class BSTreeViewNode {
             });
             this._domElement.dispatchEvent(event);
         }
-    }
-
-    /**
-     * Returns true, if this node has children.
-     */
-    hasChildren(): boolean {
-        return this.nodes && this.nodes.length > 0;
     }
 
     /**
