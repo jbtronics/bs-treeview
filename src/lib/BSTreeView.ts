@@ -1103,9 +1103,8 @@ export default class BSTreeView
 
         nodes.forEach((node) => {
             let parentNode = node;
-            let tmpNode;
-            while (tmpNode = this.getParents([parentNode])[0]) {
-                parentNode = tmpNode;
+            while (parentNode._parentNode) {
+                parentNode = parentNode._parentNode;
                 parentNode.setExpanded(true, options);
             }
         });
@@ -1366,7 +1365,7 @@ export default class BSTreeView
      @param {optional String} modifier - Valid RegEx modifiers
      @return {Array} nodes - Nodes that match your criteria
      */
-    _findNodes (pattern: string, attribute: string = 'text', modifier: string = 'g'): BSTreeViewNode[] {
+    _findNodes (pattern: string, attribute = 'text', modifier= 'g'): BSTreeViewNode[] {
 
         const tmp = [];
 
@@ -1391,6 +1390,7 @@ export default class BSTreeView
      @param {String} attr - Identifies an object property using dot notation
      @return {String} value - Matching attributes string representation
      */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     _getNodeValue (obj: object, attr: string): string {
         const index = attr.indexOf('.');
         if (index > 0) {
@@ -1399,6 +1399,7 @@ export default class BSTreeView
             return this._getNodeValue(_obj, _attr);
         }
         else {
+            // eslint-disable-next-line no-prototype-builtins
             if (obj.hasOwnProperty(attr) && obj[attr] !== undefined) {
                 return obj[attr].toString();
             }
