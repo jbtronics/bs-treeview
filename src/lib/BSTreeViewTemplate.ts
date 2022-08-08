@@ -1,8 +1,13 @@
-function templateElement(tagType: string, classes: string): HTMLElement {
+function templateElement(tagType: string, classes: string, role: string = null): HTMLElement {
     const el = document.createElement(tagType);
     if(classes.length > 0) {
         el.classList.add(...classes.split(" "));
     }
+
+    if(role) {
+        el.setAttribute("role", role);
+    }
+
     return el;
 }
 
@@ -12,14 +17,14 @@ function templateElement(tagType: string, classes: string): HTMLElement {
  * @private
  */
 class BSTreeViewTemplate {
-    tree = templateElement('ul', "list-group");
-    node = templateElement("li", "list-group-item");
-    indent = templateElement("span", "indent");
+    tree = templateElement('ul', "list-group", "tree");
+    node = templateElement("li", "list-group-item", "treeitem");
+    indent = templateElement("span", "indent", "none");
     icon = {
         node : templateElement("span", "icon node-icon"),
-        expand :  templateElement("span", "icon expand-icon"),
+        expand :  templateElement("span", "icon expand-icon", "group"),
         check : templateElement("span", "icon check-icon"),
-        empty :  templateElement("span", "icon")
+        empty :  templateElement("span", "icon", "none")
     };
     image = templateElement("span", "image");
     badge = templateElement("span", "");

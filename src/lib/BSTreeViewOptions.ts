@@ -88,7 +88,7 @@ export default class BSTreeViewOptions {
     /** Whether or not to propagate nodeChecked and nodeUnchecked events to the parent/child nodes, used in conjunction with hierarchicalCheck. Default false. */
     propagateCheckEvent: boolean = false;
     /** Whether or not to surround the text of the node with a <span class='text'> tag. */
-    wrapNodeText: boolean = false;
+    wrapNodeText: boolean = true;
 
     // Event handlers
     onLoading: (event: Event) => void = undefined;

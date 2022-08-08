@@ -105,6 +105,12 @@ export default class BSTreeViewNode {
      * @internal
      */
     _domBadges: HTMLElement[] = [];
+    /**
+     * The span in which the text of this node is contained
+     * @private
+     * @internal
+     */
+    _domText: HTMLElement = null;
 
 
     /**
@@ -273,6 +279,8 @@ export default class BSTreeViewNode {
         // Set the #id of the node if specified
         if (this.id) {
             this._domElement.id = this.id;
+        } else { //Otherwise generate one
+            this._domElement.id = this._treeView._elementId + '-node-' + this._nodeId;
         }
 
         // Append custom data- attributes to the node
@@ -318,13 +326,14 @@ export default class BSTreeViewNode {
         }
 
         // Add text
-        if (this._options.wrapNodeText) {
-            const wrapper = Template.text.cloneNode(true) as HTMLElement;
-            this._domElement.append(wrapper);
-            wrapper.append(this.text);
-        } else {
-            this._domElement.append(this.text);
-        }
+        this._domText = Template.text.cloneNode(true) as HTMLElement;
+        this._domText.textContent = this.text;
+        this._domElement.append(this._domText);
+        //Assign an ID to the text element, so we can reference it later on the group
+        this._domText.id = this._treeView._elementId + '-node-' + this._nodeId + '-label';
+
+        //This element is labeled by the text element
+        this._domElement.setAttribute('aria-labelledby', this._domText.id);
 
         // Add tags as badges
         if (this._options.showTags && this.tags) {
@@ -367,6 +376,19 @@ export default class BSTreeViewNode {
 
 
         return this._domElement;
+    }
+
+    /**
+     * Recusively set the aria-owns attribute of this element to make the hierachy accessible
+     * This is only possible after the tree is rendered
+     */
+    _setAriaOwnsValue()
+    {
+        if (this.hasChildren()) {
+            const childIds = this.nodes.map(child => child._domElement.id);
+            this._domElement.setAttribute('aria-owns', childIds.join(' '));
+            this.nodes.forEach(child => child._setAriaOwnsValue());
+        }
     }
 
     /**
@@ -505,6 +527,11 @@ export default class BSTreeViewNode {
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_COLLAPSED, options);
         }
+
+        //Set aria-expanded state if possible
+        if(this._domElement) {
+            this._domElement.ariaExpanded = this.state.expanded ? "true" : "false";
+        }
     };
 
     /**
@@ -612,6 +639,11 @@ export default class BSTreeViewNode {
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_UNSELECTED, options);
+        }
+
+        //Set aria-select state
+        if (this._domElement) {
+            this._domElement.ariaSelected = this.state.selected ? "true" : "false";
         }
 
         return this;

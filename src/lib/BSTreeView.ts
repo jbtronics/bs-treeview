@@ -580,6 +580,10 @@ export default class BSTreeView
 
             // Setup first time only components
             this._wrapper = Template.tree.cloneNode(true) as HTMLElement;
+
+            //Set aria-multiSelect for accessibility
+            this._wrapper.ariaMultiSelectable = this._options.multiSelect ? "true" : "false";
+
             //Empty this element
             while(this._element.firstChild) {
                 this._element.removeChild(this._element.firstChild);
@@ -600,6 +604,11 @@ export default class BSTreeView
 
             //Append our node to the wrapper to really show it in the DOM
             this._wrapper.appendChild(nodeElement);
+        });
+
+        //Sets the aria-owns attribute for the root nodes, children nodes will be set recusively
+        this._tree.forEach((node) => {
+            node._setAriaOwnsValue();
         });
 
         this._triggerEvent(EVENT_RENDERED, Array.from(this._orderedNodes.values()), new BSTreeViewMethodOptions());
