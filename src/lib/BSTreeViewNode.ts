@@ -444,13 +444,15 @@ export default class BSTreeViewNode {
      * Toggle the expanded state of this node (if it was expanded, it will be collapsed, and vice versa)
      * @param options
      */
-    toggleExpanded (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
+    toggleExpanded (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
         // Lazy-load the child nodes if possible
         if (typeof(this.lazyLoad) === 'function' && this.lazyLoad) {
             this._lazyLoad();
         } else {
             this.setExpanded(!this.state.expanded, options);
         }
+
+        return this;
     };
 
     /**
@@ -480,12 +482,12 @@ export default class BSTreeViewNode {
      * @param state True, if the node should be expanded, false to collapse it.
      * @param options
      */
-    setExpanded (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): void {
+    setExpanded (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
         //Parse the passed options to an options object
         options = new BSTreeViewMethodOptions(options);
 
         // During rendered event, the options._force property is set
-        if (!options._force && state === this.state.expanded) return;
+        if (!options._force && state === this.state.expanded) return this;
 
         if (state && this.hasChildren()) {
 
@@ -532,6 +534,8 @@ export default class BSTreeViewNode {
         if(this._domElement) {
             this._domElement.ariaExpanded = this.state.expanded ? "true" : "false";
         }
+
+        return this;
     };
 
     /**
@@ -708,12 +712,12 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    setChecked (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
+    setChecked (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
         options = new BSTreeViewMethodOptions(options);
 
         // We never pass options when rendering, so the only time
         // we need to validate state is from user interaction
-        if (!options._force && state === this.state.checked) return;
+        if (!options._force && state === this.state.checked) return this;
 
         //TODO: Put this responsibility on the treeview using an Event
         // Highlight the node if its checkbox has unsaved changes
@@ -781,6 +785,8 @@ export default class BSTreeViewNode {
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_UNCHECKED, options);
         }
+
+        return this;
     };
 
     /**
@@ -788,13 +794,13 @@ export default class BSTreeViewNode {
      * @param state true to disable, false to enable
      * @param options
      */
-    setDisabled (state: boolean, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()) {
+    setDisabled (state: boolean, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): this {
 
         options = new BSTreeViewDisableOptions(options);
 
         // We never pass options when rendering, so the only time
         // we need to validate state is from user interaction
-        if (!options._force && state === this.state.disabled) return;
+        if (!options._force && state === this.state.disabled) return this;
 
         if (state) {
 
@@ -829,6 +835,8 @@ export default class BSTreeViewNode {
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_DISABLED, options);
         }
+
+        return this;
     };
 
     /**
