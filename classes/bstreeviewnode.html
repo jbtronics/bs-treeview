@@ -101,6 +101,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_domiconexpand" class="tsd-kind-icon">_dom<wbr>Icon<wbr>Expand</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_domimage" class="tsd-kind-icon">_dom<wbr>Image</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_domindents" class="tsd-kind-icon">_dom<wbr>Indents</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_domtext" class="tsd-kind-icon">_dom<wbr>Text</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_index" class="tsd-kind-icon">_index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_level" class="tsd-kind-icon">_level</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_nodeid" class="tsd-kind-icon">_node<wbr>Id</a></li>
@@ -146,11 +147,20 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_lazyload" class="tsd-kind-icon">_lazy<wbr>Load</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_removenodeel" class="tsd-kind-icon">_remove<wbr>Node<wbr>El</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_rendernode" class="tsd-kind-icon">_render<wbr>Node</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#_setariaownsvalue" class="tsd-kind-icon">_set<wbr>Aria<wbr>Owns<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_setsearchresult" class="tsd-kind-icon">_set<wbr>Search<wbr>Result</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_setvisible" class="tsd-kind-icon">_set<wbr>Visible</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_triggerevent" class="tsd-kind-icon">_trigger<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnode.html#_updatechildrenhierarchy" class="tsd-kind-icon">_update<wbr>Children<wbr>Hierarchy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#getchildren" class="tsd-kind-icon">get<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#getchildrencount" class="tsd-kind-icon">get<wbr>Children<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#getlevel" class="tsd-kind-icon">get<wbr>Level</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#getparentnode" class="tsd-kind-icon">get<wbr>Parent<wbr>Node</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#gettreeview" class="tsd-kind-icon">get<wbr>Tree<wbr>View</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#haschildren" class="tsd-kind-icon">has<wbr>Children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#ischildnode" class="tsd-kind-icon">is<wbr>Child<wbr>Node</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#isendnode" class="tsd-kind-icon">is<wbr>End<wbr>Node</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#isrootnode" class="tsd-kind-icon">is<wbr>Root<wbr>Node</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#setchecked" class="tsd-kind-icon">set<wbr>Checked</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#setdisabled" class="tsd-kind-icon">set<wbr>Disabled</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bstreeviewnode.html#setexpanded" class="tsd-kind-icon">set<wbr>Expanded</a></li>
@@ -177,7 +187,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L153">lib/BSTreeViewNode.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L159">lib/BSTreeViewNode.ts:159</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Badges<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L107">lib/BSTreeViewNode.ts:107</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L107">lib/BSTreeViewNode.ts:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -228,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Checkbox<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L89">lib/BSTreeViewNode.ts:89</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L89">lib/BSTreeViewNode.ts:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,7 +257,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L71">lib/BSTreeViewNode.ts:71</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L71">lib/BSTreeViewNode.ts:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -266,7 +276,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L95">lib/BSTreeViewNode.ts:95</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L95">lib/BSTreeViewNode.ts:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -285,7 +295,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Icon<wbr>Expand<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L83">lib/BSTreeViewNode.ts:83</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L83">lib/BSTreeViewNode.ts:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -304,7 +314,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Image<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L101">lib/BSTreeViewNode.ts:101</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L101">lib/BSTreeViewNode.ts:101</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -323,7 +333,7 @@
 					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Indents<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L77">lib/BSTreeViewNode.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L77">lib/BSTreeViewNode.ts:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -337,12 +347,31 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_domtext" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _dom<wbr>Text</h3>
+					<div class="tsd-signature tsd-kind-icon">_dom<wbr>Text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> = null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L113">lib/BSTreeViewNode.ts:113</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The span in which the text of this node is contained</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>internal</dt>
+							<dd></dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _index</h3>
 					<div class="tsd-signature tsd-kind-icon">_index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L127">lib/BSTreeViewNode.ts:127</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L133">lib/BSTreeViewNode.ts:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -361,7 +390,7 @@
 					<div class="tsd-signature tsd-kind-icon">_level<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L122">lib/BSTreeViewNode.ts:122</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L128">lib/BSTreeViewNode.ts:128</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -380,7 +409,7 @@
 					<div class="tsd-signature tsd-kind-icon">_node<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L133">lib/BSTreeViewNode.ts:133</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L139">lib/BSTreeViewNode.ts:139</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -399,7 +428,7 @@
 					<div class="tsd-signature tsd-kind-icon">_options<span class="tsd-signature-symbol">:</span> <a href="bstreeviewoptions.html" class="tsd-signature-type">BSTreeViewOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L147">lib/BSTreeViewNode.ts:147</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L153">lib/BSTreeViewNode.ts:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -418,7 +447,7 @@
 					<div class="tsd-signature tsd-kind-icon">_parent<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L140">lib/BSTreeViewNode.ts:140</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L146">lib/BSTreeViewNode.ts:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -437,7 +466,7 @@
 					<div class="tsd-signature tsd-kind-icon">_search<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L115">lib/BSTreeViewNode.ts:115</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L121">lib/BSTreeViewNode.ts:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -456,7 +485,7 @@
 					<div class="tsd-signature tsd-kind-icon">_tree<wbr>View<span class="tsd-signature-symbol">:</span> <a href="bstreeview.html" class="tsd-signature-type">BSTreeView</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L153">lib/BSTreeViewNode.ts:153</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L159">lib/BSTreeViewNode.ts:159</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -475,7 +504,7 @@
 					<div class="tsd-signature tsd-kind-icon">back<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L34">lib/BSTreeViewNode.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L34">lib/BSTreeViewNode.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -490,7 +519,7 @@
 					<div class="tsd-signature tsd-kind-icon">checkable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L42">lib/BSTreeViewNode.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L42">lib/BSTreeViewNode.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -505,7 +534,7 @@
 					<div class="tsd-signature tsd-kind-icon">class<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L52">lib/BSTreeViewNode.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L52">lib/BSTreeViewNode.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -520,7 +549,7 @@
 					<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L32">lib/BSTreeViewNode.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L32">lib/BSTreeViewNode.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -535,7 +564,7 @@
 					<div class="tsd-signature tsd-kind-icon">data<wbr>Attr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L48">lib/BSTreeViewNode.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L48">lib/BSTreeViewNode.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -550,7 +579,7 @@
 					<div class="tsd-signature tsd-kind-icon">hide<wbr>Checkbox<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L54">lib/BSTreeViewNode.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L54">lib/BSTreeViewNode.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -565,7 +594,7 @@
 					<div class="tsd-signature tsd-kind-icon">href<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L58">lib/BSTreeViewNode.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L58">lib/BSTreeViewNode.ts:58</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -575,7 +604,7 @@
 					<div class="tsd-signature tsd-kind-icon">icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L26">lib/BSTreeViewNode.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L26">lib/BSTreeViewNode.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -590,7 +619,7 @@
 					<div class="tsd-signature tsd-kind-icon">icon<wbr>Background<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L38">lib/BSTreeViewNode.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L38">lib/BSTreeViewNode.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -605,7 +634,7 @@
 					<div class="tsd-signature tsd-kind-icon">icon<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L36">lib/BSTreeViewNode.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L36">lib/BSTreeViewNode.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -620,7 +649,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L50">lib/BSTreeViewNode.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L50">lib/BSTreeViewNode.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -635,7 +664,7 @@
 					<div class="tsd-signature tsd-kind-icon">image<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L28">lib/BSTreeViewNode.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L28">lib/BSTreeViewNode.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -650,7 +679,7 @@
 					<div class="tsd-signature tsd-kind-icon">lazy<wbr>Load<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L61">lib/BSTreeViewNode.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L61">lib/BSTreeViewNode.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -665,7 +694,7 @@
 					<div class="tsd-signature tsd-kind-icon">nodes<span class="tsd-signature-symbol">:</span> <a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L55">lib/BSTreeViewNode.ts:55</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L55">lib/BSTreeViewNode.ts:55</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -675,7 +704,7 @@
 					<div class="tsd-signature tsd-kind-icon">selectable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L40">lib/BSTreeViewNode.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L40">lib/BSTreeViewNode.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -690,7 +719,7 @@
 					<div class="tsd-signature tsd-kind-icon">selected<wbr>Icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L30">lib/BSTreeViewNode.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L30">lib/BSTreeViewNode.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -705,7 +734,7 @@
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <a href="bstreeviewnodestate.html" class="tsd-signature-type">BSTreeViewNodeState</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L44">lib/BSTreeViewNode.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L44">lib/BSTreeViewNode.ts:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -720,7 +749,7 @@
 					<div class="tsd-signature tsd-kind-icon">tags<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L46">lib/BSTreeViewNode.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L46">lib/BSTreeViewNode.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -735,7 +764,7 @@
 					<div class="tsd-signature tsd-kind-icon">tags<wbr>Class<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L63">lib/BSTreeViewNode.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L63">lib/BSTreeViewNode.ts:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -750,7 +779,7 @@
 					<div class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L24">lib/BSTreeViewNode.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L24">lib/BSTreeViewNode.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -765,7 +794,7 @@
 					<div class="tsd-signature tsd-kind-icon">tooltip<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L57">lib/BSTreeViewNode.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L57">lib/BSTreeViewNode.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -787,7 +816,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L170">lib/BSTreeViewNode.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L176">lib/BSTreeViewNode.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -813,7 +842,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L807">lib/BSTreeViewNode.ts:807</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L915">lib/BSTreeViewNode.ts:915</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -839,7 +868,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L820">lib/BSTreeViewNode.ts:820</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L928">lib/BSTreeViewNode.ts:928</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -865,7 +894,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L834">lib/BSTreeViewNode.ts:834</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L942">lib/BSTreeViewNode.ts:942</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -891,7 +920,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L439">lib/BSTreeViewNode.ts:439</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L529">lib/BSTreeViewNode.ts:529</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -917,7 +946,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L377">lib/BSTreeViewNode.ts:377</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L472">lib/BSTreeViewNode.ts:472</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -943,7 +972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L257">lib/BSTreeViewNode.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L336">lib/BSTreeViewNode.ts:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -959,17 +988,40 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="_setsearchresult" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _set<wbr>Search<wbr>Result</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_set<wbr>Search<wbr>Result<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="_setariaownsvalue" class="tsd-anchor"></a>
+					<h3>_set<wbr>Aria<wbr>Owns<wbr>Value</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">_set<wbr>Aria<wbr>Owns<wbr>Value<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L852">lib/BSTreeViewNode.ts:852</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L458">lib/BSTreeViewNode.ts:458</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Recusively set the aria-owns attribute of this element to make the hierachy accessible
+									This is only possible after the tree is rendered</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="_setsearchresult" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _set<wbr>Search<wbr>Result</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">_set<wbr>Search<wbr>Result<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L960">lib/BSTreeViewNode.ts:960</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -987,7 +1039,7 @@
 									<h5>state: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -1000,13 +1052,13 @@
 					<a name="_setvisible" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _set<wbr>Visible</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_set<wbr>Visible<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">_set<wbr>Visible<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L518">lib/BSTreeViewNode.ts:518</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L615">lib/BSTreeViewNode.ts:615</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1025,7 +1077,7 @@
 									<h5>state: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -1038,13 +1090,13 @@
 					<a name="_triggerevent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _trigger<wbr>Event</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_trigger<wbr>Event<span class="tsd-signature-symbol">(</span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">_trigger<wbr>Event<span class="tsd-signature-symbol">(</span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L391">lib/BSTreeViewNode.ts:391</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L486">lib/BSTreeViewNode.ts:486</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1065,7 +1117,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = null</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = null</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1082,7 +1134,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L205">lib/BSTreeViewNode.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L284">lib/BSTreeViewNode.ts:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1101,6 +1153,117 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getchildren" class="tsd-anchor"></a>
+					<h3>get<wbr>Children</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L216">lib/BSTreeViewNode.ts:216</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the children of this node</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getchildrencount" class="tsd-anchor"></a>
+					<h3>get<wbr>Children<wbr>Count</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Children<wbr>Count<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L224">lib/BSTreeViewNode.ts:224</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the number of children of this node</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getlevel" class="tsd-anchor"></a>
+					<h3>get<wbr>Level</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Level<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L241">lib/BSTreeViewNode.ts:241</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the level of this node in the treeview
+									Please note that the value is only correct after the nodes have been rendered</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getparentnode" class="tsd-anchor"></a>
+					<h3>get<wbr>Parent<wbr>Node</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L232">lib/BSTreeViewNode.ts:232</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the parent node of this node, or null if no parent exists</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="bstreeviewnode.html" class="tsd-signature-type">BSTreeViewNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="gettreeview" class="tsd-anchor"></a>
+					<h3>get<wbr>Tree<wbr>View</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tree<wbr>View<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bstreeview.html" class="tsd-signature-type">BSTreeView</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L249">lib/BSTreeViewNode.ts:249</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The treeview this node belongs to</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="bstreeview.html" class="tsd-signature-type">BSTreeView</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="haschildren" class="tsd-anchor"></a>
 					<h3>has<wbr>Children</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1110,7 +1273,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L408">lib/BSTreeViewNode.ts:408</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L208">lib/BSTreeViewNode.ts:208</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1123,16 +1286,82 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setchecked" class="tsd-anchor"></a>
-					<h3>set<wbr>Checked</h3>
+					<a name="ischildnode" class="tsd-anchor"></a>
+					<h3>is<wbr>Child<wbr>Node</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Checked<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Child<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L679">lib/BSTreeViewNode.ts:679</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L192">lib/BSTreeViewNode.ts:192</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true, if this node is a child node, meaning it has a parent node. False otherwise.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isendnode" class="tsd-anchor"></a>
+					<h3>is<wbr>End<wbr>Node</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>End<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L200">lib/BSTreeViewNode.ts:200</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true, if this node is a end node, meaning it has no child nodes. False otherwise.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isrootnode" class="tsd-anchor"></a>
+					<h3>is<wbr>Root<wbr>Node</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Root<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L184">lib/BSTreeViewNode.ts:184</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true, if this node is a root node (meaning it has no parent). False otherwise.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setchecked" class="tsd-anchor"></a>
+					<h3>set<wbr>Checked</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Checked<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L781">lib/BSTreeViewNode.ts:781</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1146,12 +1375,12 @@
 									<h5>state: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1159,13 +1388,13 @@
 					<a name="setdisabled" class="tsd-anchor"></a>
 					<h3>set<wbr>Disabled</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Disabled<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewdisableoptions.html" class="tsd-signature-type">BSTreeViewDisableOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Disabled<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewdisableoptions.html" class="tsd-signature-type">BSTreeViewDisableOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L759">lib/BSTreeViewNode.ts:759</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L865">lib/BSTreeViewNode.ts:865</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1187,7 +1416,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1195,13 +1424,13 @@
 					<a name="setexpanded" class="tsd-anchor"></a>
 					<h3>set<wbr>Expanded</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Expanded<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Expanded<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L461">lib/BSTreeViewNode.ts:461</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L551">lib/BSTreeViewNode.ts:551</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1218,12 +1447,12 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1237,7 +1466,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L550">lib/BSTreeViewNode.ts:550</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L647">lib/BSTreeViewNode.ts:647</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1267,13 +1496,13 @@
 					<a name="togglechecked" class="tsd-anchor"></a>
 					<h3>toggle<wbr>Checked</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Checked<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Checked<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L624">lib/BSTreeViewNode.ts:624</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L726">lib/BSTreeViewNode.ts:726</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1284,7 +1513,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -1303,7 +1532,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L416">lib/BSTreeViewNode.ts:416</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L504">lib/BSTreeViewNode.ts:504</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1327,13 +1556,13 @@
 					<a name="toggleexpanded" class="tsd-anchor"></a>
 					<h3>toggle<wbr>Expanded</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Expanded<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Expanded<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L425">lib/BSTreeViewNode.ts:425</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L513">lib/BSTreeViewNode.ts:513</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1344,12 +1573,12 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewEventOptions()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="bstreeviewmethodoptions.html" class="tsd-signature-type">BSTreeViewMethodOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new BSTreeViewMethodOptions()</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1363,7 +1592,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L540">lib/BSTreeViewNode.ts:540</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L637">lib/BSTreeViewNode.ts:637</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1393,7 +1622,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNode.ts#L181">lib/BSTreeViewNode.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/9ff9c25/src/lib/BSTreeViewNode.ts#L260">lib/BSTreeViewNode.ts:260</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1446,10 +1675,10 @@
 						<a href="bstreeviewdisableoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Disable<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreevieweventoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Event<wbr>Options</a>
+						<a href="bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
+						<a href="bstreeviewmethodoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Method<wbr>Options</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -1479,6 +1708,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="bstreeviewnode.html#_domindents" class="tsd-kind-icon">_dom<wbr>Indents</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="bstreeviewnode.html#_domtext" class="tsd-kind-icon">_dom<wbr>Text</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="bstreeviewnode.html#_index" class="tsd-kind-icon">_index</a>
@@ -1585,6 +1817,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="bstreeviewnode.html#_rendernode" class="tsd-kind-icon">_render<wbr>Node</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#_setariaownsvalue" class="tsd-kind-icon">_set<wbr>Aria<wbr>Owns<wbr>Value</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="bstreeviewnode.html#_setsearchresult" class="tsd-kind-icon">_set<wbr>Search<wbr>Result</a>
 							</li>
@@ -1598,7 +1833,31 @@
 								<a href="bstreeviewnode.html#_updatechildrenhierarchy" class="tsd-kind-icon">_update<wbr>Children<wbr>Hierarchy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#getchildren" class="tsd-kind-icon">get<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#getchildrencount" class="tsd-kind-icon">get<wbr>Children<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#getlevel" class="tsd-kind-icon">get<wbr>Level</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#getparentnode" class="tsd-kind-icon">get<wbr>Parent<wbr>Node</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#gettreeview" class="tsd-kind-icon">get<wbr>Tree<wbr>View</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bstreeviewnode.html#haschildren" class="tsd-kind-icon">has<wbr>Children</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#ischildnode" class="tsd-kind-icon">is<wbr>Child<wbr>Node</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#isendnode" class="tsd-kind-icon">is<wbr>End<wbr>Node</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bstreeviewnode.html#isrootnode" class="tsd-kind-icon">is<wbr>Root<wbr>Node</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bstreeviewnode.html#setchecked" class="tsd-kind-icon">set<wbr>Checked</a>

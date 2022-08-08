@@ -70,17 +70,186 @@
 				<p>A treeview element for browsers using Javascript.
 					It is based on the bootstrap-treeview libraries of <a href="https://github.com/jonmiles/bootstrap-treeview">@jonmiles</a> and <a href="https://github.com/patternfly/patternfly-bootstrap-treeview">@patternfly</a>,
 				but is overhauled with typescript and does not use any jQuery.</p>
+				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
+					<h2>Features</h2>
+				</a>
+				<ul>
+					<li>No dependencies (especially not on jQuery)</li>
+					<li>Supports all features of the original libraries (with some minor changes, see below)</li>
+					<li>Search function for nodes</li>
+					<li>Allows selection of one (or if wanted mutiple) nodes, nodes can be checked or unchecked independently</li>
+					<li>Methods to control the treeview and nodes states (expand, collapse, select, deselect, check, uncheck, check all, uncheck all)</li>
+					<li>Style each node indepentedly (using different classes, colors, icons, etc.)</li>
+					<li>Support for different themes, to fit the CSS framework and icon set you are using</li>
+					<li>Improved accessibility by setting the correct <code>aria-*</code> tags according <a href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/">specification</a></li>
+				</ul>
 				<a href="#dependencies" id="dependencies" style="color: inherit; text-decoration: none;">
 					<h2>Dependencies</h2>
 				</a>
 				<ul>
 					<li>A browser supporting ECMAScript 2017 (which should be any browser of the last years)</li>
 					<li><a href="https://getbootstrap.com/">Bootstrap</a> 4 or 5, and <a href="https://fontawesome.com/">Font Awesome</a>: bs-treeview can be configured to use other frontend frameworks, but this is the default configuration</li>
+					<li>A bundler like <a href="https://webpack.js.org/">webpack</a> is highly recommended</li>
 				</ul>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<p>TODO</p>
+				<ol>
+					<li><p>Import it to your project: <code>yarn add @jbtronics/bs-treeview</code></p>
+					</li>
+					<li><p>Import the bs-treeview library and the style file (example code for webpack):</p>
+						<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@jbtronics/bs-treeview&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;@jbtronics/bs-treeview/src/bs-treeview.css&quot;</span>;
+</code></pre>
+					</li>
+					<li><p>You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website,
+						an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructure.</p>
+					</li>
+					<li><p>Create the treeview element in your DOM:</p>
+						<pre><code class="language-html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;treeview&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+					</li>
+					<li><p>Initialize the treeview element:</p>
+						<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@jbtronics/bs-treeview&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;@jbtronics/bs-treeview/src/bs-treeview.css&quot;</span>;
+</code></pre>
+					</li>
+				</ol>
+				<p>//Choose the element on which you want to create the treeview
+				const treeElement = document.getElementById(&quot;treeview&quot;);</p>
+				<p>//The data which will be shown in the treeview. For simplicity we use an object structure, but you can load it from anywhere you want
+					const data = [
+					{
+					text: &quot;Parent 1&quot;,
+					state: {
+					expanded: true
+					},
+					nodes: [
+					{
+					text: &quot;Child 1&quot;,
+					nodes: [
+					{
+					text: &quot;Grandchild 1&quot;,
+					state: {
+					disabled: true
+					}
+					},
+					{
+					text: &quot;Grandchild 2&quot;
+					}
+					]
+					},
+					{
+					text: &quot;Child 2&quot;,
+					tags: [&quot;available&quot;, &quot;out of stock&quot;]
+					}
+					]
+					},
+					{
+					text: &quot;Parent 2&quot;
+					}
+				]</p>
+				<p>//Create the treeview
+					const tree = new BSTreeView(treeElement,
+					//The options to apply to our treeView
+					{
+					data: data,
+					//You can either use the callback provided in the options element...
+					onNodeSelected: (event) =&gt; {
+					const node = event.detail.node;
+					alert(&quot;You selected: &quot; + node.text);
+				}</p>
+				<pre><code>},
+<span class="hljs-comment">//Themes to use for the BSTreeview. We use Bootstrap5 and FontAwesome5</span>
+<span class="hljs-string">[BS5Theme, FAIconTheme]</span>
+</code></pre>
+				<p>);</p>
+				<p>//Or attach an event listener to the tree DOM element (The event is triggered on the node and bubbles upwards)
+					treeElement.addEventListener(EVENT_INITIALIZED, (event) =&gt; {
+					console.log(&quot;The treeview has been initialized&quot;);
+					treeView.expandAll()
+				});</p>
+				<pre><code>
+<span class="hljs-comment">## Data Structure</span>
+In order <span class="hljs-keyword">to</span> define <span class="hljs-keyword">the</span> hierarchical structure needed <span class="hljs-keyword">for</span> <span class="hljs-keyword">the</span> tree <span class="hljs-keyword">it</span>&#x27;s necessary <span class="hljs-keyword">to</span> provide a nested array <span class="hljs-keyword">of</span> JavaScript objects.
+
+Example
+
+```javascript
+var tree = [
+  {
+    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 1&quot;</span>,
+    nodes: [
+      {
+        <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Child 1&quot;</span>,
+        nodes: [
+          {
+            <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Grandchild 1&quot;</span>
+          },
+          {
+            <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Grandchild 2&quot;</span>
+          }
+        ]
+      },
+      {
+        <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Child 2&quot;</span>
+      }
+    ]
+  },
+  {
+    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 2&quot;</span>
+  },
+  {
+    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 3&quot;</span>
+  },
+  {
+    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 4&quot;</span>
+  },
+  {
+    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 5&quot;</span>
+  }
+];
+</code></pre>
+				<p>At the lowest level a tree node is a represented as a simple JavaScript object.  This one required property <code>text</code> will build you a tree.</p>
+				<pre><code class="language-javascript">{
+  <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>
+}
+</code></pre>
+				<p>If you want to do more, here&#39;s the full node specification</p>
+				<pre><code class="language-javascript">{
+  <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>,
+  <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
+  <span class="hljs-attr">image</span>: <span class="hljs-string">&quot;something.png&quot;</span>,
+  <span class="hljs-attr">selectedIcon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
+  <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
+  <span class="hljs-attr">backColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
+  <span class="hljs-attr">iconColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
+  <span class="hljs-attr">iconBackground</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
+  <span class="hljs-attr">selectable</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">checkable</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">state</span>: {
+    <span class="hljs-attr">checked</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">disabled</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">expanded</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">selected</span>: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-attr">tags</span>: [
+    <span class="hljs-string">&#x27;available&#x27;</span>,
+    {<span class="hljs-attr">text</span>:<span class="hljs-string">&#x27;not available&#x27;</span>, <span class="hljs-attr">class</span>:<span class="hljs-string">&#x27;disabled&#x27;</span>}
+  ],
+  <span class="hljs-attr">dataAttr</span>: {
+    <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;#tree&#x27;</span>
+  }
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;something&#x27;</span>,
+  <span class="hljs-attr">class</span>: <span class="hljs-string">&#x27;special extraordinary&#x27;</span>,
+  <span class="hljs-attr">hideCheckbox</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">nodes</span>: [
+    {},
+    ...
+  ]
+}
+</code></pre>
+				<p>See documentation of the respective fields in the <code>BSTreeViewNode</code> class for more information.</p>
 				<a href="#migrate-from-bootstrap-treeview" id="migrate-from-bootstrap-treeview" style="color: inherit; text-decoration: none;">
 					<h2>Migrate from bootstrap-treeview</h2>
 				</a>
@@ -123,10 +292,10 @@
 						<a href="classes/bstreeviewdisableoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Disable<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/bstreevieweventoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Event<wbr>Options</a>
+						<a href="classes/bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
+						<a href="classes/bstreeviewmethodoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Method<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/bstreeviewnode.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Node</a>
