@@ -146,6 +146,22 @@ export default class BSTreeView
     }
 
     /**
+     * Returns the options used to initialize this treeView
+     */
+    getConfig(): BSTreeViewOptions
+    {
+        return this._options;
+    }
+
+    /**
+     * Returns the dom element to which the treeview is attached to
+     */
+    getTreeElement(): HTMLElement
+    {
+        return this._element;
+    }
+
+    /**
      * Initialize the treeView using the given options
      * @private
      * @internal
