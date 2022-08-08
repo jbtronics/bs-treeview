@@ -12,9 +12,9 @@ but is overhauled with typescript and does not use any jQuery.
 TODO
 
 ## Migrate from bootstrap-treeview
-### Changes
+### Breaking changes
 * Other event names and event signatures are changed: We use javascript native events now, which has the signature: `(event: Event) => void` for the handlers. You can access the data part of the event using `event.detail.data`
-* 
+* The default value for the `levels` option, of how many levels should be expanded automatically, is now `1` instead of `2` (meaning no levels are expanded automatically).
 
 
 # License

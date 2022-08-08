@@ -7,7 +7,7 @@ export default class BSTreeViewOptions {
     injectStyle: boolean = true;
 
     /** Sets the number of hierarchical levels deep the tree will be expanded to by default. */
-    levels: number = 2;
+    levels: number = 1;
 
     /** The data to be displayed on the treeView. Can be either passed as array of nodes / partial node data or a JSON string of the same. Takes presence of ajaxURL */
     data: BSTreeViewNode[]|string = null;
