@@ -40,7 +40,7 @@ export default class BSTreeViewNode {
     /** The current state of this node. See @BSTreeViewNodeState for more details */
     state: BSTreeViewNodeState;
     /** Used in conjunction with global showTags option to add additional information to the right of each node; using Bootstrap Badges, A tag can be an object with properties 'text' for tag value and 'class' for class names(s) of this tag **/
-    tags: string[];
+    tags: string[]|Record<string, string>[];
     /** List of per-node HTML data- attributes to append. */
     dataAttr: object;
     /** Custom HTML id attribute */
@@ -56,8 +56,8 @@ export default class BSTreeViewNode {
 
     /** Adds an expand icon to the node even if it has no children, it calls the lazyLoad() function (described below) upon the first expand. Default: false (Optional) */
     lazyLoad: boolean = false;
-    /** Sets the class of node tags. Default "badge" **/
-    tagsClass: string = "badge";
+    /** Sets the class of node tags. Default null **/
+    tagsClass: string = null;
 
 
     /**
@@ -281,17 +281,22 @@ export default class BSTreeViewNode {
         if (this._options.showTags && this.tags) {
             this.tags.forEach(tag => {
                 const template = Template.badge.cloneNode(true) as HTMLElement;
-                template.classList.add(
-                    //@ts-ignore
-                    ...((typeof tag === 'object' ? tag.class : undefined)
-                        || this.tagsClass
-                        || this._options.tagsClass).split(" ")
-                );
-                template.append(
-                    //@ts-ignore
-                    (typeof tag === 'object' ? tag.text : undefined)
-                    || tag
-                );
+
+                //Decide which class to use
+                if (typeof tag === 'object' && tag.class) { //If the tag has its own class definition use this
+                    template.classList.add(...tag.class.split(" "));
+                } else if(this.tagsClass) { //If this node has its own definition for the tagsClass use it
+                    template.classList.add(...this.tagsClass.split(" "));
+                } else { //Otherwise use the global one
+                    template.classList.add(...this._options.tagsClass.split(" "));
+                }
+
+                //Decide which text the text to use
+                if (typeof tag === 'object' && tag.text) {
+                    template.innerText = tag.text;
+                } else {
+                    template.innerText = tag;
+                }
                 this._domBadges.push(template);
             });
             this._domElement.append(...this._domBadges);

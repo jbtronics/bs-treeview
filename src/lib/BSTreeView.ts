@@ -23,6 +23,7 @@ import {default as BSTreeViewNode} from "./BSTreeViewNode";
 import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
 import Template from "./BSTreeViewTemplate";
+import BSTreeViewTheme from "./themes/BSTreeViewTheme";
 
 const pluginName = 'treeview';
 
@@ -74,16 +75,26 @@ export default class BSTreeView
 
     _options: BSTreeViewOptions;
 
-    constructor(element: HTMLElement, options: BSTreeViewOptions|object)
+    constructor(element: HTMLElement, options: BSTreeViewOptions|Partial<BSTreeViewOptions>, themes?: BSTreeViewTheme[])
     {
         this.element = element;
         this._elementId = element.id ?? "bs-treeview-" + Math.floor(Math.random() * 1000000);
         this._styleId = this._elementId + '-style';
 
+        //Apply the presets of the thmes if any are defined
+        if(themes) {
+            const tmp = new BSTreeViewOptions();
+            for(const theme of themes) {
+                Object.assign(tmp, theme.getOptions());
+            }
+            options = Object.assign(tmp, options);
+        }
+
+
         this._init(options);
     }
 
-    _init (options: BSTreeViewOptions|object)
+    _init (options: BSTreeViewOptions|Partial<BSTreeViewOptions>)
     {
         this._tree = [];
         this._initialized = false;

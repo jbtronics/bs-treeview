@@ -15,3 +15,6 @@ export {EVENT_RENDERED} from "./lib/BSTreeViewEventNames";
 export {EVENT_NODE_RENDERED} from "./lib/BSTreeViewEventNames";
 export {EVENT_INITIALIZED} from "./lib/BSTreeViewEventNames";
 export {EVENT_LOADING_FAILED} from "./lib/BSTreeViewEventNames";
+
+export {default as BS5Theme} from "./lib/themes/BS5Theme";
+export {default as FAIconTheme} from "./lib/themes/FAIconTheme";
