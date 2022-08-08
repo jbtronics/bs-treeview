@@ -84,12 +84,14 @@
 				<a href="#migrate-from-bootstrap-treeview" id="migrate-from-bootstrap-treeview" style="color: inherit; text-decoration: none;">
 					<h2>Migrate from bootstrap-treeview</h2>
 				</a>
-				<a href="#changes" id="changes" style="color: inherit; text-decoration: none;">
-					<h3>Changes</h3>
+				<a href="#breaking-changes" id="breaking-changes" style="color: inherit; text-decoration: none;">
+					<h3>Breaking changes</h3>
 				</a>
 				<ul>
 					<li>Other event names and event signatures are changed: We use javascript native events now, which has the signature: <code>(event: Event) =&gt; void</code> for the handlers. You can access the data part of the event using <code>event.detail.data</code></li>
-					<li></li>
+					<li>The default value for the <code>levels</code> option, of how many levels should be expanded automatically, is now <code>1</code> instead of <code>2</code> (meaning no levels are expanded automatically).</li>
+					<li>addNode()/RemoveNode()/UpdateNode() does not dispatch the <code>initialized</code> anymore</li>
+					<li><code>initialized</code> event is now dispatched after all nodes were rendered (therefore afterwards the <code>render</code> event is dispatched)</li>
 				</ul>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h1>License</h1>
@@ -108,6 +110,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/bs5themeclass.html" class="tsd-kind-icon">BS5<wbr>Theme<wbr>Class</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/bstreesearchoptions.html" class="tsd-kind-icon">BSTree<wbr>Search<wbr>Options</a>
 					</li>
@@ -134,6 +139,18 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/bstreeviewselectoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Select<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-private">
+						<a href="classes/bstreeviewtemplate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Template</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/faiconthemeclass.html" class="tsd-kind-icon">FAIcon<wbr>Theme<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bstreeviewtheme.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Theme</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-private">
+						<a href="globals.html#base_class" class="tsd-kind-icon">BASE_<wbr>CLASS</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#event_destroyed" class="tsd-kind-icon">EVENT_<wbr>DESTROYED</a>
@@ -183,9 +200,6 @@
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#event_search_completed" class="tsd-kind-icon">EVENT_<wbr>SEARCH_<wbr>COMPLETED</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#pluginname" class="tsd-kind-icon">plugin<wbr>Name</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#templateelement" class="tsd-kind-icon">template<wbr>Element</a>
 					</li>
@@ -209,6 +223,10 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

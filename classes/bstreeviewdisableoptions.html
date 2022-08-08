@@ -66,6 +66,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The options for TreeView disable/enable functions</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -92,11 +99,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-private"><a href="bstreeviewdisableoptions.html#_force" class="tsd-kind-icon">_force</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="bstreeviewdisableoptions.html#ignorechildren" class="tsd-kind-icon">ignore<wbr>Children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewdisableoptions.html#keepstate" class="tsd-kind-icon">keep<wbr>State</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="bstreeviewdisableoptions.html#lazyload" class="tsd-kind-icon">lazy<wbr>Load</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="bstreeviewdisableoptions.html#silent" class="tsd-kind-icon">silent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewdisableoptions.html#unselecting" class="tsd-kind-icon">unselecting</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,20 +115,20 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new BSTree<wbr>View<wbr>Disable<wbr>Options<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bstreeviewdisableoptions.html" class="tsd-signature-type">BSTreeViewDisableOptions</a></li>
+						<li class="tsd-signature tsd-kind-icon">new BSTree<wbr>View<wbr>Disable<wbr>Options<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bstreeviewdisableoptions.html" class="tsd-signature-type">BSTreeViewDisableOptions</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="bstreevieweventoptions.html">BSTreeViewEventOptions</a>.<a href="bstreevieweventoptions.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in lib/BSTreeViewEventOptions.ts:5</li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewEventOptions.ts#L16">lib/BSTreeViewEventOptions.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> = null</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="bstreevieweventoptions.html" class="tsd-signature-type">BSTreeViewEventOptions</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = null</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="bstreeviewdisableoptions.html" class="tsd-signature-type">BSTreeViewDisableOptions</a></h4>
@@ -131,6 +138,26 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-private">
+					<a name="_force" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _force</h3>
+					<div class="tsd-signature tsd-kind-icon">_force<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="bstreevieweventoptions.html">BSTreeViewEventOptions</a>.<a href="bstreevieweventoptions.html#_force">_force</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewEventOptions.ts#L16">lib/BSTreeViewEventOptions.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Force a change of the node state, even if the vaklue is not changed. Mostly useful for internal usage</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>internal</dt>
+							<dd></dd>
+						</dl>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="ignorechildren" class="tsd-anchor"></a>
 					<h3>ignore<wbr>Children</h3>
@@ -138,7 +165,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="bstreevieweventoptions.html">BSTreeViewEventOptions</a>.<a href="bstreevieweventoptions.html#ignorechildren">ignoreChildren</a></p>
 						<ul>
-							<li>Defined in lib/BSTreeViewEventOptions.ts:3</li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewEventOptions.ts#L7">lib/BSTreeViewEventOptions.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -148,9 +175,14 @@
 					<div class="tsd-signature tsd-kind-icon">keep<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/BSTreeViewDisableOptions.ts:7</li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewDisableOptions.ts#L9">lib/BSTreeViewDisableOptions.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Keep the expanded/checked/selected state on disable?</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="lazyload" class="tsd-anchor"></a>
@@ -159,7 +191,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="bstreevieweventoptions.html">BSTreeViewEventOptions</a>.<a href="bstreevieweventoptions.html#lazyload">lazyLoad</a></p>
 						<ul>
-							<li>Defined in lib/BSTreeViewEventOptions.ts:5</li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewEventOptions.ts#L9">lib/BSTreeViewEventOptions.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -170,19 +202,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="bstreevieweventoptions.html">BSTreeViewEventOptions</a>.<a href="bstreevieweventoptions.html#silent">silent</a></p>
 						<ul>
-							<li>Defined in lib/BSTreeViewEventOptions.ts:2</li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewEventOptions.ts#L6">lib/BSTreeViewEventOptions.ts:6</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="unselecting" class="tsd-anchor"></a>
-					<h3>unselecting</h3>
-					<div class="tsd-signature tsd-kind-icon">unselecting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in lib/BSTreeViewDisableOptions.ts:6</li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If true no events will be triggered by this action</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -197,6 +224,9 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="bs5themeclass.html" class="tsd-kind-icon">BS5<wbr>Theme<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="bstreesearchoptions.html" class="tsd-kind-icon">BSTree<wbr>Search<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -210,6 +240,9 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 								<a href="bstreeviewdisableoptions.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-private">
+								<a href="bstreeviewdisableoptions.html#_force" class="tsd-kind-icon">_force</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="bstreeviewdisableoptions.html#ignorechildren" class="tsd-kind-icon">ignore<wbr>Children</a>
 							</li>
@@ -221,9 +254,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="bstreeviewdisableoptions.html#silent" class="tsd-kind-icon">silent</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="bstreeviewdisableoptions.html#unselecting" class="tsd-kind-icon">unselecting</a>
 							</li>
 						</ul>
 					</li>
@@ -246,6 +276,18 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="bstreeviewselectoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Select<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-private">
+						<a href="bstreeviewtemplate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Template</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="faiconthemeclass.html" class="tsd-kind-icon">FAIcon<wbr>Theme<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/bstreeviewtheme.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Theme</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-private">
+						<a href="../globals.html#base_class" class="tsd-kind-icon">BASE_<wbr>CLASS</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#event_destroyed" class="tsd-kind-icon">EVENT_<wbr>DESTROYED</a>
@@ -295,9 +337,6 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#event_search_completed" class="tsd-kind-icon">EVENT_<wbr>SEARCH_<wbr>COMPLETED</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#pluginname" class="tsd-kind-icon">plugin<wbr>Name</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#templateelement" class="tsd-kind-icon">template<wbr>Element</a>
 					</li>
@@ -321,6 +360,10 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

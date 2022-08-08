@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BSTreeViewNodeState | @jbtronics/bs-treeview</title>
+	<title>BSTreeViewTheme | @jbtronics/bs-treeview</title>
 	<meta name="description" content="Documentation for @jbtronics/bs-treeview">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,29 +56,29 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="bstreeviewnodestate.html">BSTreeViewNodeState</a>
+					<a href="bstreeviewtheme.html">BSTreeViewTheme</a>
 				</li>
 			</ul>
-			<h1>Class BSTreeViewNodeState</h1>
+			<h1>Interface BSTreeViewTheme</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>This class describes the state of a node in the tree (e.g. if it is disabled, expanded, checked, etc.)</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BSTreeViewNodeState</span>
+						<span class="target">BSTreeViewTheme</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/bs5themeclass.html" class="tsd-signature-type">BS5ThemeClass</a></li>
+					<li><a href="../classes/faiconthemeclass.html" class="tsd-signature-type">FAIconThemeClass</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -86,98 +86,37 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewnodestate.html#_visible" class="tsd-kind-icon">_visible</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewnodestate.html#checked" class="tsd-kind-icon">checked</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewnodestate.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewnodestate.html#expanded" class="tsd-kind-icon">expanded</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewnodestate.html#selected" class="tsd-kind-icon">selected</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="bstreeviewtheme.html#getoptions" class="tsd-kind-icon">get<wbr>Options</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_visible" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _visible</h3>
-					<div class="tsd-signature tsd-kind-icon">_visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNodeState.ts#L19">lib/BSTreeViewNodeState.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether this node is visible in the DOM.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>internal</dt>
-							<dd></dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="checked" class="tsd-anchor"></a>
-					<h3>checked</h3>
-					<div class="tsd-signature tsd-kind-icon">checked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNodeState.ts#L6">lib/BSTreeViewNodeState.ts:6</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether a node is checked, normally represented by a checkbox icon.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="disabled" class="tsd-anchor"></a>
-					<h3>disabled</h3>
-					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNodeState.ts#L8">lib/BSTreeViewNodeState.ts:8</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether a node is disabled (not selectable, expandable or checkable).</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="expanded" class="tsd-anchor"></a>
-					<h3>expanded</h3>
-					<div class="tsd-signature tsd-kind-icon">expanded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNodeState.ts#L10">lib/BSTreeViewNodeState.ts:10</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether or not a node is expanded i.e. open.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="selected" class="tsd-anchor"></a>
-					<h3>selected</h3>
-					<div class="tsd-signature tsd-kind-icon">selected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/BSTreeViewNodeState.ts#L12">lib/BSTreeViewNodeState.ts:12</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether or not a node is selected.</p>
-						</div>
-					</div>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getoptions" class="tsd-anchor"></a>
+					<h3>get<wbr>Options</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Options<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/bstreeviewoptions.html" class="tsd-signature-type">BSTreeViewOptions</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/ced46ce/src/lib/themes/BSTreeViewTheme.ts#L7">lib/themes/BSTreeViewTheme.ts:7</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return an object with the partial parameters that should override the default ones defined in BSTreeViewOptions.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/bstreeviewoptions.html" class="tsd-signature-type">BSTreeViewOptions</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -192,65 +131,53 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="bs5themeclass.html" class="tsd-kind-icon">BS5<wbr>Theme<wbr>Class</a>
+						<a href="../classes/bs5themeclass.html" class="tsd-kind-icon">BS5<wbr>Theme<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreesearchoptions.html" class="tsd-kind-icon">BSTree<wbr>Search<wbr>Options</a>
+						<a href="../classes/bstreesearchoptions.html" class="tsd-kind-icon">BSTree<wbr>Search<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreeview.html" class="tsd-kind-icon">BSTree<wbr>View</a>
+						<a href="../classes/bstreeview.html" class="tsd-kind-icon">BSTree<wbr>View</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreeviewdisableoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Disable<wbr>Options</a>
+						<a href="../classes/bstreeviewdisableoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Disable<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreevieweventoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Event<wbr>Options</a>
+						<a href="../classes/bstreevieweventoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Event<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
+						<a href="../classes/bstreeviewexpandoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Expand<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bstreeviewnode.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Node</a>
+						<a href="../classes/bstreeviewnode.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/bstreeviewnodestate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Node<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/bstreeviewoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/bstreeviewselectoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Select<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-private">
+						<a href="../classes/bstreeviewtemplate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Template</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/faiconthemeclass.html" class="tsd-kind-icon">FAIcon<wbr>Theme<wbr>Class</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="bstreeviewnodestate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Node<wbr>State</a>
+					<li class="current tsd-kind-interface">
+						<a href="bstreeviewtheme.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Theme</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="bstreeviewnodestate.html#_visible" class="tsd-kind-icon">_visible</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="bstreeviewnodestate.html#checked" class="tsd-kind-icon">checked</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="bstreeviewnodestate.html#disabled" class="tsd-kind-icon">disabled</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="bstreeviewnodestate.html#expanded" class="tsd-kind-icon">expanded</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="bstreeviewnodestate.html#selected" class="tsd-kind-icon">selected</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="bstreeviewtheme.html#getoptions" class="tsd-kind-icon">get<wbr>Options</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="bstreeviewoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="bstreeviewselectoptions.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Select<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-private">
-						<a href="bstreeviewtemplate.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Template</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="faiconthemeclass.html" class="tsd-kind-icon">FAIcon<wbr>Theme<wbr>Class</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bstreeviewtheme.html" class="tsd-kind-icon">BSTree<wbr>View<wbr>Theme</a>
-					</li>
 					<li class=" tsd-kind-variable tsd-is-private">
 						<a href="../globals.html#base_class" class="tsd-kind-icon">BASE_<wbr>CLASS</a>
 					</li>
