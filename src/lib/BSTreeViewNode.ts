@@ -9,7 +9,7 @@ import {
     EVENT_NODE_UNCHECKED,
     EVENT_NODE_UNSELECTED
 } from "./BSTreeViewEventNames";
-import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
+import BSTreeViewMethodOptions from "./BSTreeViewMethodOptions";
 import BSTreeViewNodeState from "./BSTreeViewNodeState";
 import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
@@ -363,7 +363,7 @@ export default class BSTreeViewNode {
         this._setVisible(this.state._visible, {_force: true, silent: true});
 
         // Trigger nodeRendered event
-        this._triggerEvent(EVENT_NODE_RENDERED, new BSTreeViewEventOptions());
+        this._triggerEvent(EVENT_NODE_RENDERED, new BSTreeViewMethodOptions());
 
 
         return this._domElement;
@@ -388,7 +388,7 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _triggerEvent (eventType: string, options: Partial<BSTreeViewEventOptions> = null) {
+    _triggerEvent (eventType: string, options: Partial<BSTreeViewMethodOptions> = null) {
         if (options && !options.silent) {
             const event = new CustomEvent(eventType, {
                 detail: {
@@ -422,7 +422,7 @@ export default class BSTreeViewNode {
      * Toggle the expanded state of this node (if it was expanded, it will be collapsed, and vice versa)
      * @param options
      */
-    toggleExpanded (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
+    toggleExpanded (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
         // Lazy-load the child nodes if possible
         if (typeof(this.lazyLoad) === 'function' && this.lazyLoad) {
             this._lazyLoad();
@@ -458,9 +458,9 @@ export default class BSTreeViewNode {
      * @param state True, if the node should be expanded, false to collapse it.
      * @param options
      */
-    setExpanded (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
+    setExpanded (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): void {
         //Parse the passed options to an options object
-        options = new BSTreeViewEventOptions(options);
+        options = new BSTreeViewMethodOptions(options);
 
         // During rendered event, the options._force property is set
         if (!options._force && state === this.state.expanded) return;
@@ -515,9 +515,9 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    _setVisible (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
+    _setVisible (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): void {
         //Parse the passed options to an options object
-        options = new BSTreeViewEventOptions(options);
+        options = new BSTreeViewMethodOptions(options);
 
         if (!options._force && state === this.state._visible) return;
 
@@ -621,10 +621,10 @@ export default class BSTreeViewNode {
      * Toggle the checked state of this node
      * @param options
      */
-    toggleChecked (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): this {
+    toggleChecked (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
         if (this._options.hierarchicalCheck) {
             // Event propagation to the parent/child nodes
-            const childOptions = new BSTreeViewEventOptions(options);
+            const childOptions = new BSTreeViewMethodOptions(options);
             childOptions.silent = options.silent || !this._options.propagateCheckEvent;
 
             let state: boolean|null;
@@ -676,8 +676,8 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    setChecked (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
-        options = new BSTreeViewEventOptions(options);
+    setChecked (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
+        options = new BSTreeViewMethodOptions(options);
 
         // We never pass options when rendering, so the only time
         // we need to validate state is from user interaction
@@ -849,8 +849,8 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    _setSearchResult (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
-        options = new BSTreeViewEventOptions(options);
+    _setSearchResult (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
+        options = new BSTreeViewMethodOptions(options);
 
         if (!options._force && state === this._searchResult) return;
 

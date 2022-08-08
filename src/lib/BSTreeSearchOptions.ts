@@ -1,9 +1,9 @@
-import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
+import BSTreeViewMethodOptions from "./BSTreeViewMethodOptions";
 
 /**
  * The options for TreeView search() function
  */
-export default class BSTreeSearchOptions extends BSTreeViewEventOptions {
+export default class BSTreeSearchOptions extends BSTreeViewMethodOptions {
     /** Should the search be case sensitive? */
     ignoreCase: boolean = true;
     /** Should the search only find exact matching nodes, or similar ones too? */

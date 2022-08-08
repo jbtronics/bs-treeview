@@ -1,7 +1,7 @@
 /**
  * The options for all kinds of functions in the TreeView
  */
-export default class BSTreeViewEventOptions {
+export default class BSTreeViewMethodOptions {
     /** If true no events will be triggered by this action */
     silent: boolean = false;
 
@@ -12,7 +12,7 @@ export default class BSTreeViewEventOptions {
      */
     _force: boolean = false;
 
-    constructor(options: BSTreeViewEventOptions|Record<string, unknown> = null) {
+    constructor(options: BSTreeViewMethodOptions|Partial<BSTreeViewMethodOptions> = null) {
         Object.assign(this, options);
     }
 }
