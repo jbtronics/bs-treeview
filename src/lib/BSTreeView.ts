@@ -117,6 +117,11 @@ export default class BSTreeView
      */
     constructor(element: HTMLElement, options: BSTreeViewOptions|Partial<BSTreeViewOptions>, themes?: BSTreeViewTheme[])
     {
+        //Ensure that that the passed element is empty
+        if (element.childElementCount > 0) {
+            throw new Error("The element is not empty! Did you already initialized an bs-treeview instance on this element?");
+        }
+
         this._element = element;
         this._elementId = element.id ?? "bs-treeview-" + Math.floor(Math.random() * 1000000);
         this._styleId = this._elementId + '-style';
