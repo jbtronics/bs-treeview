@@ -6,6 +6,11 @@ function templateElement(tagType: string, classes: string): HTMLElement {
     return el;
 }
 
+/**
+ * This class gives template elements for the tree view.
+ * @internal
+ * @private
+ */
 class BSTreeViewTemplate {
     tree = templateElement('ul', "list-group");
     node = templateElement("li", "list-group-item");

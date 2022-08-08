@@ -11,5 +11,10 @@ export default class BSTreeViewNodeState {
     /** Whether or not a node is selected. */
     selected: boolean = false;
 
-    visible: boolean;
+    /**
+     * Whether this node is visible in the DOM.
+     * @internal
+     * @private
+     */
+    _visible: boolean;
 }

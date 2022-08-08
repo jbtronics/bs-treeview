@@ -1,6 +1,9 @@
 import BSTreeViewOptions from "../BSTreeViewOptions";
 import BSTreeViewTheme from "./BSTreeViewTheme";
 
+/**
+ * Use this theme to use Font Awesome icons in the treeview.
+ */
 class FAIconThemeClass implements BSTreeViewTheme {
     getOptions(): Partial<BSTreeViewOptions> {
         return {

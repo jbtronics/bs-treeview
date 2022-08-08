@@ -15,7 +15,8 @@ TODO
 ### Breaking changes
 * Other event names and event signatures are changed: We use javascript native events now, which has the signature: `(event: Event) => void` for the handlers. You can access the data part of the event using `event.detail.data`
 * The default value for the `levels` option, of how many levels should be expanded automatically, is now `1` instead of `2` (meaning no levels are expanded automatically).
-
+* addNode()/RemoveNode()/UpdateNode() does not dispatch the `initialized` anymore
+* `initialized` event is now dispatched after all nodes were rendered (therefore afterwards the `render` event is dispatched)
 
 # License
 bs-treeview is licensed under Apache 2.0 license. This means you can use it for free and redistribute it, without much restrictions. See [LICENSE](LICENSE.md) for more information.

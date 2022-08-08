@@ -15,6 +15,9 @@ import BSTreeViewOptions from "./BSTreeViewOptions";
 import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
 import Template from "./BSTreeViewTemplate";
 
+/**
+ * This class describes a node of an BSTreeView
+ */
 export default class BSTreeViewNode {
 
     /** The text value displayed for a given tree node, typically to the right of the nodes icon. (Mandatory) */
@@ -63,52 +66,90 @@ export default class BSTreeViewNode {
     /**
      * The dom element representing this node
      * @private
+     * @internal
      */
     _domElement: HTMLElement = null;
     /**
      * The elements used to build the node level indentation
      * @private
+     * @internal
      */
     _domIndents: HTMLElement[] = [];
     /**
      * The expand icon displayed on a given node, typically to the left of the text. (Optional)
      * @private
+     * @internal
      */
     _domIconExpand: HTMLElement = null;
     /**
      * The element representing the checkbox on this element
      * @private
+     * @internal
      */
     _domCheckbox: HTMLElement = null;
     /**
      * The element representing the (user definable) icon on this element
      * @private
+     * @internal
      */
     _domIcon: HTMLElement = null;
     /**
      * The element representing the image description of this element
      * @private
+     * @internal
      */
     _domImage: HTMLElement = null;
     /**
      * The elements of badges on this treeview
      * @private
+     * @internal
      */
     _domBadges: HTMLElement[] = [];
 
 
-    searchResult: boolean;
+    /**
+     * Whether this node is marked as a search result or not
+     * @internal
+     * @private
+     */
+    _searchResult: boolean;
 
 
-    /** The hierachy level this node is at. */
-    level: number = 1;
-    /** The index of this entry in the parent's children array. */
-    index: number;
-    nodeId: string;
+    /** The hierachy level this node is at.
+     * @private
+     * @internal
+     */
+    _level: number = 1;
+    /** The index of this entry in the parent's children array.
+     * @private
+     * @internal
+     */
+    _index: number;
+    /**
+     * The internal node ID. This is used to identify the node in the treeview via its path
+     * @private
+     * @internal
+     */
+    _nodeId: string;
 
+    /**
+     * The parent of this node if it is existing
+     * @private
+     * @internal
+     */
     _parentNode: BSTreeViewNode|null = null;
 
+    /**
+     * The options of the treeview this node belongs to
+     * @private
+     * @internal
+     */
     _options: BSTreeViewOptions;
+    /**
+     * The treeview this node belongs to
+     * @private
+     * @internal
+     */
     _treeView: BSTreeView;
 
     /**
@@ -122,9 +163,13 @@ export default class BSTreeViewNode {
         this._options = treeView._options;
     }
 
+    /**
+     * Returns the nodeID of the parent node
+     * Returns null, if this element has no parent
+     */
     get parentId(): string|null
     {
-        return this._parentNode.nodeId ?? null;
+        return this._parentNode._nodeId ?? null;
     }
 
     /**
@@ -154,27 +199,29 @@ export default class BSTreeViewNode {
      * Update the children nodes for hierachy, by setting the right values for parent, level and index.
      * All children nodes are registered then at the treeview. Beware that this node itself is not registered!
      * Also hierachically dependent node properties are set here. This function is called recursively.
+     * @private
+     * @internal
      */
     _updateChildrenHierarchy(): void
     {
         //If this node has no children we are done
         if (!this.hasChildren()) return;
 
-        const new_level = this.level + 1;
+        const new_level = this._level + 1;
         // The virtual root node has level 0 and should not become parent of the real root nodes
-        const parent = this.level > 0 ? this : null;
+        const parent = this._level > 0 ? this : null;
 
         this.nodes.forEach((node, index) => {
             // level : hierarchical tree level, starts at 1
-            node.level = new_level;
+            node._level = new_level;
 
             // index : relative to siblings
-            node.index = index;
+            node._index = index;
 
             // nodeId : unique, hierarchical identifier
-            node.nodeId = (parent && parent.nodeId) ?
-                parent.nodeId + '.' + node.index :
-                (new_level - 1) + '.' + node.index;
+            node._nodeId = (parent && parent._nodeId) ?
+                parent._nodeId + '.' + node._index :
+                (new_level - 1) + '.' + node._index;
 
             // We are the parent of our children nodea
             node._parentNode = parent;
@@ -190,7 +237,7 @@ export default class BSTreeViewNode {
             }
 
             // set visible state; based parent state plus levels
-            node.state.visible = !!((parent && parent.state && parent.state.expanded) || (new_level <= this._options.levels));
+            node.state._visible = !!((parent && parent.state && parent.state.expanded) || (new_level <= this._options.levels));
 
             // recurse child nodes and transverse the tree, depth-first
             if (node.hasChildren()) {
@@ -204,6 +251,8 @@ export default class BSTreeViewNode {
 
     /**
      * Creates the underlying HTMLElement for this node and updates its properties.
+     * @private
+     * @internal
      */
     _renderNode(): HTMLElement
     {
@@ -236,7 +285,7 @@ export default class BSTreeViewNode {
         }
 
         // Set / update nodeid; it can change as a result of addNode etc.
-        this._domElement.dataset.nodeId = this.nodeId;
+        this._domElement.dataset.nodeId = this._nodeId;
 
         // Set the tooltip attribute if present
         if (this.tooltip) {
@@ -244,7 +293,7 @@ export default class BSTreeViewNode {
         }
 
         // Add indent/spacer to mimic tree structure
-        for (let i = 0; i < (this.level - 1); i++) {
+        for (let i = 0; i < (this._level - 1); i++) {
             this._domIndents.push(Template.indent.cloneNode(true) as HTMLElement);
         }
         this._domElement.append(...this._domIndents);
@@ -308,10 +357,10 @@ export default class BSTreeViewNode {
         // Set various node states
         this.setSelected(this.state.selected, {_force: true, silent: true});
         this.setChecked(this.state.checked, {_force: true, silent: true});
-        this.setSearchResult(this.searchResult, {_force: true, silent: true});
+        this._setSearchResult(this._searchResult, {_force: true, silent: true});
         this.setExpanded(this.state.expanded, {_force: true, silent: true});
         this.setDisabled(this.state.disabled, {_force: true, silent: true});
-        this.setVisible(this.state.visible, {_force: true, silent: true});
+        this._setVisible(this.state._visible, {_force: true, silent: true});
 
         // Trigger nodeRendered event
         this._triggerEvent(EVENT_NODE_RENDERED, new BSTreeViewEventOptions());
@@ -322,6 +371,8 @@ export default class BSTreeViewNode {
 
     /**
      * Recursivley removes this node and all its children from the Dom
+     * @private
+     * @internal
      */
     _removeNodeEl (): void {
         this.nodes.forEach((node) => {
@@ -334,8 +385,10 @@ export default class BSTreeViewNode {
      * Create the given event on the nodes element. The event bubbles the DOM upwards. Details about the node and the used treeView are passed via event.detail
      * @param eventType The name of the event to generate (see EVENT_* constants in BSTreeViewEventNames)
      * @param options
+     * @private
+     * @internal
      */
-    _triggerEvent (eventType: string, options: BSTreeViewEventOptions = null) {
+    _triggerEvent (eventType: string, options: Partial<BSTreeViewEventOptions> = null) {
         if (options && !options.silent) {
             const event = new CustomEvent(eventType, {
                 detail: {
@@ -349,11 +402,6 @@ export default class BSTreeViewNode {
         }
     }
 
-    toggleDisabled(options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): this {
-        this.setDisabled(!this.state.disabled, options);
-        return this;
-    }
-
     /**
      * Returns true, if this node has children.
      */
@@ -362,10 +410,19 @@ export default class BSTreeViewNode {
     }
 
     /**
+     * Toggle the disabled state of this node
+     * @param options
+     */
+    toggleDisabled(options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): this {
+        this.setDisabled(!this.state.disabled, options);
+        return this;
+    }
+
+    /**
      * Toggle the expanded state of this node (if it was expanded, it will be collapsed, and vice versa)
      * @param options
      */
-    toggleExpanded (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    toggleExpanded (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         // Lazy-load the child nodes if possible
         if (typeof(this.lazyLoad) === 'function' && this.lazyLoad) {
             this._lazyLoad();
@@ -374,6 +431,11 @@ export default class BSTreeViewNode {
         }
     };
 
+    /**
+     * Perform the lazy load on this node, using the lazyLoad function if present
+     * @private
+     * @internal
+     */
     _lazyLoad () {
         if(!this.lazyLoad) return;
 
@@ -391,7 +453,12 @@ export default class BSTreeViewNode {
         this.lazyLoad = false;
     };
 
-    setExpanded (state: boolean, options: BSTreeViewEventOptions|Record<string, unknown> = new BSTreeViewEventOptions()): void {
+    /**
+     * Sets the expanded state of this node.
+     * @param state True, if the node should be expanded, false to collapse it.
+     * @param options
+     */
+    setExpanded (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         //Parse the passed options to an options object
         options = new BSTreeViewEventOptions(options);
 
@@ -412,7 +479,7 @@ export default class BSTreeViewNode {
 
             // Expand children
             this.nodes.forEach((node) => {
-                node.setVisible(true, options);
+                node._setVisible(true, options);
             });
 
             // Optionally trigger event
@@ -431,7 +498,7 @@ export default class BSTreeViewNode {
 
             // Collapse children
             this.nodes.forEach ((node) => {
-                node.setVisible(false, options);
+                node._setVisible(false, options);
                 node.setExpanded(false, options);
             });
 
@@ -440,13 +507,21 @@ export default class BSTreeViewNode {
         }
     };
 
-    setVisible (state: boolean, options: BSTreeViewEventOptions|Record<string, unknown> = new BSTreeViewEventOptions()): void {
+    /**
+     * Changes the visibility state of this node.
+     * Mostly useful for internal use
+     * @internal
+     * @private
+     * @param state
+     * @param options
+     */
+    _setVisible (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         //Parse the passed options to an options object
         options = new BSTreeViewEventOptions(options);
 
-        if (!options._force && state === this.state.visible) return;
+        if (!options._force && state === this.state._visible) return;
 
-        this.state.visible = state;
+        this.state._visible = state;
 
         if(this._domElement) {
             //Add hidden class to our element
@@ -458,12 +533,21 @@ export default class BSTreeViewNode {
         }
     };
 
-    toggleSelected (options: BSTreeViewSelectOptions = new BSTreeViewSelectOptions()): this {
+    /**
+     * Toggle the selected state of this node
+     * @param options
+     */
+    toggleSelected (options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()): this {
         this.setSelected(!this.state.selected, options);
         return this;
     };
 
-    setSelected (state: boolean, options: BSTreeViewSelectOptions|Record<string, unknown> = new BSTreeViewSelectOptions()): this {
+    /**
+     * Sets the selected state of this node
+     * @param state The new state of the node
+     * @param options
+     */
+    setSelected (state: boolean, options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()): this {
         //Parse the passed options to an options object
         options = new BSTreeViewSelectOptions(options);
 
@@ -478,7 +562,7 @@ export default class BSTreeViewNode {
             if (!this._options.multiSelect) {
                 const selectedNodes = this._treeView._findNodes('true', 'state.selected');
                 selectedNodes.forEach((node) => {
-                    options.unselecting = true;
+                    options._unselecting = true;
 
                     node.setSelected(false, options);
                 });
@@ -504,7 +588,7 @@ export default class BSTreeViewNode {
 
             // If preventUnselect true + only one remaining selection, disable unselect
             if (this._options.preventUnselect &&
-                (options && !options.unselecting) &&
+                (options && !options._unselecting) &&
                 (this._treeView._findNodes('true', 'state.selected').length === 1)) {
                 // Fire the nodeSelected event if reselection is allowed
                 if (this._options.allowReselect) {
@@ -533,7 +617,11 @@ export default class BSTreeViewNode {
         return this;
     };
 
-    toggleChecked (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): this {
+    /**
+     * Toggle the checked state of this node
+     * @param options
+     */
+    toggleChecked (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): this {
         if (this._options.hierarchicalCheck) {
             // Event propagation to the parent/child nodes
             const childOptions = new BSTreeViewEventOptions(options);
@@ -583,7 +671,12 @@ export default class BSTreeViewNode {
         return this;
     };
 
-    setChecked (state: boolean, options: BSTreeViewEventOptions|Record<string, unknown> = new BSTreeViewEventOptions()) {
+    /**
+     * Sets the checked state of this node
+     * @param state
+     * @param options
+     */
+    setChecked (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         options = new BSTreeViewEventOptions(options);
 
         // We never pass options when rendering, so the only time
@@ -658,7 +751,12 @@ export default class BSTreeViewNode {
         }
     };
 
-    setDisabled (state: boolean, options: BSTreeViewDisableOptions|Record<string, unknown> = new BSTreeViewDisableOptions()) {
+    /**
+     * Sets the disabled state of this node
+     * @param state true to disable, false to enable
+     * @param options
+     */
+    setDisabled (state: boolean, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()) {
 
         options = new BSTreeViewDisableOptions(options);
 
@@ -703,6 +801,8 @@ export default class BSTreeViewNode {
 
     /**
      * This function creates the _domCheckbox element and add it to the dom if a checkbox should be shown
+     * @private
+     * @internal
      */
     _addCheckbox (): void {
         if (this._options.showCheckbox && (this.hideCheckbox === undefined || this.hideCheckbox === false)) {
@@ -714,6 +814,8 @@ export default class BSTreeViewNode {
 
     /**
      * This function creates the _domIcon element and add it to the dom if an icon should be shown
+     * @private
+     * @internal
      */
     _addIcon (): void {
         if (this._options.showIcon && !(this._options.showImage && this.image)) {
@@ -724,6 +826,11 @@ export default class BSTreeViewNode {
         }
     }
 
+    /**
+     * This function creates the _domImage element and add it to the dom if an image should be shown
+     * @private
+     * @internal
+     */
     _addImage (): void {
         if (this._options.showImage && this.image) {
             this._domImage = Template.image.cloneNode(true) as HTMLElement;
@@ -735,13 +842,20 @@ export default class BSTreeViewNode {
         }
     }
 
-    setSearchResult (state: boolean, options: BSTreeViewEventOptions|Record<string, unknown> = new BSTreeViewEventOptions()) {
+    /**
+     * Sets whether this node is a highlighted as search result or not.
+     * @internal
+     * @private
+     * @param state
+     * @param options
+     */
+    _setSearchResult (state: boolean, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         options = new BSTreeViewEventOptions(options);
 
-        if (!options._force && state === this.searchResult) return;
+        if (!options._force && state === this._searchResult) return;
 
         if (state) {
-            this.searchResult = true;
+            this._searchResult = true;
 
             if (this._domElement) {
                 this._domElement.classList.add('node-result');
@@ -749,7 +863,7 @@ export default class BSTreeViewNode {
         }
         else {
 
-            this.searchResult = false;
+            this._searchResult = false;
 
             if (this._domElement) {
                 this._domElement.classList.remove('node-result');

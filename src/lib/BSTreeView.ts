@@ -3,6 +3,7 @@ import BSTreeViewDisableOptions from "./BSTreeViewDisableOptions";
 import {
     EVENT_DESTROYED,
     EVENT_INITIALIZED,
+    EVENT_LOADING,
     EVENT_LOADING_FAILED,
     EVENT_NODE_CHECKED,
     EVENT_NODE_COLLAPSED,
@@ -15,7 +16,7 @@ import {
     EVENT_NODE_UNSELECTED,
     EVENT_RENDERED,
     EVENT_SEARCH_CLEARED,
-    EVENT_SEARCH_COMPLETED
+    EVENT_SEARCH_COMPLETED,
 } from "./BSTreeViewEventNames";
 import BSTreeViewEventOptions from "./BSTreeViewEventOptions";
 import BSTreeViewExpandOptions from "./BSTreeViewExpandOptions";
@@ -25,59 +26,98 @@ import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
 import Template from "./BSTreeViewTemplate";
 import BSTreeViewTheme from "./themes/BSTreeViewTheme";
 
-const pluginName = 'treeview';
+/** @private @internal The class names which are added to the main wrapper */
+const BASE_CLASS = 'treeview';
 
-const EVENT_LOADING = 'bs-tree:loading';
-
-
+/**
+ * This class allows to create and represent the TreeView element.
+ */
 export default class BSTreeView
 {
+    /**
+     * @private
+     * @internal
+     */
     _css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}'
 
 
     /**
+     * @private
+     * @internal
      * @param {HTMLElement} The HTMLElement this tree applies to
      */
-    element: HTMLElement;
+    _element: HTMLElement;
 
-    wrapper: HTMLElement|null;
+    /**
+     * @private
+     * @internal
+     * The wrapper in which the tree resides (normally an <ul> element)
+     */
+    _wrapper: HTMLElement|null;
 
     /**
      * {string}
      * @private
+     * @internal
      */
     _elementId: string;
 
+    /**
+     * @private
+     * @internal
+     */
     _styleId: string;
 
     /**
      * The hierachically tree of nodes
+     * @private
+     * @internal
      */
     _tree: BSTreeViewNode[];
 
     /**
      * A flat list representation of all nodes (unsorted)
+     * @private
+     * @internal
      */
     _nodes: Map<string, BSTreeViewNode>;
 
     /**
      * A flat list representation of all nodes, sorted by their nodeId, which gives you the render order
+     * @private
+     * @internal
      */
     _orderedNodes: Map<string, BSTreeViewNode>;
 
+    /**
+     * @private
+     * @internal
+     */
     _checkedNodes: BSTreeViewNode[];
 
     /**
+     * Whether this treeview was already initialized
      * @private
-     * {boolean}
+     * @internal
      */
     _initialized: boolean;
 
+    /**
+     * The options used to initialize this treeView
+     * @private
+     * @internal
+     */
     _options: BSTreeViewOptions;
 
+    /**
+     * Create a new treeView inside of the given element
+     * @param element The elements in which the tree will be rendered
+     * @param options The options for the tree, the data is passed here too
+     * @param themes Optional themes to apply to the tree
+     */
     constructor(element: HTMLElement, options: BSTreeViewOptions|Partial<BSTreeViewOptions>, themes?: BSTreeViewTheme[])
     {
-        this.element = element;
+        this._element = element;
         this._elementId = element.id ?? "bs-treeview-" + Math.floor(Math.random() * 1000000);
         this._styleId = this._elementId + '-style';
 
@@ -94,6 +134,12 @@ export default class BSTreeView
         this._init(options);
     }
 
+    /**
+     * Initialize the treeView using the given options
+     * @private
+     * @internal
+     * @param options
+     */
     _init (options: BSTreeViewOptions|Partial<BSTreeViewOptions>)
     {
         this._tree = [];
@@ -141,6 +187,12 @@ export default class BSTreeView
         ;
     }
 
+    /**
+     * Asynchronously load the data for the tree, depending on the settings
+     * @private
+     * @internal
+     * @param options
+     */
     _load (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         if (options.data) {
             return this._loadLocalData(options);
@@ -150,6 +202,12 @@ export default class BSTreeView
         throw new Error("No data source defined.");
     }
 
+    /**
+     * Asynchronously load the data from a network source using fetch
+     * @private
+     * @internal
+     * @param options
+     */
     _loadRemoteData (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         return new Promise((resolve, reject) => {
             fetch(options.ajaxURL, options.ajaxConfig).then((response) => {
@@ -159,6 +217,12 @@ export default class BSTreeView
         });
     }
 
+    /**
+     * Asynchronously load the data from the data property passed as options
+     * @param options
+     * @private
+     * @internal
+     */
     _loadLocalData (options: BSTreeViewOptions): Promise<Partial<BSTreeViewNode>[]> {
         return new Promise((resolve, reject) => {
             //if options.data is a string we need to JSON decode it first
@@ -174,13 +238,20 @@ export default class BSTreeView
         });
     };
 
-    _remove () {
+    /**
+     * Destroys and remove this treeView from the DOM
+     */
+    remove () {
         this._destroy();
-        //$.removeData(this, pluginName);
         const styleElement = document.getElementById(this._styleId);
         styleElement.remove();
     };
 
+    /**
+     * Destroy this instance
+     * @private
+     * @internal
+     */
     _destroy () {
         if (!this._initialized) return;
         this._initialized = false;
@@ -191,158 +262,180 @@ export default class BSTreeView
         this._unsubscribeEvents();
 
         // Tear down
-        this.wrapper.remove();
-        this.wrapper = null;
+        this._wrapper.remove();
+        this._wrapper = null;
     };
 
+    /**
+     * Unsubscribe the events for this treeView.
+     * This includes the onEvent listeners passed by options and the click handler
+     * @private
+     * @internal
+     */
     _unsubscribeEvents () {
         if (typeof (this._options.onLoading) === 'function') {
-            this.element.removeEventListener(EVENT_LOADING, this._options.onLoading);
+            this._element.removeEventListener(EVENT_LOADING, this._options.onLoading);
         }
 
         if (typeof (this._options.onLoadingFailed) === 'function') {
-            this.element.removeEventListener(EVENT_LOADING_FAILED, this._options.onLoadingFailed);
+            this._element.removeEventListener(EVENT_LOADING_FAILED, this._options.onLoadingFailed);
         }
 
         if (typeof (this._options.onInitialized) === 'function') {
-            this.element.removeEventListener(EVENT_INITIALIZED, this._options.onInitialized);
+            this._element.removeEventListener(EVENT_INITIALIZED, this._options.onInitialized);
         }
 
         if (typeof (this._options.onNodeRendered) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_RENDERED, this._options.onNodeRendered);
+            this._element.removeEventListener(EVENT_NODE_RENDERED, this._options.onNodeRendered);
         }
 
         if (typeof (this._options.onRendered) === 'function') {
-            this.element.removeEventListener(EVENT_RENDERED, this._options.onRendered);
+            this._element.removeEventListener(EVENT_RENDERED, this._options.onRendered);
         }
 
         if (typeof (this._options.onDestroyed) === 'function') {
-            this.element.removeEventListener(EVENT_DESTROYED, this._options.onDestroyed);
+            this._element.removeEventListener(EVENT_DESTROYED, this._options.onDestroyed);
         }
 
-        this.element.removeEventListener('click', this._clickHandler.bind(this));
+        this._element.removeEventListener('click', this._clickHandler.bind(this));
 
         if (typeof (this._options.onNodeChecked) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_CHECKED, this._options.onNodeChecked);
+            this._element.removeEventListener(EVENT_NODE_CHECKED, this._options.onNodeChecked);
         }
 
         if (typeof (this._options.onNodeCollapsed) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_COLLAPSED, this._options.onNodeCollapsed);
+            this._element.removeEventListener(EVENT_NODE_COLLAPSED, this._options.onNodeCollapsed);
         }
 
         if (typeof (this._options.onNodeDisabled) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_DISABLED, this._options.onNodeDisabled);
+            this._element.removeEventListener(EVENT_NODE_DISABLED, this._options.onNodeDisabled);
         }
 
         if (typeof (this._options.onNodeEnabled) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_ENABLED, this._options.onNodeEnabled);
+            this._element.removeEventListener(EVENT_NODE_ENABLED, this._options.onNodeEnabled);
         }
 
         if (typeof (this._options.onNodeExpanded) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_EXPANDED, this._options.onNodeExpanded);
+            this._element.removeEventListener(EVENT_NODE_EXPANDED, this._options.onNodeExpanded);
         }
 
         if (typeof (this._options.onNodeSelected) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_SELECTED, this._options.onNodeSelected);
+            this._element.removeEventListener(EVENT_NODE_SELECTED, this._options.onNodeSelected);
         }
 
         if (typeof (this._options.onNodeUnchecked) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_UNCHECKED, this._options.onNodeUnchecked);
+            this._element.removeEventListener(EVENT_NODE_UNCHECKED, this._options.onNodeUnchecked);
         }
 
         if (typeof (this._options.onNodeUnselected) === 'function') {
-            this.element.removeEventListener(EVENT_NODE_UNSELECTED, this._options.onNodeUnselected);
+            this._element.removeEventListener(EVENT_NODE_UNSELECTED, this._options.onNodeUnselected);
         }
 
         if (typeof (this._options.onSearchComplete) === 'function') {
-            this.element.removeEventListener(EVENT_SEARCH_COMPLETED, this._options.onSearchComplete);
+            this._element.removeEventListener(EVENT_SEARCH_COMPLETED, this._options.onSearchComplete);
         }
 
         if (typeof (this._options.onSearchCleared) === 'function') {
-            this.element.removeEventListener(EVENT_SEARCH_CLEARED, this._options.onSearchCleared);
+            this._element.removeEventListener(EVENT_SEARCH_CLEARED, this._options.onSearchCleared);
         }
     };
 
+    /**
+     * Subscribe the events for this treeView.
+     * This includes the onEvent listeners passed by options and the click handler
+     * @private
+     * @internal
+     */
     _subscribeEvents () {
         this._unsubscribeEvents();
 
         if (typeof (this._options.onLoading) === 'function') {
-            this.element.addEventListener(EVENT_LOADING, this._options.onLoading);
+            this._element.addEventListener(EVENT_LOADING, this._options.onLoading);
         }
 
         if (typeof (this._options.onLoadingFailed) === 'function') {
-            this.element.addEventListener(EVENT_LOADING_FAILED, this._options.onLoadingFailed);
+            this._element.addEventListener(EVENT_LOADING_FAILED, this._options.onLoadingFailed);
         }
 
         if (typeof (this._options.onInitialized) === 'function') {
-            this.element.addEventListener(EVENT_INITIALIZED, this._options.onInitialized);
+            this._element.addEventListener(EVENT_INITIALIZED, this._options.onInitialized);
         }
 
         if (typeof (this._options.onNodeRendered) === 'function') {
-            this.element.addEventListener(EVENT_NODE_RENDERED, this._options.onNodeRendered);
+            this._element.addEventListener(EVENT_NODE_RENDERED, this._options.onNodeRendered);
         }
 
         if (typeof (this._options.onRendered) === 'function') {
-            this.element.addEventListener(EVENT_RENDERED, this._options.onRendered);
+            this._element.addEventListener(EVENT_RENDERED, this._options.onRendered);
         }
 
         if (typeof (this._options.onDestroyed) === 'function') {
-            this.element.addEventListener(EVENT_DESTROYED, this._options.onDestroyed);
+            this._element.addEventListener(EVENT_DESTROYED, this._options.onDestroyed);
         }
 
-        this.element.addEventListener('click', this._clickHandler.bind(this));
+        this._element.addEventListener('click', this._clickHandler.bind(this));
 
         if (typeof (this._options.onNodeChecked) === 'function') {
-            this.element.addEventListener(EVENT_NODE_CHECKED, this._options.onNodeChecked);
+            this._element.addEventListener(EVENT_NODE_CHECKED, this._options.onNodeChecked);
         }
 
         if (typeof (this._options.onNodeCollapsed) === 'function') {
-            this.element.addEventListener(EVENT_NODE_COLLAPSED, this._options.onNodeCollapsed);
+            this._element.addEventListener(EVENT_NODE_COLLAPSED, this._options.onNodeCollapsed);
         }
 
         if (typeof (this._options.onNodeDisabled) === 'function') {
-            this.element.addEventListener(EVENT_NODE_DISABLED, this._options.onNodeDisabled);
+            this._element.addEventListener(EVENT_NODE_DISABLED, this._options.onNodeDisabled);
         }
 
         if (typeof (this._options.onNodeEnabled) === 'function') {
-            this.element.addEventListener(EVENT_NODE_ENABLED, this._options.onNodeEnabled);
+            this._element.addEventListener(EVENT_NODE_ENABLED, this._options.onNodeEnabled);
         }
 
         if (typeof (this._options.onNodeExpanded) === 'function') {
-            this.element.addEventListener(EVENT_NODE_EXPANDED, this._options.onNodeExpanded);
+            this._element.addEventListener(EVENT_NODE_EXPANDED, this._options.onNodeExpanded);
         }
 
         if (typeof (this._options.onNodeSelected) === 'function') {
-            this.element.addEventListener(EVENT_NODE_SELECTED, this._options.onNodeSelected);
+            this._element.addEventListener(EVENT_NODE_SELECTED, this._options.onNodeSelected);
         }
 
         if (typeof (this._options.onNodeUnchecked) === 'function') {
-            this.element.addEventListener(EVENT_NODE_UNCHECKED, this._options.onNodeUnchecked);
+            this._element.addEventListener(EVENT_NODE_UNCHECKED, this._options.onNodeUnchecked);
         }
 
         if (typeof (this._options.onNodeUnselected) === 'function') {
-            this.element.addEventListener(EVENT_NODE_UNSELECTED, this._options.onNodeUnselected);
+            this._element.addEventListener(EVENT_NODE_UNSELECTED, this._options.onNodeUnselected);
         }
 
         if (typeof (this._options.onSearchComplete) === 'function') {
-            this.element.addEventListener(EVENT_SEARCH_COMPLETED, this._options.onSearchComplete);
+            this._element.addEventListener(EVENT_SEARCH_COMPLETED, this._options.onSearchComplete);
         }
 
         if (typeof (this._options.onSearchCleared) === 'function') {
-            this.element.addEventListener(EVENT_SEARCH_CLEARED, this._options.onSearchCleared);
+            this._element.addEventListener(EVENT_SEARCH_CLEARED, this._options.onSearchCleared);
         }
     };
 
+    /**
+     * Trigger the given event type on the global DOM element using the options
+     * @private
+     * @internal
+     * @param eventType The event type to trigger
+     * @param data The data which is passed as detail.data
+     * @param options
+     */
     _triggerEvent (eventType: string, data: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewEventOptions = null) {
         if (options && !options.silent) {
             const event = new CustomEvent(eventType, { bubbles: true, detail: {data: data, eventOptions: options, treeView: this} });
 
-            this.element.dispatchEvent(event);
+            this._element.dispatchEvent(event);
         }
     }
 
     /**
      * Call this function after changes to the tree have been made to regenerate the flat structures
+     * @private
+     * @internal
      */
     _updateFlatTreeMaps(): void
     {
@@ -352,7 +445,7 @@ export default class BSTreeView
         //Create an virtual root node, which is used to initialize the real root nodes, by calling _updateChildrenHierachy
         const virtual_root = new BSTreeViewNode(this);
         //Virtual root is the only node with no parent
-        virtual_root.level = 0;
+        virtual_root._level = 0;
         virtual_root.nodes = this._tree;
 
         //Initialize all nodes of our tree and register them to the flat map
@@ -368,12 +461,21 @@ export default class BSTreeView
     /**
      * Register the given node at this tree view. This is called in BSTreeViewNode::_updateChildHierachy
      * @param node
+     * @private
+     * @internal
      */
     _registerNode(node: BSTreeViewNode): void
     {
-        this._nodes.set(node.nodeId, node);
+        this._nodes.set(node._nodeId, node);
     }
 
+    /**
+     * Sort a unsorted flat represenation of the tree by their nodeId.
+     * This gives an flat list in the order which can be rendered
+     * @private
+     * @internal
+     * @param nodes
+     */
     _sortNodes (nodes: Map<string, BSTreeViewNode>): Map<string, BSTreeViewNode> {
         return new Map([...nodes].sort((pairA, pairB) => {
             //Index 0 of our pair variables contains the index of our map
@@ -394,9 +496,15 @@ export default class BSTreeView
         }));
     };
 
+    /**
+     * This function is called when a node is clicked. The respective action is triggered depending on the type of the event target
+     * @private
+     * @internal
+     * @param event
+     */
     _clickHandler (event: Event) {
         const target = event.target as HTMLElement;
-        const node = this.targetNode(target);
+        const node = this._domToNode(target);
         if (!node || node.state.disabled) return;
 
         const classList = target.classList;
@@ -417,6 +525,11 @@ export default class BSTreeView
         }
     };
 
+    /**
+     * This function updates the list of checked nodes (see this._checkedNodes)
+     * @private
+     * @internal
+     */
     _inheritCheckboxChanges (): void {
         if (this._options.showCheckbox && this._options.highlightChanges) {
             this._checkedNodes = [];
@@ -428,9 +541,14 @@ export default class BSTreeView
         }
     };
 
-    /* Looks up the DOM for the closest parent list item to retrieve the
-     * data attribute nodeid, which is used to lookup the node in the flattened structure. */
-    targetNode (target: HTMLElement): BSTreeViewNode {
+    /**
+     * Looks up the DOM for the closest parent list item to retrieve the
+     * data attribute nodeid, which is used to lookup the node in the flattened structure.
+     * @private
+     * @internal
+     * @param target The element that should be searched for
+     */
+    _domToNode (target: HTMLElement): BSTreeViewNode {
         const nodeElement = target.closest('li.list-group-item') as HTMLElement;
         const nodeId = nodeElement.dataset.nodeId;
         const node = this._nodes.get(nodeId);
@@ -440,19 +558,25 @@ export default class BSTreeView
         return node;
     };
 
+
+    /**
+     * Render the treeview and trigger EVENT_TRIGGERED at the end
+     * @private
+     * @internal
+     */
     _render(): void {
         if (!this._initialized) {
 
             // Setup first time only components
-            this.wrapper = Template.tree.cloneNode(true) as HTMLElement;
+            this._wrapper = Template.tree.cloneNode(true) as HTMLElement;
             //Empty this element
-            while(this.element.firstChild) {
-                this.element.removeChild(this.element.firstChild);
+            while(this._element.firstChild) {
+                this._element.removeChild(this._element.firstChild);
             }
 
 
-            this.element.classList.add(...pluginName.split(" "))
-            this.element.appendChild(this.wrapper);
+            this._element.classList.add(...BASE_CLASS.split(" "))
+            this._element.appendChild(this._wrapper);
 
             this._injectStyle();
 
@@ -464,21 +588,17 @@ export default class BSTreeView
             const nodeElement = node._renderNode();
 
             //Append our node to the wrapper to really show it in the DOM
-            this.wrapper.appendChild(nodeElement);
+            this._wrapper.appendChild(nodeElement);
         });
-
-        /*//If we already had a previous node, insert it after
-        if (previousNode) {
-            previousNode.el.after(nodeElement);
-        }
-        this._renderNode(node, previousNode);
-        previousNode = node;
-    });*/
 
         this._triggerEvent(EVENT_RENDERED, Array.from(this._orderedNodes.values()), new BSTreeViewEventOptions());
     };
 
-// Add inline style into head
+    /**
+     * Inject the inline style elements into the head
+     * @private
+     * @internal
+     */
     _injectStyle (): void {
         if (this._options.injectStyle && !document.getElementById(this._styleId)) {
             const styleElement = document.createElement('style');
@@ -489,7 +609,11 @@ export default class BSTreeView
         }
     };
 
-// Construct trees style based on user options
+    /**
+     * Construct the tree style CSS based on user options
+     * @private
+     * @internal
+     */
     _buildStyle () {
         let style = '.node-' + this._elementId + '{';
 
@@ -548,7 +672,7 @@ export default class BSTreeView
 
         // Style changed nodes
         if (this._options.highlightChanges) {
-            let innerStyle = 'color: ' + this._options.changedNodeColor + ';';
+            const innerStyle = 'color: ' + this._options.changedNodeColor + ';';
             style += '.node-' + this._elementId + '.node-check-changed{' + innerStyle + '}';
         }
 
@@ -562,12 +686,12 @@ export default class BSTreeView
                 if (node.backColor) {
                     innerStyle += 'background-color:' + node.backColor + ';';
                 }
-                style += '.node-' + this._elementId + '[data-nodeId="' + node.nodeId + '"]{' + innerStyle + '}';
+                style += '.node-' + this._elementId + '[data-nodeId="' + node._nodeId + '"]{' + innerStyle + '}';
             }
 
             if (node.iconColor) {
-                let innerStyle = 'color:' + node.iconColor + ';';
-                style += '.node-' + this._elementId + '[data-nodeId="' + node.nodeId + '"] .node-icon{' + innerStyle + '}';
+                const innerStyle = 'color:' + node.iconColor + ';';
+                style += '.node-' + this._elementId + '[data-nodeId="' + node._nodeId + '"] .node-icon{' + innerStyle + '}';
             }
         });
 
@@ -602,12 +726,9 @@ export default class BSTreeView
             nodes = [nodes];
         }
 
-        let parentNodes = [];
+        const parentNodes = [];
         nodes.forEach((node) => {
-            const parentNode = node.parentId ? this._nodes.get(node.parentId) : false;
-            if (parentNode) {
-                parentNodes.push(parentNode);
-            }
+            parentNodes.push(node._parentNode);
         });
         return parentNodes;
     };
@@ -624,10 +745,10 @@ export default class BSTreeView
 
         let siblingNodes = [];
         nodes.forEach((node) => {
-            let parent = this.getParents([node]);
-            let nodes = parent[0] ? parent[0].nodes : this._tree;
+            const parent = this.getParents([node]);
+            const nodes = parent[0] ? parent[0].nodes : this._tree;
             siblingNodes = nodes.filter(function (obj) {
-                return obj.nodeId !== node.nodeId;
+                return obj._nodeId !== node._nodeId;
             });
         });
 
@@ -709,7 +830,7 @@ export default class BSTreeView
      @param {optional number} index  - Zero based insert index, where the node will be inserted. If not specified, the node will be added to the end of the list.
      @param {optional Object} options
      */
-    addNode (nodes: BSTreeViewNode[]|BSTreeViewNode, parentNode: BSTreeViewNode|null = null, index: number = null, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    addNode (nodes: BSTreeViewNode[]|BSTreeViewNode, parentNode: BSTreeViewNode|null = null, index: number = null, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -751,7 +872,7 @@ export default class BSTreeView
      @param {Object} node  - The node to which nodes will be added after
      @param {optional Object} options
      */
-    addNodeAfter (nodes: BSTreeViewNode[]|BSTreeViewNode, node: BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    addNodeAfter (nodes: BSTreeViewNode[]|BSTreeViewNode, node: BSTreeViewNode, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -760,7 +881,7 @@ export default class BSTreeView
             node = node[0];
         }
 
-        this.addNode(nodes, this.getParents(node)[0], (node.index + 1), options);
+        this.addNode(nodes, this.getParents(node)[0], (node._index + 1), options);
     }
 
     /**
@@ -769,7 +890,7 @@ export default class BSTreeView
      @param {Object} node  - The node to which nodes will be added before
      @param {optional Object} options
      */
-    addNodeBefore (nodes: BSTreeViewNode[]|BSTreeViewNode, node: BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    addNodeBefore (nodes: BSTreeViewNode[]|BSTreeViewNode, node: BSTreeViewNode, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -778,7 +899,7 @@ export default class BSTreeView
             node = node[0];
         }
 
-        this.addNode(nodes, this.getParents(node)[0], node.index, options);
+        this.addNode(nodes, this.getParents(node)[0], node._index, options);
     }
 
     /**
@@ -786,7 +907,7 @@ export default class BSTreeView
      @param {Array} nodes  - An array of nodes to remove
      @param {optional Object} options
      */
-    removeNode (nodes: BSTreeViewNode[]|BSTreeViewNode, _options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    removeNode (nodes: BSTreeViewNode[]|BSTreeViewNode, _options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -802,7 +923,7 @@ export default class BSTreeView
             } else {
                 targetNodes = this._tree;
             }
-            targetNodes.splice(node.index, 1);
+            targetNodes.splice(node._index, 1);
 
             // remove node from DOM
             node._removeNodeEl();
@@ -817,9 +938,9 @@ export default class BSTreeView
      Updates / replaces a given tree node
      @param {Object} node  - A single node to be replaced
      @param {Object} newNode  - THe replacement node
-     @param {optional Object} options
+     @param {optional Object} _options
      */
-    updateNode (node: BSTreeViewNode, newNode: BSTreeViewNode, _options: BSTreeViewEventOptions = new BSTreeViewEventOptions()) {
+    updateNode (node: BSTreeViewNode, newNode: BSTreeViewNode, _options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()) {
         if (node instanceof Array) {
             node = node[0];
         }
@@ -832,7 +953,7 @@ export default class BSTreeView
         } else {
             targetNodes = this._tree;
         }
-        targetNodes.splice(node.index, 1, newNode);
+        targetNodes.splice(node._index, 1, newNode);
 
         // remove old node from DOM
         node._removeNodeEl();
@@ -848,7 +969,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    selectNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewSelectOptions = new BSTreeViewSelectOptions()) {
+    selectNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -863,7 +984,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    unselectNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewSelectOptions) {
+    unselectNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -879,7 +1000,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    toggleNodeSelected (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewSelectOptions = new BSTreeViewSelectOptions()) {
+    toggleNodeSelected (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -894,7 +1015,7 @@ export default class BSTreeView
      Collapse all tree nodes
      @param {optional Object} options
      */
-    collapseAll (options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()) {
+    collapseAll (options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()) {
         options.levels = options.levels || 999;
         this.collapseNode(this._tree, options);
     };
@@ -904,7 +1025,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    collapseNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()): void {
+    collapseNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -918,7 +1039,7 @@ export default class BSTreeView
      Expand all tree nodes
      @param {optional Object} options
      */
-    expandAll (options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()): void {
+    expandAll (options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()): void {
         options.levels = options.levels || 999;
         this.expandNode(this._tree, options);
     };
@@ -928,7 +1049,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    expandNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()) {
+    expandNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -948,7 +1069,16 @@ export default class BSTreeView
         });
     };
 
-    _expandLevels (nodes: BSTreeViewNode[]|BSTreeViewNode, level: number, options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()): void {
+    /**
+     * Expands the given nodes by the given number of levels
+     * @private
+     * @internal
+     * @param
+     * @param nodes
+     * @param level
+     * @param options
+     */
+    _expandLevels (nodes: BSTreeViewNode[]|BSTreeViewNode, level: number, options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -966,7 +1096,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    revealNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()): void {
+    revealNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -986,7 +1116,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    toggleNodeExpanded (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewExpandOptions = new BSTreeViewExpandOptions()): void {
+    toggleNodeExpanded (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewExpandOptions> = new BSTreeViewExpandOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1002,7 +1132,7 @@ export default class BSTreeView
      Check all tree nodes
      @param {optional Object} options
      */
-    checkAll (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
+    checkAll (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         this._orderedNodes.forEach((node) => {
             if(!node.state.checked) {
                 node.setChecked(true, options);
@@ -1015,7 +1145,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    checkNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
+    checkNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1029,7 +1159,7 @@ export default class BSTreeView
      Uncheck all tree nodes
      @param {optional Object} options
      */
-    uncheckAll (options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
+    uncheckAll (options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         this._orderedNodes.forEach((node) => {
             if(node.state.checked || node.state.checked === undefined) {
                 node.setChecked( false, options);
@@ -1042,7 +1172,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    uncheckNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
+    uncheckNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1057,7 +1187,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    toggleNodeChecked (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewEventOptions = new BSTreeViewEventOptions()): void {
+    toggleNodeChecked (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewEventOptions> = new BSTreeViewEventOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1082,7 +1212,7 @@ export default class BSTreeView
      Disable all tree nodes
      @param {optional Object} options
      */
-    disableAll (options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
+    disableAll (options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): void {
         const nodes = this._findNodes('false', 'state.disabled');
         nodes.forEach((node) => {
             node.setDisabled(true, options);
@@ -1094,7 +1224,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    disableNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
+    disableNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1108,7 +1238,7 @@ export default class BSTreeView
      Enable all tree nodes
      @param {optional Object} options
      */
-    enableAll (options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
+    enableAll (options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): void {
         const nodes = this._findNodes('true', 'state.disabled');
 
         nodes.forEach((node) => {
@@ -1121,7 +1251,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    enableNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()) {
+    enableNode (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()) {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1136,7 +1266,7 @@ export default class BSTreeView
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
      */
-    toggleNodeDisabled (nodes: BSTreeViewNode[]|BSTreeViewNode, options: BSTreeViewDisableOptions = new BSTreeViewDisableOptions()): void {
+    toggleNodeDisabled (nodes: BSTreeViewNode[]|BSTreeViewNode, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): void {
         if (!(nodes instanceof Array)) {
             nodes = [nodes];
         }
@@ -1153,8 +1283,8 @@ export default class BSTreeView
      @param {optional Object} options - Search criteria options
      @return {Array} nodes - Matching nodes
      */
-    search (pattern: string, options: BSTreeSearchOptions = new BSTreeSearchOptions()): BSTreeViewNode[] {
-        let previous = this._getSearchResults();
+    search (pattern: string, options: Partial<BSTreeSearchOptions> = new BSTreeSearchOptions()): BSTreeViewNode[] {
+        const previous = this.getSearchResults();
         let results = [];
 
         if (pattern && pattern.length > 0) {
@@ -1173,12 +1303,12 @@ export default class BSTreeView
 
         // Clear previous results no longer matched
         this._diffArray<BSTreeViewNode>(results, previous).forEach((node) => {
-            node.setSearchResult(false, options);
+            node._setSearchResult(false, options);
         });
 
         // Set new results
         this._diffArray<BSTreeViewNode>(previous, results).forEach((node) => {
-            node.setSearchResult( true, options);
+            node._setSearchResult( true, options);
         });
 
         // Reveal hidden nodes
@@ -1186,29 +1316,38 @@ export default class BSTreeView
             this.revealNode(results);
         }
 
-        this._triggerEvent(EVENT_SEARCH_COMPLETED, results, options);
+        this._triggerEvent(EVENT_SEARCH_COMPLETED, results, new BSTreeViewEventOptions(options));
 
         return results;
     };
 
     /**
-     Clears previous search results
+     * Clears previous search results
      */
-    clearSearch (options: BSTreeSearchOptions = new BSTreeSearchOptions()): void {
-        const results = this._getSearchResults();
+    clearSearch (options: Partial<BSTreeSearchOptions> = new BSTreeSearchOptions()): void {
+        const results = this.getSearchResults();
         results.forEach((node) => {
-            node.setSearchResult(false, options);
+            node._setSearchResult(false, options);
         });
 
-        this._triggerEvent(EVENT_SEARCH_CLEARED, results, options);
+        this._triggerEvent(EVENT_SEARCH_CLEARED, results, new BSTreeSearchOptions(options));
     };
 
-    _getSearchResults (): BSTreeViewNode[] {
+    /**
+     * Returns all nodes that were found by the last search
+     */
+    getSearchResults (): BSTreeViewNode[] {
         return this._findNodes('true', 'searchResult');
     };
 
+    /**
+     * @internal
+     * @private
+     * @param a
+     * @param b
+     */
     _diffArray<T> (a: Array<T>, b: Array<T>) {
-        let diff: Array<T> = [];
+        const diff: Array<T> = [];
 
         b.forEach((n) => {
             if (a.indexOf(n) === -1) {
@@ -1220,6 +1359,8 @@ export default class BSTreeView
 
     /**
      Find nodes that match a given criteria
+     @internal
+     @private
      @param {String} pattern - A given string to match against
      @param {optional String} attribute - Attribute to compare pattern against
      @param {optional String} modifier - Valid RegEx modifiers
@@ -1227,7 +1368,7 @@ export default class BSTreeView
      */
     _findNodes (pattern: string, attribute: string = 'text', modifier: string = 'g'): BSTreeViewNode[] {
 
-        let tmp = [];
+        const tmp = [];
 
         this._orderedNodes.forEach((node) => {
             const val = this._getNodeValue(node, attribute);
@@ -1244,6 +1385,8 @@ export default class BSTreeView
     /**
      Recursive find for retrieving nested attributes values
      All values are return as strings, unless invalid
+     @private
+     @internal
      @param {Object} obj - Typically a node, could be any object
      @param {String} attr - Identifies an object property using dot notation
      @return {String} value - Matching attributes string representation

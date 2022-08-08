@@ -13,3 +13,4 @@ export const EVENT_NODE_UNCHECKED = 'bs-tree:nodeUnchecked';
 export const EVENT_NODE_UNSELECTED = 'bs-tree:nodeUnselected';
 export const EVENT_SEARCH_COMPLETED = 'bs-tree:searchCompleted';
 export const EVENT_SEARCH_CLEARED = 'bs-tree:searchCleared';
+export const EVENT_LOADING = 'bs-tree:loading';
