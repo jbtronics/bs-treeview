@@ -12,7 +12,11 @@ export default class BSTreeViewMethodOptions {
      */
     _force: boolean = false;
 
-    constructor(options: BSTreeViewMethodOptions|Partial<BSTreeViewMethodOptions> = null) {
+    constructor(
+        options:
+            | BSTreeViewMethodOptions
+            | Partial<BSTreeViewMethodOptions> = null
+    ) {
         Object.assign(this, options);
     }
 }

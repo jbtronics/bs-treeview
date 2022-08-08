@@ -1,4 +1,4 @@
-import BSTreeViewMethodOptions from "./BSTreeViewMethodOptions";
+import BSTreeViewMethodOptions from './BSTreeViewMethodOptions';
 
 /**
  * The options for TreeView search() function

@@ -3,11 +3,11 @@
  */
 export default class BSTreeViewNodeState {
     /** Whether a node is checked, normally represented by a checkbox icon. */
-    checked: boolean|null = false;
+    checked: boolean | null = false;
     /** Whether a node is disabled (not selectable, expandable or checkable). */
     disabled: boolean = false;
     /** Whether or not a node is expanded i.e. open. */
-    expanded: boolean|null = null;
+    expanded: boolean | null = null;
     /** Whether or not a node is selected. */
     selected: boolean = false;
 

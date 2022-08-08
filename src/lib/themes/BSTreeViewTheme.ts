@@ -1,4 +1,4 @@
-import BSTreeViewOptions from "../BSTreeViewOptions";
+import BSTreeViewOptions from '../BSTreeViewOptions';
 
 export default interface BSTreeViewTheme {
     /**

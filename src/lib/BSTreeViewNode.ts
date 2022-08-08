@@ -1,25 +1,25 @@
-import BSTreeView from "./BSTreeView";
-import BSTreeViewDisableOptions from "./BSTreeViewDisableOptions";
+import BSTreeView from './BSTreeView';
+import BSTreeViewDisableOptions from './BSTreeViewDisableOptions';
 import {
     EVENT_NODE_CHECKED,
     EVENT_NODE_COLLAPSED,
     EVENT_NODE_DISABLED,
-    EVENT_NODE_EXPANDED, EVENT_NODE_RENDERED,
+    EVENT_NODE_EXPANDED,
+    EVENT_NODE_RENDERED,
     EVENT_NODE_SELECTED,
     EVENT_NODE_UNCHECKED,
-    EVENT_NODE_UNSELECTED
-} from "./BSTreeViewEventNames";
-import BSTreeViewMethodOptions from "./BSTreeViewMethodOptions";
-import BSTreeViewNodeState from "./BSTreeViewNodeState";
-import BSTreeViewOptions from "./BSTreeViewOptions";
-import BSTreeViewSelectOptions from "./BSTreeViewSelectOptions";
-import Template from "./BSTreeViewTemplate";
+    EVENT_NODE_UNSELECTED,
+} from './BSTreeViewEventNames';
+import BSTreeViewMethodOptions from './BSTreeViewMethodOptions';
+import BSTreeViewNodeState from './BSTreeViewNodeState';
+import BSTreeViewOptions from './BSTreeViewOptions';
+import BSTreeViewSelectOptions from './BSTreeViewSelectOptions';
+import Template from './BSTreeViewTemplate';
 
 /**
  * This class describes a node of an BSTreeView
  */
 export default class BSTreeViewNode {
-
     /** The text value displayed for a given tree node, typically to the right of the nodes icon. (Mandatory) */
     text: string;
     /** The icon displayed on a given node, typically to the left of the text. (Optional) */
@@ -43,7 +43,7 @@ export default class BSTreeViewNode {
     /** The current state of this node. See @BSTreeViewNodeState for more details */
     state: BSTreeViewNodeState;
     /** Used in conjunction with global showTags option to add additional information to the right of each node; using Bootstrap Badges, A tag can be an object with properties 'text' for tag value and 'class' for class names(s) of this tag **/
-    tags: string[]|Record<string, string>[];
+    tags: string[] | Record<string, string>[];
     /** List of per-node HTML data- attributes to append. */
     dataAttr: object;
     /** Custom HTML id attribute */
@@ -61,7 +61,6 @@ export default class BSTreeViewNode {
     lazyLoad: boolean = false;
     /** Sets the class of node tags. Default null **/
     tagsClass: string = null;
-
 
     /**
      * The dom element representing this node
@@ -112,14 +111,12 @@ export default class BSTreeViewNode {
      */
     _domText: HTMLElement = null;
 
-
     /**
      * Whether this node is marked as a search result or not
      * @internal
      * @private
      */
     _searchResult: boolean;
-
 
     /** The hierachy level this node is at.
      * @private
@@ -143,7 +140,7 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _parentNode: BSTreeViewNode|null = null;
+    _parentNode: BSTreeViewNode | null = null;
 
     /**
      * The options of the treeview this node belongs to
@@ -173,64 +170,56 @@ export default class BSTreeViewNode {
      * Returns the nodeID of the parent node
      * Returns null, if this element has no parent
      */
-    get parentId(): string|null
-    {
+    get parentId(): string | null {
         return this._parentNode._nodeId ?? null;
     }
 
     /**
      * Returns true, if this node is a root node (meaning it has no parent). False otherwise.
      */
-    isRootNode(): boolean
-    {
+    isRootNode(): boolean {
         return this._parentNode === null;
     }
 
     /**
      * Returns true, if this node is a child node, meaning it has a parent node. False otherwise.
      */
-    isChildNode(): boolean
-    {
+    isChildNode(): boolean {
         return !this.isRootNode();
     }
 
     /**
      * Returns true, if this node is a end node, meaning it has no child nodes. False otherwise.
      */
-    isEndNode(): boolean
-    {
+    isEndNode(): boolean {
         return !this.hasChildren();
     }
 
     /**
      * Returns true, if this node has children.
      */
-    hasChildren(): boolean
-    {
+    hasChildren(): boolean {
         return this.nodes && this.nodes.length > 0;
     }
 
     /**
      * Returns the children of this node
      */
-    getChildren(): BSTreeViewNode[]
-    {
+    getChildren(): BSTreeViewNode[] {
         return this.nodes;
     }
 
     /**
      * Returns the number of children of this node
      */
-    getChildrenCount(): number
-    {
+    getChildrenCount(): number {
         return this.nodes.length;
     }
 
     /**
      * Returns the parent node of this node, or null if no parent exists
      */
-    getParentNode(): BSTreeViewNode|null
-    {
+    getParentNode(): BSTreeViewNode | null {
         return this._parentNode;
     }
 
@@ -238,16 +227,14 @@ export default class BSTreeViewNode {
      * Returns the level of this node in the treeview
      * Please note that the value is only correct after the nodes have been rendered
      */
-    getLevel(): number
-    {
+    getLevel(): number {
         return this._level;
     }
 
     /**
      * The treeview this node belongs to
      */
-    getTreeView(): BSTreeView
-    {
+    getTreeView(): BSTreeView {
         return this._treeView;
     }
 
@@ -257,16 +244,20 @@ export default class BSTreeViewNode {
      * @param data An object with the properties which should be set on the node.
      * @param treeView The treeview this node belongs to
      */
-    static fromData(data: Partial<BSTreeViewNode>, treeView: BSTreeView): BSTreeViewNode
-    {
+    static fromData(
+        data: Partial<BSTreeViewNode>,
+        treeView: BSTreeView
+    ): BSTreeViewNode {
         const node = new BSTreeViewNode(treeView);
 
         //Apply our properties from data to our target node
         Object.assign(node, data);
 
         //Create children nodes from data
-        if(data.nodes) {
-            node.nodes = data.nodes.map(node => BSTreeViewNode.fromData(node, treeView));
+        if (data.nodes) {
+            node.nodes = data.nodes.map((node) =>
+                BSTreeViewNode.fromData(node, treeView)
+            );
         } else {
             node.nodes = [];
         }
@@ -281,8 +272,7 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _updateChildrenHierarchy(): void
-    {
+    _updateChildrenHierarchy(): void {
         //If this node has no children we are done
         if (!this.hasChildren()) return;
 
@@ -298,25 +288,35 @@ export default class BSTreeViewNode {
             node._index = index;
 
             // nodeId : unique, hierarchical identifier
-            node._nodeId = (parent && parent._nodeId) ?
-                parent._nodeId + '.' + node._index :
-                (new_level - 1) + '.' + node._index;
+            node._nodeId =
+                parent && parent._nodeId
+                    ? parent._nodeId + '.' + node._index
+                    : new_level - 1 + '.' + node._index;
 
             // We are the parent of our children nodea
             node._parentNode = parent;
 
             // convert the undefined string if hierarchical checks are enabled
-            if (this._options.hierarchicalCheck && node.state.checked === null) {
+            if (
+                this._options.hierarchicalCheck &&
+                node.state.checked === null
+            ) {
                 node.state.checked = null;
             }
 
             // If no expanded state was passed as data (meaning it is null), set its value depending on the levels properties
             if (node.state.expanded === null) {
-                node.state.expanded = !node.state.disabled && (new_level < this._options.levels) && (node.hasChildren());
+                node.state.expanded =
+                    !node.state.disabled &&
+                    new_level < this._options.levels &&
+                    node.hasChildren();
             }
 
             // set visible state; based parent state plus levels
-            node.state._visible = !!((parent && parent.state && parent.state.expanded) || (new_level <= this._options.levels));
+            node.state._visible = !!(
+                (parent && parent.state && parent.state.expanded) ||
+                new_level <= this._options.levels
+            );
 
             // recurse child nodes and transverse the tree, depth-first
             if (node.hasChildren()) {
@@ -333,27 +333,27 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _renderNode(): HTMLElement
-    {
+    _renderNode(): HTMLElement {
         //Create the node element from template if it is not existing
         if (!this._domElement) {
             this._domElement = Template.node.cloneNode(true) as HTMLElement;
             this._domElement.classList.add('node-' + this._treeView._elementId);
-        }
-        else {
-            this._domElement.innerHTML = "";
+        } else {
+            this._domElement.innerHTML = '';
         }
 
         // Append .classes to the node
-        if(this.class) {
-            this._domElement.classList.add(...this.class.split(" "));
+        if (this.class) {
+            this._domElement.classList.add(...this.class.split(' '));
         }
 
         // Set the #id of the node if specified
         if (this.id) {
             this._domElement.id = this.id;
-        } else { //Otherwise generate one
-            this._domElement.id = this._treeView._elementId + '-node-' + this._nodeId;
+        } else {
+            //Otherwise generate one
+            this._domElement.id =
+                this._treeView._elementId + '-node-' + this._nodeId;
         }
 
         // Append custom data- attributes to the node
@@ -374,17 +374,24 @@ export default class BSTreeViewNode {
         }
 
         // Add indent/spacer to mimic tree structure
-        for (let i = 0; i < (this._level - 1); i++) {
-            this._domIndents.push(Template.indent.cloneNode(true) as HTMLElement);
+        for (let i = 0; i < this._level - 1; i++) {
+            this._domIndents.push(
+                Template.indent.cloneNode(true) as HTMLElement
+            );
         }
         this._domElement.append(...this._domIndents);
 
         // Add expand / collapse icon element or an empty spacer icons
-        if(this.hasChildren() || this.lazyLoad) {
-            this._domIconExpand = Template.icon.expand.cloneNode(true) as HTMLElement;
+        if (this.hasChildren() || this.lazyLoad) {
+            this._domIconExpand = Template.icon.expand.cloneNode(
+                true
+            ) as HTMLElement;
             this._domElement.append(this._domIconExpand);
-        } else { //Add an element for spacing
-            this._domElement.append(Template.icon.empty.cloneNode(true) as HTMLElement);
+        } else {
+            //Add an element for spacing
+            this._domElement.append(
+                Template.icon.empty.cloneNode(true) as HTMLElement
+            );
         }
 
         // Add checkbox and node icons
@@ -403,23 +410,29 @@ export default class BSTreeViewNode {
         this._domText.textContent = this.text;
         this._domElement.append(this._domText);
         //Assign an ID to the text element, so we can reference it later on the group
-        this._domText.id = this._treeView._elementId + '-node-' + this._nodeId + '-label';
+        this._domText.id =
+            this._treeView._elementId + '-node-' + this._nodeId + '-label';
 
         //This element is labeled by the text element
         this._domElement.setAttribute('aria-labelledby', this._domText.id);
 
         // Add tags as badges
         if (this._options.showTags && this.tags) {
-            this.tags.forEach(tag => {
+            this.tags.forEach((tag) => {
                 const template = Template.badge.cloneNode(true) as HTMLElement;
 
                 //Decide which class to use
-                if (typeof tag === 'object' && tag.class) { //If the tag has its own class definition use this
-                    template.classList.add(...tag.class.split(" "));
-                } else if(this.tagsClass) { //If this node has its own definition for the tagsClass use it
-                    template.classList.add(...this.tagsClass.split(" "));
-                } else { //Otherwise use the global one
-                    template.classList.add(...this._options.tagsClass.split(" "));
+                if (typeof tag === 'object' && tag.class) {
+                    //If the tag has its own class definition use this
+                    template.classList.add(...tag.class.split(' '));
+                } else if (this.tagsClass) {
+                    //If this node has its own definition for the tagsClass use it
+                    template.classList.add(...this.tagsClass.split(' '));
+                } else {
+                    //Otherwise use the global one
+                    template.classList.add(
+                        ...this._options.tagsClass.split(' ')
+                    );
                 }
 
                 //Decide which text the text to use
@@ -437,16 +450,18 @@ export default class BSTreeViewNode {
         // Setting the options value to force, will force an update.
 
         // Set various node states
-        this.setSelected(this.state.selected, {_force: true, silent: true});
-        this.setChecked(this.state.checked, {_force: true, silent: true});
-        this._setSearchResult(this._searchResult, {_force: true, silent: true});
-        this.setExpanded(this.state.expanded, {_force: true, silent: true});
-        this.setDisabled(this.state.disabled, {_force: true, silent: true});
-        this._setVisible(this.state._visible, {_force: true, silent: true});
+        this.setSelected(this.state.selected, { _force: true, silent: true });
+        this.setChecked(this.state.checked, { _force: true, silent: true });
+        this._setSearchResult(this._searchResult, {
+            _force: true,
+            silent: true,
+        });
+        this.setExpanded(this.state.expanded, { _force: true, silent: true });
+        this.setDisabled(this.state.disabled, { _force: true, silent: true });
+        this._setVisible(this.state._visible, { _force: true, silent: true });
 
         // Trigger nodeRendered event
         this._triggerEvent(EVENT_NODE_RENDERED, new BSTreeViewMethodOptions());
-
 
         return this._domElement;
     }
@@ -455,12 +470,11 @@ export default class BSTreeViewNode {
      * Recusively set the aria-owns attribute of this element to make the hierachy accessible
      * This is only possible after the tree is rendered
      */
-    _setAriaOwnsValue()
-    {
+    _setAriaOwnsValue() {
         if (this.hasChildren()) {
-            const childIds = this.nodes.map(child => child._domElement.id);
+            const childIds = this.nodes.map((child) => child._domElement.id);
             this._domElement.setAttribute('aria-owns', childIds.join(' '));
-            this.nodes.forEach(child => child._setAriaOwnsValue());
+            this.nodes.forEach((child) => child._setAriaOwnsValue());
         }
     }
 
@@ -469,12 +483,12 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _removeNodeEl (): void {
+    _removeNodeEl(): void {
         this.nodes.forEach((node) => {
             node._removeNodeEl();
         });
         this._domElement.remove();
-    };
+    }
 
     /**
      * Create the given event on the nodes element. The event bubbles the DOM upwards. Details about the node and the used treeView are passed via event.detail
@@ -483,15 +497,18 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _triggerEvent (eventType: string, options: Partial<BSTreeViewMethodOptions> = null) {
+    _triggerEvent(
+        eventType: string,
+        options: Partial<BSTreeViewMethodOptions> = null
+    ) {
         if (options && !options.silent) {
             const event = new CustomEvent(eventType, {
                 detail: {
                     node: this,
                     eventOptions: options,
-                    treeView: this._treeView
+                    treeView: this._treeView,
                 },
-                bubbles: true
+                bubbles: true,
             });
             this._domElement.dispatchEvent(event);
         }
@@ -501,7 +518,9 @@ export default class BSTreeViewNode {
      * Toggle the disabled state of this node
      * @param options
      */
-    toggleDisabled(options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): this {
+    toggleDisabled(
+        options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()
+    ): this {
         this.setDisabled(!this.state.disabled, options);
         return this;
     }
@@ -510,29 +529,35 @@ export default class BSTreeViewNode {
      * Toggle the expanded state of this node (if it was expanded, it will be collapsed, and vice versa)
      * @param options
      */
-    toggleExpanded (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
+    toggleExpanded(
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ): this {
         // Lazy-load the child nodes if possible
-        if (typeof(this.lazyLoad) === 'function' && this.lazyLoad) {
+        if (typeof this.lazyLoad === 'function' && this.lazyLoad) {
             this._lazyLoad();
         } else {
             this.setExpanded(!this.state.expanded, options);
         }
 
         return this;
-    };
+    }
 
     /**
      * Perform the lazy load on this node, using the lazyLoad function if present
      * @private
      * @internal
      */
-    _lazyLoad () {
-        if(!this.lazyLoad) return;
+    _lazyLoad() {
+        if (!this.lazyLoad) return;
 
         // Show a different icon while loading the child nodes
-        if(this._domIconExpand) {
-            this._domImage.classList.remove(...this._options.expandIcon.split(' '));
-            this._domImage.classList.add(...this._options.loadingIcon.split(' '));
+        if (this._domIconExpand) {
+            this._domImage.classList.remove(
+                ...this._options.expandIcon.split(' ')
+            );
+            this._domImage.classList.add(
+                ...this._options.loadingIcon.split(' ')
+            );
         }
 
         this._options.lazyLoad(this, (nodes) => {
@@ -541,14 +566,17 @@ export default class BSTreeViewNode {
         });
         // Only the first expand should do a lazy-load
         this.lazyLoad = false;
-    };
+    }
 
     /**
      * Sets the expanded state of this node.
      * @param state True, if the node should be expanded, false to collapse it.
      * @param options
      */
-    setExpanded (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
+    setExpanded(
+        state: boolean,
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ): this {
         //Parse the passed options to an options object
         options = new BSTreeViewMethodOptions(options);
 
@@ -556,15 +584,20 @@ export default class BSTreeViewNode {
         if (!options._force && state === this.state.expanded) return this;
 
         if (state && this.hasChildren()) {
-
             // Set node state
             this.state.expanded = true;
 
             // Set element
             if (this._domIconExpand) {
-                this._domIconExpand.classList.remove(...this._options.expandIcon.split(" "))
-                this._domIconExpand.classList.remove(...this._options.loadingIcon.split(" "))
-                this._domIconExpand.classList.add(...this._options.collapseIcon.split(" "));
+                this._domIconExpand.classList.remove(
+                    ...this._options.expandIcon.split(' ')
+                );
+                this._domIconExpand.classList.remove(
+                    ...this._options.loadingIcon.split(' ')
+                );
+                this._domIconExpand.classList.add(
+                    ...this._options.collapseIcon.split(' ')
+                );
             }
 
             // Expand children
@@ -574,20 +607,22 @@ export default class BSTreeViewNode {
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_EXPANDED, options);
-        }
-        else if (!state) {
-
+        } else if (!state) {
             // Set node state
             this.state.expanded = false;
 
             // Set element
             if (this._domIconExpand) {
-                this._domIconExpand.classList.remove(...this._options.collapseIcon.split(" "));
-                this._domIconExpand.classList.add(...this._options.expandIcon.split(" "));
+                this._domIconExpand.classList.remove(
+                    ...this._options.collapseIcon.split(' ')
+                );
+                this._domIconExpand.classList.add(
+                    ...this._options.expandIcon.split(' ')
+                );
             }
 
             // Collapse children
-            this.nodes.forEach ((node) => {
+            this.nodes.forEach((node) => {
                 node._setVisible(false, options);
                 node.setExpanded(false, options);
             });
@@ -597,12 +632,14 @@ export default class BSTreeViewNode {
         }
 
         //Set aria-expanded state if possible
-        if(this._domElement) {
-            this._domElement.ariaExpanded = this.state.expanded ? "true" : "false";
+        if (this._domElement) {
+            this._domElement.ariaExpanded = this.state.expanded
+                ? 'true'
+                : 'false';
         }
 
         return this;
-    };
+    }
 
     /**
      * Changes the visibility state of this node.
@@ -612,7 +649,10 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    _setVisible (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): void {
+    _setVisible(
+        state: boolean,
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ): void {
         //Parse the passed options to an options object
         options = new BSTreeViewMethodOptions(options);
 
@@ -620,44 +660,51 @@ export default class BSTreeViewNode {
 
         this.state._visible = state;
 
-        if(this._domElement) {
+        if (this._domElement) {
             //Add hidden class to our element
-            if(state) {
+            if (state) {
                 this._domElement.classList.remove('node-hidden');
             } else {
                 this._domElement.classList.add('node-hidden');
             }
         }
-    };
+    }
 
     /**
      * Toggle the selected state of this node
      * @param options
      */
-    toggleSelected (options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()): this {
+    toggleSelected(
+        options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
+    ): this {
         this.setSelected(!this.state.selected, options);
         return this;
-    };
+    }
 
     /**
      * Sets the selected state of this node
      * @param state The new state of the node
      * @param options
      */
-    setSelected (state: boolean, options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()): this {
+    setSelected(
+        state: boolean,
+        options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
+    ): this {
         //Parse the passed options to an options object
         options = new BSTreeViewSelectOptions(options);
 
         // We never pass options when rendering, so the only time
         // we need to validate state is from user interaction
-        if (!options._force && (state === this.state.selected)) return this;
+        if (!options._force && state === this.state.selected) return this;
 
         if (state) {
-
             // If multiSelect false, unselect previously selected
             //TODO: Put this responsibility on the treeview using an Event
             if (!this._options.multiSelect) {
-                const selectedNodes = this._treeView._findNodes('true', 'state.selected');
+                const selectedNodes = this._treeView._findNodes(
+                    'true',
+                    'state.selected'
+                );
                 selectedNodes.forEach((node) => {
                     options._unselecting = true;
 
@@ -672,21 +719,31 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-selected');
 
-                if ((this.selectedIcon || this._options.selectedIcon) && this._domIcon) {
-                    this._domIcon.classList.remove(...(this.icon || this._options.nodeIcon).split(" "));
-                    this._domIcon.classList.add(...(this.selectedIcon || this._options.selectedIcon).split(" "));
+                if (
+                    (this.selectedIcon || this._options.selectedIcon) &&
+                    this._domIcon
+                ) {
+                    this._domIcon.classList.remove(
+                        ...(this.icon || this._options.nodeIcon).split(' ')
+                    );
+                    this._domIcon.classList.add(
+                        ...(
+                            this.selectedIcon || this._options.selectedIcon
+                        ).split(' ')
+                    );
                 }
             }
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_SELECTED, options);
-        }
-        else {
-
+        } else {
             // If preventUnselect true + only one remaining selection, disable unselect
-            if (this._options.preventUnselect &&
-                (options && !options._unselecting) &&
-                (this._treeView._findNodes('true', 'state.selected').length === 1)) {
+            if (
+                this._options.preventUnselect &&
+                options &&
+                !options._unselecting &&
+                this._treeView._findNodes('true', 'state.selected').length === 1
+            ) {
                 // Fire the nodeSelected event if reselection is allowed
                 if (this._options.allowReselect) {
                     this._triggerEvent(EVENT_NODE_SELECTED, options);
@@ -701,9 +758,18 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.remove('node-selected');
 
-                if ((this.selectedIcon || this._options.selectedIcon) && this._domIcon) {
-                    this._domIcon.classList.remove(...(this.selectedIcon || this._options.selectedIcon).split(" "))
-                    this._domIcon.classList.add(...(this.icon || this._options.nodeIcon).split(" "));
+                if (
+                    (this.selectedIcon || this._options.selectedIcon) &&
+                    this._domIcon
+                ) {
+                    this._domIcon.classList.remove(
+                        ...(
+                            this.selectedIcon || this._options.selectedIcon
+                        ).split(' ')
+                    );
+                    this._domIcon.classList.add(
+                        ...(this.icon || this._options.nodeIcon).split(' ')
+                    );
                 }
             }
 
@@ -713,23 +779,28 @@ export default class BSTreeViewNode {
 
         //Set aria-select state
         if (this._domElement) {
-            this._domElement.ariaSelected = this.state.selected ? "true" : "false";
+            this._domElement.ariaSelected = this.state.selected
+                ? 'true'
+                : 'false';
         }
 
         return this;
-    };
+    }
 
     /**
      * Toggle the checked state of this node
      * @param options
      */
-    toggleChecked (options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
+    toggleChecked(
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ): this {
         if (this._options.hierarchicalCheck) {
             // Event propagation to the parent/child nodes
             const childOptions = new BSTreeViewMethodOptions(options);
-            childOptions.silent = options.silent || !this._options.propagateCheckEvent;
+            childOptions.silent =
+                options.silent || !this._options.propagateCheckEvent;
 
-            let state: boolean|null;
+            let state: boolean | null;
             let currentNode: BSTreeViewNode = this;
             // Temporarily swap the tree state
             this.state.checked = !this.state.checked;
@@ -737,10 +808,9 @@ export default class BSTreeViewNode {
             currentNode = this._treeView._nodes.get(currentNode.parentId);
             // Iterate through each parent node
             while (currentNode) {
-
                 // Calculate the state
                 state = currentNode.nodes.reduce((acc, curr) => {
-                    return (acc === curr.state.checked) ? acc : null;
+                    return acc === curr.state.checked ? acc : null;
                 }, currentNode.nodes[0].state.checked);
 
                 // Set the state
@@ -751,7 +821,8 @@ export default class BSTreeViewNode {
 
             if (this.hasChildren()) {
                 // Copy the content of the array
-                let child, children = this.nodes.slice();
+                let child,
+                    children = this.nodes.slice();
                 // Iterate through each child node
                 while (children && children.length > 0) {
                     child = children.pop();
@@ -771,14 +842,17 @@ export default class BSTreeViewNode {
 
         this.setChecked(!this.state.checked, options);
         return this;
-    };
+    }
 
     /**
      * Sets the checked state of this node
      * @param state
      * @param options
      */
-    setChecked (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()): this {
+    setChecked(
+        state: boolean,
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ): this {
         options = new BSTreeViewMethodOptions(options);
 
         // We never pass options when rendering, so the only time
@@ -788,8 +862,9 @@ export default class BSTreeViewNode {
         //TODO: Put this responsibility on the treeview using an Event
         // Highlight the node if its checkbox has unsaved changes
         if (this._options.highlightChanges) {
-            const nodeNotInCheckList = this._treeView._checkedNodes.indexOf(this) == -1;
-            if(nodeNotInCheckList == state) {
+            const nodeNotInCheckList =
+                this._treeView._checkedNodes.indexOf(this) == -1;
+            if (nodeNotInCheckList == state) {
                 this._domElement.classList.add('node-check-changed');
             } else {
                 this._domElement.classList.remove('node-check-changed');
@@ -797,7 +872,6 @@ export default class BSTreeViewNode {
         }
 
         if (state) {
-
             // Set node state
             this.state.checked = true;
 
@@ -805,18 +879,22 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-checked');
                 this._domElement.classList.remove('node-checked-partial');
-                if(this._domCheckbox) {
-                    this._domCheckbox.classList.remove(...this._options.uncheckedIcon.split(" "))
-                    this._domCheckbox.classList.remove(...this._options.partiallyCheckedIcon.split(" "))
-                    this._domCheckbox.classList.add(...this._options.checkedIcon.split(" "));
+                if (this._domCheckbox) {
+                    this._domCheckbox.classList.remove(
+                        ...this._options.uncheckedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.remove(
+                        ...this._options.partiallyCheckedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.add(
+                        ...this._options.checkedIcon.split(' ')
+                    );
                 }
             }
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_CHECKED, options);
-        }
-        else if (state === null && this._options.hierarchicalCheck) {
-
+        } else if (state === null && this._options.hierarchicalCheck) {
             // Set node state to partially checked
             this.state.checked = null;
 
@@ -824,27 +902,41 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-checked-partial');
                 this._domElement.classList.remove('node-checked');
-                if(this._domCheckbox) {
-                    this._domCheckbox.classList.remove(...this._options.uncheckedIcon.split(" "));
-                    this._domCheckbox.classList.remove(...this._options.checkedIcon.split(" "));
-                    this._domCheckbox.classList.add(...this._options.partiallyCheckedIcon.split(" "));
+                if (this._domCheckbox) {
+                    this._domCheckbox.classList.remove(
+                        ...this._options.uncheckedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.remove(
+                        ...this._options.checkedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.add(
+                        ...this._options.partiallyCheckedIcon.split(' ')
+                    );
                 }
             }
 
             // Optionally trigger event, partially checked is technically unchecked
             this._triggerEvent(EVENT_NODE_UNCHECKED, options);
         } else {
-
             // Set node state to unchecked
             this.state.checked = false;
 
             // Set element
             if (this._domElement) {
-                this._domElement.classList.remove('node-checked', 'node-checked-partial');
-                if(this._domCheckbox) {
-                    this._domCheckbox.classList.remove(...this._options.checkedIcon.split(" "));
-                    this._domCheckbox.classList.remove(...this._options.partiallyCheckedIcon.split(" "));
-                    this._domCheckbox.classList.add(...this._options.uncheckedIcon.split(" "));
+                this._domElement.classList.remove(
+                    'node-checked',
+                    'node-checked-partial'
+                );
+                if (this._domCheckbox) {
+                    this._domCheckbox.classList.remove(
+                        ...this._options.checkedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.remove(
+                        ...this._options.partiallyCheckedIcon.split(' ')
+                    );
+                    this._domCheckbox.classList.add(
+                        ...this._options.uncheckedIcon.split(' ')
+                    );
                 }
             }
 
@@ -852,18 +944,20 @@ export default class BSTreeViewNode {
             this._triggerEvent(EVENT_NODE_UNCHECKED, options);
         }
 
-        this._domElement.ariaChecked = this.state.checked ? "true" : "false";
+        this._domElement.ariaChecked = this.state.checked ? 'true' : 'false';
 
         return this;
-    };
+    }
 
     /**
      * Sets the disabled state of this node
      * @param state true to disable, false to enable
      * @param options
      */
-    setDisabled (state: boolean, options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()): this {
-
+    setDisabled(
+        state: boolean,
+        options: Partial<BSTreeViewDisableOptions> = new BSTreeViewDisableOptions()
+    ): this {
         options = new BSTreeViewDisableOptions(options);
 
         // We never pass options when rendering, so the only time
@@ -871,7 +965,6 @@ export default class BSTreeViewNode {
         if (!options._force && state === this.state.disabled) return this;
 
         if (state) {
-
             // Set node state to disabled
             this.state.disabled = true;
 
@@ -889,9 +982,7 @@ export default class BSTreeViewNode {
 
             // Optionally trigger event
             this._triggerEvent(EVENT_NODE_DISABLED, options);
-        }
-        else {
-
+        } else {
             // Set node state to enabled
             this.state.disabled = false;
 
@@ -905,16 +996,21 @@ export default class BSTreeViewNode {
         }
 
         return this;
-    };
+    }
 
     /**
      * This function creates the _domCheckbox element and add it to the dom if a checkbox should be shown
      * @private
      * @internal
      */
-    _addCheckbox (): void {
-        if (this._options.showCheckbox && (this.hideCheckbox === undefined || this.hideCheckbox === false)) {
-            this._domCheckbox = Template.icon.check.cloneNode(true) as HTMLElement
+    _addCheckbox(): void {
+        if (
+            this._options.showCheckbox &&
+            (this.hideCheckbox === undefined || this.hideCheckbox === false)
+        ) {
+            this._domCheckbox = Template.icon.check.cloneNode(
+                true
+            ) as HTMLElement;
 
             this._domElement.append(this._domCheckbox);
         }
@@ -925,10 +1021,15 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _addIcon (): void {
-        if (this._options.showIcon && !(this._options.showImage && this.image)) {
+    _addIcon(): void {
+        if (
+            this._options.showIcon &&
+            !(this._options.showImage && this.image)
+        ) {
             this._domIcon = Template.icon.node.cloneNode(true) as HTMLElement;
-            this._domIcon.classList.add(...(this.icon || this._options.nodeIcon).split(" "));
+            this._domIcon.classList.add(
+                ...(this.icon || this._options.nodeIcon).split(' ')
+            );
 
             this._domElement.append(this._domIcon);
         }
@@ -939,12 +1040,11 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _addImage (): void {
+    _addImage(): void {
         if (this._options.showImage && this.image) {
             this._domImage = Template.image.cloneNode(true) as HTMLElement;
             this._domImage.classList.add('node-image');
             this._domImage.style.backgroundImage = "url('" + this.image + "')";
-
 
             this._domElement.append(this._domImage);
         }
@@ -957,7 +1057,10 @@ export default class BSTreeViewNode {
      * @param state
      * @param options
      */
-    _setSearchResult (state: boolean, options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()) {
+    _setSearchResult(
+        state: boolean,
+        options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
+    ) {
         options = new BSTreeViewMethodOptions(options);
 
         if (!options._force && state === this._searchResult) return;
@@ -968,16 +1071,12 @@ export default class BSTreeViewNode {
             if (this._domElement) {
                 this._domElement.classList.add('node-result');
             }
-        }
-        else {
-
+        } else {
             this._searchResult = false;
 
             if (this._domElement) {
                 this._domElement.classList.remove('node-result');
             }
         }
-    };
-
+    }
 }
-

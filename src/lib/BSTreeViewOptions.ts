@@ -1,4 +1,4 @@
-import BSTreeViewNode from "./BSTreeViewNode";
+import BSTreeViewNode from './BSTreeViewNode';
 
 /**
  * The global options to configure the treeView
@@ -10,12 +10,12 @@ export default class BSTreeViewOptions {
     levels: number = 1;
 
     /** The data to be displayed on the treeView. Can be either passed as array of nodes / partial node data or a JSON string of the same. Takes presence of ajaxURL */
-    data: BSTreeViewNode[]|string = null;
+    data: BSTreeViewNode[] | string = null;
     /** The URL to fetch the data from. fetch() is used to get the data from this url */
     ajaxURL: string = null;
     /** The options to be passed to the fetch() function, when data is fetched from ajaxURL */
     ajaxConfig: RequestInit = {
-        method: "GET",
+        method: 'GET',
     };
 
     /** Sets the class name of the icon to be used on an expandable tree node. */
@@ -44,7 +44,7 @@ export default class BSTreeViewOptions {
     /** Sets the default background color used by all nodes, except when overridden on a per node basis in data. Can be any valid color value */
     backColor: string = undefined;
     /** Sets the border color for the component; set showBorder to false if you don't want a visible border. Can be any valid color value */
-    borderColor: string|boolean = undefined;
+    borderColor: string | boolean = undefined;
     /** Sets the text color for a node with a changed checkbox. */
     changedNodeColor: string = '#39A5DC';
     /** Sets the default background color activated when the users cursor hovers over a node. */
@@ -113,10 +113,13 @@ export default class BSTreeViewOptions {
     /** This function is called when a lazyly-loadable node is being expanded for the first time.
      *  The node is available as the first argument, while the second argument is a function responsible for passing the loaded data to the renderer.
      *  The data needs to be in the same JSON format as specified above. */
-    lazyLoad: (node: BSTreeViewNode, renderer: (nodes: BSTreeViewNode[]) => void) => void = undefined;
+    lazyLoad: (
+        node: BSTreeViewNode,
+        renderer: (nodes: BSTreeViewNode[]) => void
+    ) => void = undefined;
 
-    constructor(options: BSTreeViewOptions|object = null) {
-        if(options) {
+    constructor(options: BSTreeViewOptions | object = null) {
+        if (options) {
             Object.assign(this, options);
         }
     }
