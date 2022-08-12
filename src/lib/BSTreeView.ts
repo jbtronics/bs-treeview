@@ -68,7 +68,7 @@ export default class BSTreeView {
     _styleId: string;
 
     /**
-     * The hierachically tree of nodes
+     * The hierarchically tree of nodes
      * @private
      * @internal
      */
@@ -109,7 +109,7 @@ export default class BSTreeView {
     _options: BSTreeViewOptions;
 
     /**
-     * Create a new treeView inside of the given element
+     * Create a new treeView inside the given element
      * @param element The elements in which the tree will be rendered
      * @param options The options for the tree, the data is passed here too
      * @param themes Optional themes to apply to the tree
@@ -119,7 +119,7 @@ export default class BSTreeView {
         options: BSTreeViewOptions | Partial<BSTreeViewOptions>,
         themes?: BSTreeViewTheme[]
     ) {
-        //Ensure that that the passed element is empty
+        //Ensure that the passed element is empty
         if (element.childElementCount > 0) {
             throw new Error(
                 'The element is not empty! Did you already initialized an bs-treeview instance on this element?'
@@ -136,7 +136,7 @@ export default class BSTreeView {
         }
         this._styleId = this._elementId + '-style';
 
-        //Apply the presets of the thmes if any are defined
+        //Apply the presets of the themes if any are defined
         if (themes) {
             const tmp = new BSTreeViewOptions();
             for (const theme of themes) {
@@ -594,10 +594,10 @@ export default class BSTreeView {
      * @internal
      */
     _updateFlatTreeMaps(): void {
-        //We start with a empty map, as nodes are re-registered later
+        //We start with an empty map, as nodes are re-registered later
         this._nodes = new Map<string, BSTreeViewNode>();
 
-        //Create an virtual root node, which is used to initialize the real root nodes, by calling _updateChildrenHierachy
+        //Create a virtual root node, which is used to initialize the real root nodes, by calling _updateChildrenHierarchy
         const virtual_root = new BSTreeViewNode(this);
         //Virtual root is the only node with no parent
         virtual_root._level = 0;
@@ -613,7 +613,7 @@ export default class BSTreeView {
     }
 
     /**
-     * Register the given node at this tree view. This is called in BSTreeViewNode::_updateChildHierachy
+     * Register the given node at this tree view. This is called in BSTreeViewNode::_updateChildHierarchy
      * @param node
      * @private
      * @internal
@@ -623,8 +623,8 @@ export default class BSTreeView {
     }
 
     /**
-     * Sort a unsorted flat represenation of the tree by their nodeId.
-     * This gives an flat list in the order which can be rendered
+     * Sort an unsorted flat representation of the tree by their nodeId.
+     * This gives a flat list in the order which can be rendered
      * @private
      * @internal
      * @param nodes
@@ -702,7 +702,7 @@ export default class BSTreeView {
 
     /**
      * Looks up the DOM for the closest parent list item to retrieve the
-     * data attribute nodeid, which is used to lookup the node in the flattened structure.
+     * data attribute nodeid, which is used to look up the node in the flattened structure.
      * @private
      * @internal
      * @param target The element that should be searched for
@@ -753,7 +753,7 @@ export default class BSTreeView {
             this._wrapper.appendChild(nodeElement);
         });
 
-        //Sets the aria-owns attribute for the root nodes, children nodes will be set recusively
+        //Sets the aria-owns attribute for the root nodes, children nodes will be set recursively
         this._tree.forEach((node) => {
             node._setAriaOwnsValue();
         });

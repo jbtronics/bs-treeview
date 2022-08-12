@@ -110,7 +110,7 @@ export default class BSTreeViewOptions {
     onSearchComplete: (event: Event) => void = undefined;
     onSearchCleared: (event: Event) => void = undefined;
 
-    /** This function is called when a lazyly-loadable node is being expanded for the first time.
+    /** This function is called when a lazily-loadable node is being expanded for the first time.
      *  The node is available as the first argument, while the second argument is a function responsible for passing the loaded data to the renderer.
      *  The data needs to be in the same JSON format as specified above. */
     lazyLoad: (

@@ -6,7 +6,7 @@ export default class BSTreeViewMethodOptions {
     silent = false;
 
     /**
-     * Force a change of the node state, even if the vaklue is not changed. Mostly useful for internal usage
+     * Force a change of the node state, even if the value is not changed. Mostly useful for internal usage
      * @private
      * @internal
      */

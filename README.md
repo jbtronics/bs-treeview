@@ -13,9 +13,9 @@ You can find a real world application using this library [here](http://demo.part
 * No dependencies (especially not on jQuery)
 * Supports all features of the original libraries (with some minor changes, see below)
 * Search function for nodes
-* Allows selection of one (or if wanted mutiple) nodes, nodes can be checked or unchecked independently
+* Allows selection of one (or if wanted multiple) nodes, nodes can be checked or unchecked independently
 * Methods to control the treeview and nodes states (expand, collapse, select, deselect, check, uncheck, check all, uncheck all)
-* Style each node indepentedly (using different classes, colors, icons, etc.)
+* Style each node independently (using different classes, colors, icons, etc.)
 * Support for different themes, to fit the CSS framework and icon set you are using
 * Improved accessibility by setting the correct `aria-*` tags according [specification](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/)
 
@@ -32,7 +32,7 @@ import {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} from "@jbtronics/b
 import "@jbtronics/bs-treeview/src/bs-treeview.css";
 ```
 3. You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website,
-   an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructure.
+   an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructures.
 4. Create the treeview element in your DOM:
 ```html
     <div id="treeview"></div>
@@ -105,14 +105,14 @@ treeElement.addEventListener(EVENT_INITIALIZED, (event) => {
 ```
 
 ## Options
-You can pass various options to the treeview as the second argument of the constructor, to control the behaviour of the treeview.
+You can pass various options to the treeview as the second argument of the constructor, to control the behavior of the treeview.
 See the [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeviewoptions.html) of `BSTreeViewOptions` to see which options are possible and what they do.
 
 ## Methods
 The treeview nodes and the treeview itself can be controlled using various methods of the treeview.
 See the [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeview.html) of `BSTreeView` and the [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeviewnode.html) of `BSTreeViewNode` for more information.
 
-Most methods take an second argument with an options object. The options object can be used to pass additional parameters to the method, like preventing the triggering of events. See the respective Options class of the method for more informations.
+Most methods take an second argument with an options object. The options object can be used to pass additional parameters to the method, like preventing the triggering of events. See the respective Options class of the method for more information.
 
 ## Themes
 Themes are presets for the options object, which can be passed as the third argument of the constructor (as an array of themes).
@@ -233,9 +233,9 @@ Every event has a handler parameter in the option object which is initially pass
 | `EVENT_LOADING_FAILED` | `bs-treeview:loadingFailed` | The tree failed to load data (ajax error). In `event.detail.data` the exception is passed                               |
 | `EVENT_LOADED` | `bs-treeview:loaded`         | The tree has initialized itself and data ready for rendering. In `event.detail.data` a flat list of all nodes is passed |
 | `EVENT_RENDERED` | `bs-treeview:rendered`      | The tree is rendered. In `event.detail.data` the list of rendered nodes is passed                                       |
-| `EVENT_DESTROYED` | `bs-treeview:destroyed`   | The tree is being destoryed                                                                                             |
-| `EVENT_SEARCH_COMPLETED` | `bs-treeview:searchCompleted` | The search has completed. In `event.detail.data` the list of found nodes is passed                              |
-|  `EVENT_SEARCH_CLEARED` | `bs-treeview:searchCleared` | The search has been cleared                                                                                        |
+| `EVENT_DESTROYED` | `bs-treeview:destroyed`   | The tree is being destroyed                                                                                             |
+| `EVENT_SEARCH_COMPLETED` | `bs-treeview:searchCompleted` | The search has completed. In `event.detail.data` the list of found nodes is passed                                      |
+|  `EVENT_SEARCH_CLEARED` | `bs-treeview:searchCleared` | The search has been cleared                                                                                             |
 
 
 ### Node events

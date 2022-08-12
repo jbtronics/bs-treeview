@@ -118,7 +118,7 @@ export default class BSTreeViewNode {
      */
     _searchResult: boolean;
 
-    /** The hierachy level this node is at.
+    /** The hierarchy level this node is at.
      * @private
      * @internal
      */
@@ -189,7 +189,7 @@ export default class BSTreeViewNode {
     }
 
     /**
-     * Returns true, if this node is a end node, meaning it has no child nodes. False otherwise.
+     * Returns true, if this node is an end node, meaning it has no child nodes. False otherwise.
      */
     isEndNode(): boolean {
         return !this.hasChildren();
@@ -266,9 +266,9 @@ export default class BSTreeViewNode {
     }
 
     /**
-     * Update the children nodes for hierachy, by setting the right values for parent, level and index.
+     * Update the children nodes for hierarchy, by setting the right values for parent, level and index.
      * All children nodes are registered then at the treeview. Beware that this node itself is not registered!
-     * Also hierachically dependent node properties are set here. This function is called recursively.
+     * Also, hierarchically dependent node properties are set here. This function is called recursively.
      * @private
      * @internal
      */
@@ -293,7 +293,7 @@ export default class BSTreeViewNode {
                     ? parent._nodeId + '.' + node._index
                     : new_level - 1 + '.' + node._index;
 
-            // We are the parent of our children nodea
+            // We are the parent of our children nodes
             node._parentNode = parent;
 
             // convert the undefined string if hierarchical checks are enabled
@@ -467,7 +467,7 @@ export default class BSTreeViewNode {
     }
 
     /**
-     * Recusively set the aria-owns attribute of this element to make the hierachy accessible
+     * Recursively set the aria-owns attribute of this element to make the hierarchy accessible
      * This is only possible after the tree is rendered
      */
     _setAriaOwnsValue() {
@@ -479,7 +479,7 @@ export default class BSTreeViewNode {
     }
 
     /**
-     * Recursivley removes this node and all its children from the Dom
+     * Recursively removes this node and all its children from the Dom
      * @private
      * @internal
      */
