@@ -1166,10 +1166,11 @@ export default class BSTreeView {
     /**
      Removes given nodes from the tree.
      @param {Array} nodes  - An array of nodes to remove
-     @param {optional Object} options
+     @param _options
      */
     removeNode(
         nodes: BSTreeViewNode[] | BSTreeViewNode,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
     ): this {
         if (!(nodes instanceof Array)) {
@@ -1208,6 +1209,7 @@ export default class BSTreeView {
     updateNode(
         node: BSTreeViewNode,
         newNode: BSTreeViewNode,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _options: Partial<BSTreeViewMethodOptions> = new BSTreeViewMethodOptions()
     ): this {
         if (node instanceof Array) {
@@ -1780,7 +1782,9 @@ export default class BSTreeView {
             if (obj.hasOwnProperty(attr) && obj[attr] !== undefined) {
                 return obj[attr].toString();
             } else {
-                throw new Error("Could not find attribute '" + attr + "' on object!");
+                throw new Error(
+                    "Could not find attribute '" + attr + "' on object!"
+                );
             }
         }
     }

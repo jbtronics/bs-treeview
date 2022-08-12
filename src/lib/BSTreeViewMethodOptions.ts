@@ -3,14 +3,14 @@
  */
 export default class BSTreeViewMethodOptions {
     /** If true no events will be triggered by this action */
-    silent: boolean = false;
+    silent = false;
 
     /**
      * Force a change of the node state, even if the vaklue is not changed. Mostly useful for internal usage
      * @private
      * @internal
      */
-    _force: boolean = false;
+    _force = false;
 
     constructor(
         options:

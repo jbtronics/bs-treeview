@@ -17,4 +17,3 @@ export const EVENT_NODE_EXPANDED = 'bs-tree:nodeExpanded';
 export const EVENT_NODE_SELECTED = 'bs-tree:nodeSelected';
 export const EVENT_NODE_UNCHECKED = 'bs-tree:nodeUnchecked';
 export const EVENT_NODE_UNSELECTED = 'bs-tree:nodeUnselected';
-

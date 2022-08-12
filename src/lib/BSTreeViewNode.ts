@@ -37,15 +37,15 @@ export default class BSTreeViewNode {
     /** The color used under a given node's background icon. (Optional) */
     iconBackground: string;
     /** Whether a node is selectable in the tree. False indicates the node should act as an expansion heading and will not fire selection events. Default true */
-    selectable: boolean = true;
+    selectable = true;
     /** Whether a node is checkable in the tree, used in conjunction with showCheckbox. Default true */
-    checkable: boolean = true;
+    checkable = true;
     /** The current state of this node. See @BSTreeViewNodeState for more details */
     state: BSTreeViewNodeState;
     /** Used in conjunction with global showTags option to add additional information to the right of each node; using Bootstrap Badges, A tag can be an object with properties 'text' for tag value and 'class' for class names(s) of this tag **/
     tags: string[] | Record<string, string>[];
     /** List of per-node HTML data- attributes to append. */
-    dataAttr: object;
+    dataAttr: Record<string, string>;
     /** Custom HTML id attribute */
     id: string;
     /** List of custom CSS classes to append, separated by space. */
@@ -58,7 +58,7 @@ export default class BSTreeViewNode {
     href: string;
 
     /** Adds an expand icon to the node even if it has no children, it calls the lazyLoad() function (described below) upon the first expand. Default: false (Optional) */
-    lazyLoad: boolean = false;
+    lazyLoad = false;
     /** Sets the class of node tags. Default null **/
     tagsClass: string = null;
 
@@ -122,7 +122,7 @@ export default class BSTreeViewNode {
      * @private
      * @internal
      */
-    _level: number = 1;
+    _level = 1;
     /** The index of this entry in the parent's children array.
      * @private
      * @internal
@@ -801,6 +801,7 @@ export default class BSTreeViewNode {
                 options.silent || !this._options.propagateCheckEvent;
 
             let state: boolean | null;
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             let currentNode: BSTreeViewNode = this;
             // Temporarily swap the tree state
             this.state.checked = !this.state.checked;

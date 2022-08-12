@@ -1,4 +1,5 @@
 import BSTreeViewOptions from '../BSTreeViewOptions';
+
 import BSTreeViewTheme from './BSTreeViewTheme';
 
 /**
