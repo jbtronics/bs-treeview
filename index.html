@@ -82,9 +82,9 @@
 					<li>No dependencies (especially not on jQuery)</li>
 					<li>Supports all features of the original libraries (with some minor changes, see below)</li>
 					<li>Search function for nodes</li>
-					<li>Allows selection of one (or if wanted mutiple) nodes, nodes can be checked or unchecked independently</li>
+					<li>Allows selection of one (or if wanted multiple) nodes, nodes can be checked or unchecked independently</li>
 					<li>Methods to control the treeview and nodes states (expand, collapse, select, deselect, check, uncheck, check all, uncheck all)</li>
-					<li>Style each node indepentedly (using different classes, colors, icons, etc.)</li>
+					<li>Style each node independently (using different classes, colors, icons, etc.)</li>
 					<li>Support for different themes, to fit the CSS framework and icon set you are using</li>
 					<li>Improved accessibility by setting the correct <code>aria-*</code> tags according <a href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/">specification</a></li>
 				</ul>
@@ -108,7 +108,7 @@
 </code></pre>
 					</li>
 					<li><p>You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website,
-						an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructure.</p>
+						an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructures.</p>
 					</li>
 					<li><p>Create the treeview element in your DOM:</p>
 						<pre><code class="language-html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;treeview&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
@@ -176,14 +176,14 @@
 				});</p>
 				<pre><code>
 ## <span class="hljs-selector-tag">Options</span>
-<span class="hljs-selector-tag">You</span> <span class="hljs-selector-tag">can</span> <span class="hljs-selector-tag">pass</span> <span class="hljs-selector-tag">various</span> <span class="hljs-selector-tag">options</span> <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span> <span class="hljs-selector-tag">as</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">second</span> <span class="hljs-selector-tag">argument</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">constructor</span>, <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">control</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">behaviour</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span>.
+<span class="hljs-selector-tag">You</span> <span class="hljs-selector-tag">can</span> <span class="hljs-selector-tag">pass</span> <span class="hljs-selector-tag">various</span> <span class="hljs-selector-tag">options</span> <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span> <span class="hljs-selector-tag">as</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">second</span> <span class="hljs-selector-tag">argument</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">constructor</span>, <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">control</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">behavior</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span>.
 <span class="hljs-selector-tag">See</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-attr">[documentation]</span>(<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/bstreeviewoptions.html) of `BSTreeViewOptions` to see which options are possible and what they do.</span>
 
 ## Methods
 The treeview nodes and the treeview itself can be controlled using various methods of the treeview.
 See the [documentation](<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/bstreeview.html) of `BSTreeView` and the [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeviewnode.html) of `BSTreeViewNode` for more information.</span>
 
-Most methods take an second argument with an options object. The options object can be used to pass additional parameters to the method, like preventing the triggering of events. See the respective Options class of the method for more informations.
+Most methods take an second argument with an options object. The options object can be used to pass additional parameters to the method, like preventing the triggering of events. See the respective Options class of the method for more information.
 
 ## Themes
 Themes are presets for the options object, which can be passed as the third argument of the constructor (as an array of themes).
@@ -284,6 +284,7 @@ var tree = [
 				node events of the treeView. You can even attach an event listener to the document, to catch the events of all treeViews on the page.</p>
 				<p>Every event name has a <code>EVENT_</code> prefixed, constant which can be imported and used in your code.</p>
 				<p>Every event passes the treeView object on which the event was triggered in <code>event.detail.treeView</code>.</p>
+				<p>Every event has a handler parameter in the option object which is initially passed to the constructor of the treeview (e.g. the <code>onNodeSelected</code> property is called when a <code>EVENT_NODE_SELECTED</code> event is triggered).</p>
 				<a href="#global-events" id="global-events" style="color: inherit; text-decoration: none;">
 					<h3>Global events</h3>
 				</a>
@@ -318,7 +319,7 @@ var tree = [
 						<tr>
 							<td><code>EVENT_DESTROYED</code></td>
 							<td><code>bs-treeview:destroyed</code></td>
-							<td>The tree is being destoryed</td>
+							<td>The tree is being destroyed</td>
 						</tr>
 						<tr>
 							<td><code>EVENT_SEARCH_COMPLETED</code></td>
