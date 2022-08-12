@@ -29,7 +29,7 @@ You can find a real world application using this library [here](http://demo.part
 2. Import the bs-treeview library and the style file (example code for webpack):
 ```javascript
 import {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} from "@jbtronics/bs-treeview";
-import "@jbtronics/bs-treeview/src/bs-treeview.css";
+import "@jbtronics/bs-treeview/styles/bs-treeview.css";
 ```
 3. You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website,
    an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructures.
@@ -41,7 +41,7 @@ import "@jbtronics/bs-treeview/src/bs-treeview.css";
 5. Initialize the treeview element:
 ```javascript
 import {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} from "@jbtronics/bs-treeview";
-import "@jbtronics/bs-treeview/src/bs-treeview.css";
+import "@jbtronics/bs-treeview/styles/bs-treeview.css";
 
 //Choose the element on which you want to create the treeview
 const treeElement = document.getElementById("treeview");

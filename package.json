@@ -77,7 +77,8 @@
         "!**/*.json",
         "CHANGELOG.md",
         "LICENSE",
-        "README.md"
+        "README.md",
+        "styles/bs-treeview.css"
     ],
     "ava": {
         "failFast": true,
