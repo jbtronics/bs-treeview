@@ -70,6 +70,11 @@
 				<p>A treeview element for browsers using Javascript.
 					It is based on the bootstrap-treeview libraries of <a href="https://github.com/jonmiles/bootstrap-treeview">@jonmiles</a> and <a href="https://github.com/patternfly/patternfly-bootstrap-treeview">@patternfly</a>,
 				but is overhauled with typescript and does not use any jQuery.</p>
+				<a href="#screenshots" id="screenshots" style="color: inherit; text-decoration: none;">
+					<h2>Screenshots</h2>
+				</a>
+				<p><img src="./documentation/screenshot1.png" alt=""></p>
+				<p>You can find a real world application using this library <a href="http://demo.part-db.de/en/">here</a> (See the sidebar with three treeviews).</p>
 				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
 					<h2>Features</h2>
 				</a>
@@ -170,86 +175,220 @@
 					treeView.expandAll()
 				});</p>
 				<pre><code>
-<span class="hljs-comment">## Data Structure</span>
-In order <span class="hljs-keyword">to</span> define <span class="hljs-keyword">the</span> hierarchical structure needed <span class="hljs-keyword">for</span> <span class="hljs-keyword">the</span> tree <span class="hljs-keyword">it</span>&#x27;s necessary <span class="hljs-keyword">to</span> provide a nested array <span class="hljs-keyword">of</span> JavaScript objects.
+## <span class="hljs-selector-tag">Options</span>
+<span class="hljs-selector-tag">You</span> <span class="hljs-selector-tag">can</span> <span class="hljs-selector-tag">pass</span> <span class="hljs-selector-tag">various</span> <span class="hljs-selector-tag">options</span> <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span> <span class="hljs-selector-tag">as</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">second</span> <span class="hljs-selector-tag">argument</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">constructor</span>, <span class="hljs-selector-tag">to</span> <span class="hljs-selector-tag">control</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">behaviour</span> <span class="hljs-selector-tag">of</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">treeview</span>.
+<span class="hljs-selector-tag">See</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-attr">[documentation]</span>(<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/bstreeviewoptions.html) of `BSTreeViewOptions` to see which options are possible and what they do.</span>
 
-Example
+## Methods
+The treeview nodes and the treeview itself can be controlled using various methods of the treeview.
+See the [documentation](<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/bstreeview.html) of `BSTreeView` and the [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeviewnode.html) of `BSTreeViewNode` for more information.</span>
 
-```javascript
+Most methods take an second argument with an options object. The options object can be used to pass additional parameters to the method, like preventing the triggering of events. See the respective Options class of the method for more informations.
+
+## Themes
+Themes are presets for the options object, which can be passed as the third argument of the constructor (as an array of themes).
+Multiple themes are possible, where the last theme in the array overrides the previous themes. The properties in the options object overrides every theme property.
+
+By default, the treeview uses settings which allows it to render on bootstrap <span class="hljs-number">3</span>-<span class="hljs-number">5</span> (with glyphicons). To use a better styling for modern bootstrap versions
+<span class="hljs-keyword">or</span> other icon packs, you can use the following <span class="hljs-attribute">themes</span>:
+* [BS5Theme](<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/bs5theme.html): Use Bootstrap 5&#x27;s CSS variables to style the treeview</span>
+* [FA5Theme](<span class="hljs-attribute">https</span>:<span class="hljs-comment">//jbtronics.github.io/bs-treeview/classes/fa5theme.html): Use FontAwesome 5 icons for the treeview</span>
+
+
+## Data Structure
+In order to define the hierarchical structure needed for the tree it&#x27;s necessary to provide a nested array of JavaScript objects.
+
+<span class="hljs-attribute">Example</span>:
+
+<span class="hljs-built_in">``</span>`javascript
 var tree = [
-  {
-    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 1&quot;</span>,
-    nodes: [
-      {
-        <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Child 1&quot;</span>,
-        nodes: [
-          {
-            <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Grandchild 1&quot;</span>
-          },
-          {
-            <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Grandchild 2&quot;</span>
-          }
+    {
+        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Parent 1&quot;</span>,
+        <span class="hljs-attribute">nodes</span>: [
+            {
+                <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Child 1&quot;</span>,
+                <span class="hljs-attribute">nodes</span>: [
+                    {
+                        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Grandchild 1&quot;</span>
+                    },
+                    {
+                        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Grandchild 2&quot;</span>
+                    }
+                ]
+            },
+            {
+                <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Child 2&quot;</span>
+            }
         ]
-      },
-      {
-        <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Child 2&quot;</span>
-      }
-    ]
-  },
-  {
-    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 2&quot;</span>
-  },
-  {
-    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 3&quot;</span>
-  },
-  {
-    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 4&quot;</span>
-  },
-  {
-    <span class="hljs-built_in">text</span>: <span class="hljs-string">&quot;Parent 5&quot;</span>
-  }
+    },
+    {
+        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Parent 2&quot;</span>
+    },
+    {
+        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Parent 3&quot;</span>
+    },
+    {
+        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Parent 4&quot;</span>
+    },
+    {
+        <span class="hljs-attribute">text</span>: <span class="hljs-string">&quot;Parent 5&quot;</span>
+    }
 ];
 </code></pre>
 				<p>At the lowest level a tree node is a represented as a simple JavaScript object.  This one required property <code>text</code> will build you a tree.</p>
 				<pre><code class="language-javascript">{
-  <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>
+    <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>
 }
 </code></pre>
 				<p>If you want to do more, here&#39;s the full node specification</p>
 				<pre><code class="language-javascript">{
-  <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>,
-  <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
-  <span class="hljs-attr">image</span>: <span class="hljs-string">&quot;something.png&quot;</span>,
-  <span class="hljs-attr">selectedIcon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
-  <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
-  <span class="hljs-attr">backColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
-  <span class="hljs-attr">iconColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
-  <span class="hljs-attr">iconBackground</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
-  <span class="hljs-attr">selectable</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">checkable</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">state</span>: {
-    <span class="hljs-attr">checked</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">disabled</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">expanded</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">selected</span>: <span class="hljs-literal">true</span>
-  },
-  <span class="hljs-attr">tags</span>: [
-    <span class="hljs-string">&#x27;available&#x27;</span>,
-    {<span class="hljs-attr">text</span>:<span class="hljs-string">&#x27;not available&#x27;</span>, <span class="hljs-attr">class</span>:<span class="hljs-string">&#x27;disabled&#x27;</span>}
-  ],
-  <span class="hljs-attr">dataAttr</span>: {
-    <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;#tree&#x27;</span>
-  }
-  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;something&#x27;</span>,
-  <span class="hljs-attr">class</span>: <span class="hljs-string">&#x27;special extraordinary&#x27;</span>,
-  <span class="hljs-attr">hideCheckbox</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">nodes</span>: [
-    {},
-    ...
-  ]
+    <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Node 1&quot;</span>,
+        <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
+        <span class="hljs-attr">image</span>: <span class="hljs-string">&quot;something.png&quot;</span>,
+        <span class="hljs-attr">selectedIcon</span>: <span class="hljs-string">&quot;glyphicon glyphicon-stop&quot;</span>,
+        <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
+        <span class="hljs-attr">backColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
+        <span class="hljs-attr">iconColor</span>: <span class="hljs-string">&quot;#FFFFFF&quot;</span>,
+        <span class="hljs-attr">iconBackground</span>: <span class="hljs-string">&quot;#000000&quot;</span>,
+        <span class="hljs-attr">selectable</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">checkable</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">state</span>: {
+        <span class="hljs-attr">checked</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">disabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">expanded</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">selected</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">tags</span>: [
+        <span class="hljs-string">&#x27;available&#x27;</span>,
+        {<span class="hljs-attr">text</span>:<span class="hljs-string">&#x27;not available&#x27;</span>, <span class="hljs-attr">class</span>:<span class="hljs-string">&#x27;disabled&#x27;</span>}
+    ],
+        <span class="hljs-attr">dataAttr</span>: {
+        <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;#tree&#x27;</span>
+    }
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;something&#x27;</span>,
+        <span class="hljs-attr">class</span>: <span class="hljs-string">&#x27;special extraordinary&#x27;</span>,
+        <span class="hljs-attr">hideCheckbox</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">nodes</span>: [
+        {},
+        ...
+    ]
 }
 </code></pre>
-				<p>See documentation of the respective fields in the <code>BSTreeViewNode</code> class for more information.</p>
+				<p>See <a href="https://jbtronics.github.io/bs-treeview/classes/bstreeviewnode.html">documentation</a> of the respective properties in the <code>BSTreeViewNode</code> class for more information.
+				Furthermore you can pass any other property to the node, but it will be ignored by the treeview, but passed to the node element, and can for example be accessed inside event handlers.</p>
+				<a href="#events" id="events" style="color: inherit; text-decoration: none;">
+					<h2>Events</h2>
+				</a>
+				<p>The treeview fires events when the treeview is initialized, when a node is selected or when a node is expanded or collapsed.</p>
+				<p>Global events are dispatched on the treeview element, node events on the respective node element. The event bubbles the DOM upwards, so you can attach an event listener to the treeView element to catch all
+				node events of the treeView. You can even attach an event listener to the document, to catch the events of all treeViews on the page.</p>
+				<p>Every event name has a <code>EVENT_</code> prefixed, constant which can be imported and used in your code.</p>
+				<p>Every event passes the treeView object on which the event was triggered in <code>event.detail.treeView</code>.</p>
+				<a href="#global-events" id="global-events" style="color: inherit; text-decoration: none;">
+					<h3>Global events</h3>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Event constant</th>
+							<th>Event name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>EVENT_LOADING</code></td>
+							<td><code>bs-treeview:loading</code></td>
+							<td>The tree has initiated data loading</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_LOADING_FAILED</code></td>
+							<td><code>bs-treeview:loadingFailed</code></td>
+							<td>The tree failed to load data (ajax error). In <code>event.detail.data</code> the exception is passed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_LOADED</code></td>
+							<td><code>bs-treeview:loaded</code></td>
+							<td>The tree has initialized itself and data ready for rendering. In <code>event.detail.data</code> a flat list of all nodes is passed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_RENDERED</code></td>
+							<td><code>bs-treeview:rendered</code></td>
+							<td>The tree is rendered. In <code>event.detail.data</code> the list of rendered nodes is passed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_DESTROYED</code></td>
+							<td><code>bs-treeview:destroyed</code></td>
+							<td>The tree is being destoryed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_SEARCH_COMPLETED</code></td>
+							<td><code>bs-treeview:searchCompleted</code></td>
+							<td>The search has completed. In <code>event.detail.data</code> the list of found nodes is passed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_SEARCH_CLEARED</code></td>
+							<td><code>bs-treeview:searchCleared</code></td>
+							<td>The search has been cleared</td>
+						</tr>
+				</tbody></table>
+				<a href="#node-events" id="node-events" style="color: inherit; text-decoration: none;">
+					<h3>Node events</h3>
+				</a>
+				<p>For every node event you can find the node object in <code>event.detail.node</code>.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Event constant</th>
+							<th>Event name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>EVENT_NODE_RENDERED</code></td>
+							<td><code>bs-treeview:nodeRendered</code></td>
+							<td>The node is rendered</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_CHECKED</code></td>
+							<td><code>bs-treeview:nodeChecked</code></td>
+							<td>The node is checked</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_UNCHECKED</code></td>
+							<td><code>bs-treeview:nodeUnchecked</code></td>
+							<td>The node is unchecked</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_SELECTED</code></td>
+							<td><code>bs-treeview:nodeSelected</code></td>
+							<td>The node is selected</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_UNSELECTED</code></td>
+							<td><code>bs-treeview:nodeUnSelected</code></td>
+							<td>The node is deselected</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_EXPANDED</code></td>
+							<td><code>bs-treeview:nodeExpanded</code></td>
+							<td>The node is expanded</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_COLLAPSED</code></td>
+							<td><code>bs-treeview:nodeCollapsed</code></td>
+							<td>The node is collapsed</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_DISABLED</code></td>
+							<td><code>bs-treeview:nodeDisabled</code></td>
+							<td>The node is disabled</td>
+						</tr>
+						<tr>
+							<td><code>EVENT_NODE_ENABLED</code></td>
+							<td><code>bs-treeview:nodeEnabled</code></td>
+							<td>The node is enabled</td>
+						</tr>
+				</tbody></table>
 				<a href="#migrate-from-bootstrap-treeview" id="migrate-from-bootstrap-treeview" style="color: inherit; text-decoration: none;">
 					<h2>Migrate from bootstrap-treeview</h2>
 				</a>
@@ -257,7 +396,8 @@ var tree = [
 					<h3>Breaking changes</h3>
 				</a>
 				<ul>
-					<li>Other event names and event signatures are changed: We use javascript native events now, which has the signature: <code>(event: Event) =&gt; void</code> for the handlers. You can access the data part of the event using <code>event.detail.data</code></li>
+					<li>Event names are now prefixed with <code>bs-treeview:</code>, so the event <code>nodeSelected</code> becomes <code>bs-treeview:nodeSelected</code></li>
+					<li>Event signatures are changed: We use javascript native events now, which has the signature: <code>(event: Event) =&gt; void</code> for the handlers. You can access the data part of the event using <code>event.detail.data</code></li>
 					<li>The default value for the <code>levels</code> option, of how many levels should be expanded automatically, is now <code>1</code> instead of <code>2</code> (meaning no levels are expanded automatically).</li>
 					<li>addNode()/RemoveNode()/UpdateNode() does not dispatch the <code>initialized</code> anymore</li>
 					<li><code>initialized</code> event is now dispatched after all nodes were rendered (therefore afterwards the <code>render</code> event is dispatched)</li>
