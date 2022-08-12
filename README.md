@@ -4,6 +4,11 @@ A treeview element for browsers using Javascript.
 It is based on the bootstrap-treeview libraries of [@jonmiles](https://github.com/jonmiles/bootstrap-treeview) and [@patternfly](https://github.com/patternfly/patternfly-bootstrap-treeview),
 but is overhauled with typescript and does not use any jQuery.
 
+## Screenshots
+![](./documentation/screenshot1.png)
+
+You can find a real world application using this library [here](http://demo.part-db.de/en/) (See the sidebar with three treeviews).
+
 ## Features
 * No dependencies (especially not on jQuery)
 * Supports all features of the original libraries (with some minor changes, see below)
@@ -26,8 +31,8 @@ but is overhauled with typescript and does not use any jQuery.
 import {BSTreeView, BS5Theme, FAIconTheme, EVENT_INITIALIZED} from "@jbtronics/bs-treeview";
 import "@jbtronics/bs-treeview/src/bs-treeview.css";
 ```
-3. You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website, 
-an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructure.
+3. You need some data source to populate the treeview: This could be an object structure, created in javascript, an static JSON string created by your website,
+   an endpoint serving an JSON encodes tree structure and so on. See below for an description of the datastructure.
 4. Create the treeview element in your DOM:
 ```html
     <div id="treeview"></div>
@@ -73,11 +78,11 @@ const data = [
         text: "Parent 2"
     }
 ]
-    
+
 
 
 //Create the treeview
-const tree = new BSTreeView(treeElement, 
+const tree = new BSTreeView(treeElement,
     //The options to apply to our treeView
     {
         data: data,
@@ -86,7 +91,7 @@ const tree = new BSTreeView(treeElement,
             const node = event.detail.node;
             alert("You selected: " + node.text);
         }
-        
+
     },
     //Themes to use for the BSTreeview. We use Bootstrap5 and FontAwesome5
     [BS5Theme, FAIconTheme]
@@ -94,8 +99,8 @@ const tree = new BSTreeView(treeElement,
 
 //Or attach an event listener to the tree DOM element (The event is triggered on the node and bubbles upwards)
 treeElement.addEventListener(EVENT_INITIALIZED, (event) => {
-  console.log("The treeview has been initialized");
-  treeView.expandAll()
+    console.log("The treeview has been initialized");
+    treeView.expandAll()
 });
 ```
 
@@ -126,37 +131,37 @@ Example:
 
 ```javascript
 var tree = [
-  {
-    text: "Parent 1",
-    nodes: [
-      {
-        text: "Child 1",
+    {
+        text: "Parent 1",
         nodes: [
-          {
-            text: "Grandchild 1"
-          },
-          {
-            text: "Grandchild 2"
-          }
+            {
+                text: "Child 1",
+                nodes: [
+                    {
+                        text: "Grandchild 1"
+                    },
+                    {
+                        text: "Grandchild 2"
+                    }
+                ]
+            },
+            {
+                text: "Child 2"
+            }
         ]
-      },
-      {
-        text: "Child 2"
-      }
-    ]
-  },
-  {
-    text: "Parent 2"
-  },
-  {
-    text: "Parent 3"
-  },
-  {
-    text: "Parent 4"
-  },
-  {
-    text: "Parent 5"
-  }
+    },
+    {
+        text: "Parent 2"
+    },
+    {
+        text: "Parent 3"
+    },
+    {
+        text: "Parent 4"
+    },
+    {
+        text: "Parent 5"
+    }
 ];
 ```
 
@@ -164,7 +169,7 @@ At the lowest level a tree node is a represented as a simple JavaScript object. 
 
 ```javascript
 {
-  text: "Node 1"
+    text: "Node 1"
 }
 ```
 
@@ -172,45 +177,84 @@ If you want to do more, here's the full node specification
 
 ```javascript
 {
-  text: "Node 1",
-  icon: "glyphicon glyphicon-stop",
-  image: "something.png",
-  selectedIcon: "glyphicon glyphicon-stop",
-  color: "#000000",
-  backColor: "#FFFFFF",
-  iconColor: "#FFFFFF",
-  iconBackground: "#000000",
-  selectable: true,
-  checkable: true,
-  state: {
-    checked: true,
-    disabled: true,
-    expanded: true,
-    selected: true
-  },
-  tags: [
-    'available',
-    {text:'not available', class:'disabled'}
-  ],
-  dataAttr: {
-    target: '#tree'
-  }
-  id: 'something',
-  class: 'special extraordinary',
-  hideCheckbox: true,
-  nodes: [
-    {},
-    ...
-  ]
+    text: "Node 1",
+        icon: "glyphicon glyphicon-stop",
+        image: "something.png",
+        selectedIcon: "glyphicon glyphicon-stop",
+        color: "#000000",
+        backColor: "#FFFFFF",
+        iconColor: "#FFFFFF",
+        iconBackground: "#000000",
+        selectable: true,
+        checkable: true,
+        state: {
+        checked: true,
+            disabled: true,
+            expanded: true,
+            selected: true
+    },
+    tags: [
+        'available',
+        {text:'not available', class:'disabled'}
+    ],
+        dataAttr: {
+        target: '#tree'
+    }
+    id: 'something',
+        class: 'special extraordinary',
+        hideCheckbox: true,
+        nodes: [
+        {},
+        ...
+    ]
 }
 ```
 
 See [documentation](https://jbtronics.github.io/bs-treeview/classes/bstreeviewnode.html) of the respective properties in the `BSTreeViewNode` class for more information.
 Furthermore you can pass any other property to the node, but it will be ignored by the treeview, but passed to the node element, and can for example be accessed inside event handlers.
 
+## Events
+The treeview fires events when the treeview is initialized, when a node is selected or when a node is expanded or collapsed.
+
+Global events are dispatched on the treeview element, node events on the respective node element. The event bubbles the DOM upwards, so you can attach an event listener to the treeView element to catch all
+node events of the treeView. You can even attach an event listener to the document, to catch the events of all treeViews on the page.
+
+Every event name has a `EVENT_` prefixed, constant which can be imported and used in your code.
+
+Every event passes the treeView object on which the event was triggered in `event.detail.treeView`.
+
+### Global events
+
+| Event constant | Event name                  | Description                                                                                                             |
+| ---------------|-----------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `EVENT_LOADING` | `bs-treeview:loading`       | The tree has initiated data loading                                                                                     |
+| `EVENT_LOADING_FAILED` | `bs-treeview:loadingFailed` | The tree failed to load data (ajax error). In `event.detail.data` the exception is passed                               |
+| `EVENT_LOADED` | `bs-treeview:loaded`         | The tree has initialized itself and data ready for rendering. In `event.detail.data` a flat list of all nodes is passed |
+| `EVENT_RENDERED` | `bs-treeview:rendered`      | The tree is rendered. In `event.detail.data` the list of rendered nodes is passed                                       |
+| `EVENT_DESTROYED` | `bs-treeview:destroyed`   | The tree is being destoryed                                                                                             |
+| `EVENT_SEARCH_COMPLETED` | `bs-treeview:searchCompleted` | The search has completed. In `event.detail.data` the list of found nodes is passed                              |
+|  `EVENT_SEARCH_CLEARED` | `bs-treeview:searchCleared` | The search has been cleared                                                                                        |
+
+
+### Node events
+For every node event you can find the node object in `event.detail.node`.
+
+| Event constant          | Event name                   | Description                                                                                                             |
+|-------------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `EVENT_NODE_RENDERED`   | `bs-treeview:nodeRendered`   | The node is rendered                                                                                                 |
+| `EVENT_NODE_CHECKED`    | `bs-treeview:nodeChecked`    | The node is checked                                                                                                   |
+| `EVENT_NODE_UNCHECKED`  | `bs-treeview:nodeUnchecked`  | The node is unchecked                                                                                             |
+| `EVENT_NODE_SELECTED`   | `bs-treeview:nodeSelected`   | The node is selected                                                                                               |
+| `EVENT_NODE_UNSELECTED` | `bs-treeview:nodeUnSelected` | The node is deselected                                                                                         |
+| `EVENT_NODE_EXPANDED`   | `bs-treeview:nodeExpanded`   | The node is expanded                                                                                             |
+| `EVENT_NODE_COLLAPSED`  | `bs-treeview:nodeCollapsed`  | The node is collapsed                                                                                           |
+| `EVENT_NODE_DISABLED`   | `bs-treeview:nodeDisabled`   | The node is disabled                                                                                           |
+| `EVENT_NODE_ENABLED`    | `bs-treeview:nodeEnabled`    | The node is enabled                                                                                            |
+
 ## Migrate from bootstrap-treeview
 ### Breaking changes
-* Other event names and event signatures are changed: We use javascript native events now, which has the signature: `(event: Event) => void` for the handlers. You can access the data part of the event using `event.detail.data`
+* Event names are now prefixed with `bs-treeview:`, so the event `nodeSelected` becomes `bs-treeview:nodeSelected`
+* Event signatures are changed: We use javascript native events now, which has the signature: `(event: Event) => void` for the handlers. You can access the data part of the event using `event.detail.data`
 * The default value for the `levels` option, of how many levels should be expanded automatically, is now `1` instead of `2` (meaning no levels are expanded automatically).
 * addNode()/RemoveNode()/UpdateNode() does not dispatch the `initialized` anymore
 * `initialized` event is now dispatched after all nodes were rendered (therefore afterwards the `render` event is dispatched)
