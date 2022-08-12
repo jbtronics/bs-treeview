@@ -41,7 +41,7 @@ export default class BSTreeViewNode {
     /** Whether a node is checkable in the tree, used in conjunction with showCheckbox. Default true */
     checkable = true;
     /** The current state of this node. See @BSTreeViewNodeState for more details */
-    state: BSTreeViewNodeState;
+    state: BSTreeViewNodeState = new BSTreeViewNodeState();
     /** Used in conjunction with global showTags option to add additional information to the right of each node; using Bootstrap Badges, A tag can be an object with properties 'text' for tag value and 'class' for class names(s) of this tag **/
     tags: string[] | Record<string, string>[];
     /** List of per-node HTML data- attributes to append. */
@@ -260,6 +260,11 @@ export default class BSTreeViewNode {
             );
         } else {
             node.nodes = [];
+        }
+
+        //Assign state object
+        if(data.state) {
+            node.state = Object.assign(new BSTreeViewNodeState(), data.state);
         }
 
         return node;
