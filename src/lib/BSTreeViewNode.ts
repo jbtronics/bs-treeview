@@ -263,7 +263,7 @@ export default class BSTreeViewNode {
         }
 
         //Assign state object
-        if(data.state) {
+        if (data.state) {
             node.state = Object.assign(new BSTreeViewNodeState(), data.state);
         }
 
