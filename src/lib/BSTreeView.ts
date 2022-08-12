@@ -1711,7 +1711,7 @@ export default class BSTreeView {
      * Returns all nodes that were found by the last search
      */
     getSearchResults(): BSTreeViewNode[] {
-        return this._findNodes('true', 'searchResult');
+        return this._findNodes('true', '_searchResult');
     }
 
     /**
@@ -1780,7 +1780,7 @@ export default class BSTreeView {
             if (obj.hasOwnProperty(attr) && obj[attr] !== undefined) {
                 return obj[attr].toString();
             } else {
-                return undefined;
+                throw new Error("Could not find attribute '" + attr + "' on object!");
             }
         }
     }
