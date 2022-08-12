@@ -223,6 +223,8 @@ Every event name has a `EVENT_` prefixed, constant which can be imported and use
 
 Every event passes the treeView object on which the event was triggered in `event.detail.treeView`.
 
+Every event has a handler parameter in the option object which is initially passed to the constructor of the treeview (e.g. the `onNodeSelected` property is called when a `EVENT_NODE_SELECTED` event is triggered).
+
 ### Global events
 
 | Event constant | Event name                  | Description                                                                                                             |
