@@ -1029,7 +1029,7 @@ export default class BSTreeViewNode {
      */
     _addIcon(): void {
         if (
-            this._options.showIcon &&
+            this._options.showIcon && this.icon &&
             !(this._options.showImage && this.image)
         ) {
             this._domIcon = Template.icon.node.cloneNode(true) as HTMLElement;
