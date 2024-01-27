@@ -101,6 +101,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-private"><a href="bstreeviewselectoptions.html#_force" class="tsd-kind-icon">_force</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="bstreeviewselectoptions.html#_unselecting" class="tsd-kind-icon">_unselecting</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="bstreeviewselectoptions.html#ignorepreventunselect" class="tsd-kind-icon">ignore<wbr>Prevent<wbr>Unselect</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="bstreeviewselectoptions.html#silent" class="tsd-kind-icon">silent</a></li>
 							</ul>
 						</section>
@@ -120,7 +121,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="bstreeviewmethodoptions.html">BSTreeViewMethodOptions</a>.<a href="bstreeviewmethodoptions.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/833eca2/src/lib/BSTreeViewMethodOptions.ts#L13">lib/BSTreeViewMethodOptions.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/b4e0c80/src/lib/BSTreeViewMethodOptions.ts#L13">lib/BSTreeViewMethodOptions.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -143,7 +144,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="bstreeviewmethodoptions.html">BSTreeViewMethodOptions</a>.<a href="bstreeviewmethodoptions.html#_force">_force</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/833eca2/src/lib/BSTreeViewMethodOptions.ts#L13">lib/BSTreeViewMethodOptions.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/b4e0c80/src/lib/BSTreeViewMethodOptions.ts#L13">lib/BSTreeViewMethodOptions.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -162,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">_unselecting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/833eca2/src/lib/BSTreeViewSelectOptions.ts#L11">lib/BSTreeViewSelectOptions.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/b4e0c80/src/lib/BSTreeViewSelectOptions.ts#L12">lib/BSTreeViewSelectOptions.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -172,7 +173,26 @@
 						<dl class="tsd-comment-tags">
 							<dt>internal</dt>
 							<dd></dd>
+							<dt>deprecated</dt>
+							<dd><p>Use ignorePreventUnselect instead</p>
+							</dd>
 						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="ignorepreventunselect" class="tsd-anchor"></a>
+					<h3>ignore<wbr>Prevent<wbr>Unselect</h3>
+					<div class="tsd-signature tsd-kind-icon">ignore<wbr>Prevent<wbr>Unselect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/b4e0c80/src/lib/BSTreeViewSelectOptions.ts#L18">lib/BSTreeViewSelectOptions.ts:18</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>When this is set to true, the node will be unselected even if the
+							preventUnselected option is used on the treeview.</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -182,7 +202,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="bstreeviewmethodoptions.html">BSTreeViewMethodOptions</a>.<a href="bstreeviewmethodoptions.html#silent">silent</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/833eca2/src/lib/BSTreeViewMethodOptions.ts#L6">lib/BSTreeViewMethodOptions.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/jbtronics/bs-treeview/blob/b4e0c80/src/lib/BSTreeViewMethodOptions.ts#L6">lib/BSTreeViewMethodOptions.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -243,6 +263,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="bstreeviewselectoptions.html#_unselecting" class="tsd-kind-icon">_unselecting</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="bstreeviewselectoptions.html#ignorepreventunselect" class="tsd-kind-icon">ignore<wbr>Prevent<wbr>Unselect</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="bstreeviewselectoptions.html#silent" class="tsd-kind-icon">silent</a>
