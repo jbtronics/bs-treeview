@@ -1277,6 +1277,40 @@ export default class BSTreeView {
     }
 
     /**
+     * Selects all currently unselected nodes.
+     * @param options
+     */
+    selectAll(
+        options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
+    ): this
+    {
+        this._orderedNodes.forEach((node) => {
+            if (!node.state.selected) {
+                node.setSelected(true, options);
+            }
+        });
+
+        return this;
+    }
+
+    /**
+     * Unselects all currently selected nodes.
+     * @param options
+     */
+    unselectAll(
+        options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
+    ): this
+    {
+        this._orderedNodes.forEach((node) => {
+            if (node.state.selected) {
+                node.setSelected(false, options);
+            }
+        });
+
+        return this;
+    }
+
+    /**
      Toggles a node selected state; selecting if unselected, unselecting if selected.
      @param {Array} nodes - An array of nodes
      @param {optional Object} options
