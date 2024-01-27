@@ -1282,8 +1282,7 @@ export default class BSTreeView {
      */
     selectAll(
         options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
-    ): this
-    {
+    ): this {
         this._orderedNodes.forEach((node) => {
             if (!node.state.selected) {
                 node.setSelected(true, options);
@@ -1299,8 +1298,7 @@ export default class BSTreeView {
      */
     unselectAll(
         options: Partial<BSTreeViewSelectOptions> = new BSTreeViewSelectOptions()
-    ): this
-    {
+    ): this {
         this._orderedNodes.forEach((node) => {
             if (node.state.selected) {
                 node.setSelected(false, options);
