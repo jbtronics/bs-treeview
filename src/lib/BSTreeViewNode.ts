@@ -746,7 +746,8 @@ export default class BSTreeViewNode {
             if (
                 this._options.preventUnselect &&
                 options &&
-                !options._unselecting &&
+                //Allow to unselect if passed as option
+                !options._unselecting && !options.ignorePreventUnselect &&
                 this._treeView._findNodes('true', 'state.selected').length === 1
             ) {
                 // Fire the nodeSelected event if reselection is allowed
