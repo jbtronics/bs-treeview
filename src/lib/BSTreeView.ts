@@ -1388,14 +1388,16 @@ export default class BSTreeView {
         }
 
         nodes.forEach((node) => {
-            // Do not re-expand already expanded nodes
-            if (node.state.expanded) return;
-
             if (typeof this._options.lazyLoad === 'function' && node.lazyLoad) {
                 node._lazyLoad();
             }
 
-            node.setExpanded(true, options);
+            //Only expand the node itself if it was not expanded before
+            if (!node.state.expanded) {
+                node.setExpanded(true, options);
+            }
+
+            //We still need to expand the children
             if (node.nodes) {
                 this._expandLevels(node.nodes, options.levels - 1, options);
             }
