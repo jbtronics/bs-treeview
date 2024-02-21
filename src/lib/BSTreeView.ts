@@ -708,7 +708,7 @@ export default class BSTreeView {
      * @param target The element that should be searched for
      */
     _domToNode(target: HTMLElement): BSTreeViewNode {
-        const nodeElement = target.closest('li.list-group-item') as HTMLElement;
+        const nodeElement = target.closest(Template.node.tagName + "." + Template.node.className.replace(" ", ".")) as HTMLElement;
         const nodeId = nodeElement.dataset.nodeId;
         const node = this._nodes.get(nodeId);
         if (!node) {
