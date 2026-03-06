@@ -1785,6 +1785,11 @@ export default class BSTreeView {
 
         this._orderedNodes.forEach((node) => {
             const val = this._getNodeValue(node, attribute);
+
+            if (val === null) {
+                return;
+            }
+
             if (typeof val === 'string') {
                 if (val.match(new RegExp(pattern, modifier))) {
                     tmp.push(node);
@@ -1797,15 +1802,15 @@ export default class BSTreeView {
 
     /**
      Recursive find for retrieving nested attributes values
-     All values are return as strings, unless invalid
+     All values are return as strings, unless invalid then null is returned
      @private
      @internal
      @param {Object} obj - Typically a node, could be any object
      @param {String} attr - Identifies an object property using dot notation
-     @return {String} value - Matching attributes string representation
+     @return {String} value - Matching attributes string representation, or null if the attribute does not exist or is undefined
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    _getNodeValue(obj: object, attr: string): string {
+    _getNodeValue(obj: object, attr: string): string|null {
         const index = attr.indexOf('.');
         if (index > 0) {
             const _obj = obj[attr.substring(0, index)];
@@ -1816,9 +1821,7 @@ export default class BSTreeView {
             if (obj.hasOwnProperty(attr) && obj[attr] !== undefined) {
                 return obj[attr].toString();
             } else {
-                throw new Error(
-                    "Could not find attribute '" + attr + "' on object!"
-                );
+                return null;
             }
         }
     }
